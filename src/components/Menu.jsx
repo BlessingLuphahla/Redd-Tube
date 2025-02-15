@@ -57,8 +57,11 @@ const Hr = styled.hr`
   border: 0.5px solid #373737;
 `;
 
-const Login = styled.div`
-  
+const Login = styled.div``;
+
+const Button = styled.button`
+  width: 25px;
+  height: 25px;
 `;
 
 function Menu() {
@@ -91,6 +94,11 @@ function Menu() {
           <HistoryIcon />
           History
         </Item>
+        <Hr />
+        <Login>
+          Sign in to like videos, comment, and subscribe.
+          <Button>Sign In</Button>
+        </Login>
         <Hr />
         <Item>
           <SportsBaseballIcon />
