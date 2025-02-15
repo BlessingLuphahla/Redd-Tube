@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import LogoImg from "../assets/images/logo.jpg";
 import HomeIcon from "@mui/icons-material/Home";
@@ -6,7 +7,6 @@ import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import HistoryIcon from "@mui/icons-material/History";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
 import MovieIcon from "@mui/icons-material/Movie";
 import ArticleIcon from "@mui/icons-material/Article";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
@@ -16,14 +16,38 @@ import FlagIcon from "@mui/icons-material/Flag";
 import HelpIcon from "@mui/icons-material/Help";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
+import PersonIcon from "@mui/icons-material/Person";
+import { LightTheme, DarkTheme } from "../utils/Theme";
 
 const Container = styled.div`
   flex: 1.1;
-  background-color: #202020;
+  background-color: ${({ theme }) => theme.bg};
   height: 100vh;
   padding: 0;
   margin: 0;
-  color: white;
+  color: ${({ theme }) => theme.text};
+  position: sticky;
+  top: 0;
+  left: 0;
+  overflow-y: scroll;
+
+  /* Scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 6px; /* Adjust width to make it smaller */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #333; /* Track color */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #555; /* Scrollbar handle color */
+    border-radius: 10px; /* Rounded edges */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #777; /* Color when hovered */
+  }
 `;
 
 const Wrapper = styled.div`
@@ -36,6 +60,8 @@ const Logo = styled.div`
   gap: 5px;
   font-weight: bold;
   margin-bottom: 25px;
+  text-transform: uppercase;
+  font-family: "Courier New", Courier, monospace;
 `;
 
 const Img = styled.img`
@@ -54,17 +80,36 @@ const Item = styled.div`
 
 const Hr = styled.hr`
   margin: 15px 0px;
-  border: 0.5px solid #373737;
+  border: 0.5px solid ${({ theme }) => theme.soft};
 `;
 
-const Login = styled.div``;
+const Login = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const Button = styled.button`
-  width: 25px;
-  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 105px;
+  height: 45px;
+  background-color: transparent;
+  border: 1px solid #3eafff;
+  color: #3eafff;
+  border-radius: 3px;
+  outline: none;
+  margin-top: 10px;
+  cursor: pointer;
 `;
 
-function Menu() {
+function Menu({ setTheme, theme }) {
+  const handleSetTheme = () => {
+    if (theme === LightTheme) setTheme(DarkTheme);
+    else setTheme(LightTheme);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -89,20 +134,26 @@ function Menu() {
           <SportsEsportsIcon />
           Sports
         </Item>
-
         <Item>
           <HistoryIcon />
           History
         </Item>
+        <Item onClick={handleSetTheme}>
+          <SettingsBrightnessIcon />
+          {theme === LightTheme ? "Dark Mode" : "Light Mode"}
+        </Item>
         <Hr />
         <Login>
           Sign in to like videos, comment, and subscribe.
-          <Button>Sign In</Button>
+          <Button>
+            <PersonIcon />
+            Sign In
+          </Button>
         </Login>
         <Hr />
         <Item>
-          <SportsBaseballIcon />
-          Baseball
+          <LibraryMusicIcon />
+          Library
         </Item>
         <Item>
           <MovieIcon />
@@ -136,10 +187,6 @@ function Menu() {
         <Item>
           <FeedbackIcon />
           Feedback
-        </Item>
-        <Item>
-          <SettingsBrightnessIcon />
-          Dark Mode
         </Item>
       </Wrapper>
     </Container>
