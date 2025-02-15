@@ -59,7 +59,7 @@ const Logo = styled.div`
   align-items: center;
   gap: 5px;
   font-weight: bold;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
   text-transform: uppercase;
   font-family: "Courier New", Courier, monospace;
 `;
@@ -71,10 +71,10 @@ const Img = styled.img`
 
 const Item = styled.div`
   display: flex;
-  align-items: centre;
+  align-items: center;
   gap: 10px;
   cursor: pointer;
-  padding: 7.5px 0px;
+  padding: 6px 0px;
   font-size: 12px;
 `;
 
@@ -86,6 +86,7 @@ const Hr = styled.hr`
 const Login = styled.div`
   display: flex;
   flex-direction: column;
+  font-size: 14px;
 `;
 
 const Button = styled.button`
