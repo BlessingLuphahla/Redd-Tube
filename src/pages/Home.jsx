@@ -1,9 +1,13 @@
+import styled from "styled-components";
 
+const Container = styled.div``;
 
 function Home() {
   return (
-    <div>Home</div>
-  )
+    <Container>
+      <div>Hello World</div>
+    </Container>
+  );
 }
 
-export default Home
+export default Home;
