@@ -15,9 +15,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import FlagIcon from "@mui/icons-material/Flag";
 import HelpIcon from "@mui/icons-material/Help";
 import FeedbackIcon from "@mui/icons-material/Feedback";
+import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 
 const Container = styled.div`
-  flex: 1;
+  flex: 1.1;
   background-color: #202020;
   height: 100vh;
   padding: 0;
@@ -35,12 +36,11 @@ const Logo = styled.div`
   gap: 5px;
   font-weight: bold;
   margin-bottom: 25px;
-  margin-left: 15px;
 `;
 
 const Img = styled.img`
-  height: 55px;
-  width: 55px;
+  height: 30px;
+  width: 30px;
 `;
 
 const Item = styled.div`
@@ -48,7 +48,17 @@ const Item = styled.div`
   align-items: centre;
   gap: 10px;
   cursor: pointer;
-  padding: 7.5px;
+  padding: 7.5px 0px;
+  font-size: 12px;
+`;
+
+const Hr = styled.hr`
+  margin: 15px 0px;
+  border: 0.5px solid #373737;
+`;
+
+const Login = styled.div`
+  
 `;
 
 function Menu() {
@@ -71,18 +81,17 @@ function Menu() {
           <SubscriptionsIcon />
           Subscriptions
         </Item>
-        <Item>
-          <HistoryIcon />
-          History
-        </Item>
-        <Item>
-          <LibraryMusicIcon />
-          Library
-        </Item>
+        <Hr />
         <Item>
           <SportsEsportsIcon />
           Sports
         </Item>
+
+        <Item>
+          <HistoryIcon />
+          History
+        </Item>
+        <Hr />
         <Item>
           <SportsBaseballIcon />
           Baseball
@@ -99,6 +108,7 @@ function Menu() {
           <LiveTvIcon />
           Live TV
         </Item>
+        <Hr />
         <Item>
           <AccountCircleIcon />
           Account
@@ -118,6 +128,10 @@ function Menu() {
         <Item>
           <FeedbackIcon />
           Feedback
+        </Item>
+        <Item>
+          <SettingsBrightnessIcon />
+          Dark Mode
         </Item>
       </Wrapper>
     </Container>
