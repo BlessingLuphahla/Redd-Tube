@@ -3,6 +3,9 @@ import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
 import { DarkTheme } from "./utils/Theme";
 import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router";
+import Home from "./pages/Home";
+import Video from "./pages/Video";
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +19,7 @@ const Main = styled.div`
 
 const Wrapper = styled.div`
   flex: 1;
+  padding: 5px;
 `;
 
 function App() {
@@ -24,13 +28,20 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <Menu theme={theme} setTheme={setTheme} />
-        <Main>
-          <Navbar />
-          <Wrapper>
-            <h2>test</h2>
-          </Wrapper>
-        </Main>
+        <BrowserRouter>
+          <Menu theme={theme} setTheme={setTheme} />
+          <Main>
+            <Navbar />
+            <Wrapper>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<Home />} />
+                  <Route path="video" element={<Video />} />
+                </Route>
+              </Routes>
+            </Wrapper>
+          </Main>
+        </BrowserRouter>
       </Container>
     </ThemeProvider>
   );

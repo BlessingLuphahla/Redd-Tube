@@ -21,7 +21,7 @@ import { LightTheme, DarkTheme } from "../utils/Theme";
 
 const Container = styled.div`
   flex: 1.1;
-  background-color: ${({ theme }) => theme.bg};
+  background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   padding: 0;
   margin: 0;
@@ -74,7 +74,7 @@ const Item = styled.div`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  padding: 6px 0px;
+  padding: 7.5px 0px;
   font-size: 12px;
 `;
 
