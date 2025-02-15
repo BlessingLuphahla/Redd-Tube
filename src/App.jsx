@@ -15,11 +15,11 @@ const Main = styled.div`
   flex: 7;
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text};
-`;
+  `;
 
 const Wrapper = styled.div`
   flex: 1;
-  padding: 5px;
+  padding: 22px 45px;
 `;
 
 function App() {
