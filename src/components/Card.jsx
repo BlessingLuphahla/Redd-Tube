@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Link } from "react-router";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -44,25 +45,29 @@ const Title = styled.h1`
 
 const ChannelName = styled.h2`
   font-size: 14px;
+  color: ${({ theme }) => theme.textSoft};
 `;
 
 const Info = styled.div`
   font-size: 12px;
+  color: ${({ theme }) => theme.text};
 `;
 
 function Card({ data }) {
   return (
-    <Container>
-      <Image src="https://images.pexels.com/photos/30682216/pexels-photo-30682216/free-photo-of-sunset-view-of-grand-canal-in-venice.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-      <Details>
-        <ChannelImage src="https://images.pexels.com/photos/29343550/pexels-photo-29343550/free-photo-of-scenic-mountain-road-in-majestic-forest-landscape.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-        <Texts>
-          <Title>Poison</Title>
-          <ChannelName>Redd Axe {data}</ChannelName>
-          <Info>660,900 views • 1 day ago </Info>
-        </Texts>
-      </Details>
-    </Container>
+    <Link to="video/test" style={{ textDecoration: "none" }}>
+      <Container>
+        <Image src="https://images.pexels.com/photos/13246022/pexels-photo-13246022.jpeg?auto=compress&cs=tinysrgb&w=600" />
+        <Details>
+          <ChannelImage src="https://images.pexels.com/photos/17089904/pexels-photo-17089904/free-photo-of-table-with-wineglasses.jpeg?auto=compress&cs=tinysrgb&w=600" />
+          <Texts>
+            <Title>Poison</Title>
+            <ChannelName>Redd Axe {data}</ChannelName>
+            <Info>660,900 views • 1 day ago </Info>
+          </Texts>
+        </Details>
+      </Container>
+    </Link>
   );
 }
 

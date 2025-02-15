@@ -18,9 +18,10 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import PersonIcon from "@mui/icons-material/Person";
 import { LightTheme, DarkTheme } from "../utils/Theme";
+import { Link } from "react-router";
 
 const Container = styled.div`
-  flex: 1.1;
+  flex: 1.2;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   padding: 0;
@@ -33,20 +34,20 @@ const Container = styled.div`
 
   /* Scrollbar styles */
   &::-webkit-scrollbar {
-    width: 6px; /* Adjust width to make it smaller */
+    width: 3px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #333; /* Track color */
+    background: #333;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #555; /* Scrollbar handle color */
-    border-radius: 10px; /* Rounded edges */
+    background: #555;
+    border-radius: 10px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #777; /* Color when hovered */
+    background: #777;
   }
 `;
 
@@ -61,12 +62,14 @@ const Logo = styled.div`
   font-weight: bold;
   margin-bottom: 5px;
   text-transform: uppercase;
+  font-size: 20px;
   font-family: "Courier New", Courier, monospace;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Img = styled.img`
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
 `;
 
 const Item = styled.div`
@@ -75,7 +78,7 @@ const Item = styled.div`
   gap: 10px;
   cursor: pointer;
   padding: 7.5px 0px;
-  font-size: 12px;
+  font-size: 16px;
 `;
 
 const Hr = styled.hr`
@@ -114,10 +117,12 @@ function Menu({ setTheme, theme }) {
   return (
     <Container>
       <Wrapper>
-        <Logo>
-          <Img src={LogoImg} alt="logo" />
-          Axe Media
-        </Logo>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Logo>
+            <Img src={LogoImg} alt="logo" />
+            Axe-Media
+          </Logo>
+        </Link>
         <Item>
           <HomeIcon />
           Home

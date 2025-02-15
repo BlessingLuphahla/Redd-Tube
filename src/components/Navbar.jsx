@@ -43,6 +43,7 @@ const Search = styled.div`
   margin: auto;
   width: 30%;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -52,6 +53,14 @@ const Input = styled.input`
   width: 92%;
   padding: 5px;
   background-color: transparent;
+  height: 100%;
+  font-size: 16px;
+  color: ${({ theme }) => theme.text};
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
 `;
 
 function Navbar() {
