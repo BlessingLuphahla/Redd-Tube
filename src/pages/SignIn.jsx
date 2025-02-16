@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import styled from "styled-components";
+import { useScreen } from "../context/ScreenContext";
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const MainWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.soft};
   padding: 20px;
   text-align: center;
-  width: 300px;
+  width: ${({ isMobile }) => (isMobile ? "320px" : "350px")};
 `;
 
 const SignInWrapper = styled.div`
@@ -59,27 +60,20 @@ const Button = styled.button`
   color: ${({ theme }) => theme.text};
 `;
 
-const More = styled.div`
-  display: flex;
-  gap: 20px;
-  font-size: 14px;
-  margin-top: 10px;
-  color: ${({ theme }) => theme.text};
-`;
-
 const Links = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  gap: 15px;
   color: ${({ theme }) => theme.text};
+  width: fit-content;
+  margin-top: 10px;
 `;
 
 function SignIn() {
-  
+  const { isMobile } = useScreen();
+
   return (
     <Container>
-      <MainWrapper>
+      <MainWrapper isMobile={isMobile}>
         <SignInWrapper>
           <HeaderText>Sign In</HeaderText>
           <SubText>to continue AXE MEDIA</SubText>
@@ -95,18 +89,26 @@ function SignIn() {
           <Button>Sign Up</Button>
         </SignUpWrapper>
       </MainWrapper>
-      <More>
-        English(USA)
-        <Links>
-          <Link style={{ textDecoration: "none", color: "inherit" }}>Help</Link>
-          <Link style={{ textDecoration: "none", color: "inherit" }}>
-            Privacy
-          </Link>
-          <Link style={{ textDecoration: "none", color: "inherit" }}>
-            Privacy
-          </Link>
-        </Links>
-      </More>
+      <Links>
+        <Link
+          to="/contact-developer"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          Contact Developer
+        </Link>
+        <Link
+          to="/privacy-policy"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          Privacy
+        </Link>
+        <Link
+          to="/terms-and-conditions"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          {"T's and C's"}
+        </Link>
+      </Links>
     </Container>
   );
 }

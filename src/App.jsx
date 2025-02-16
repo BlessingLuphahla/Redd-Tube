@@ -9,6 +9,9 @@ import Video from "./pages/Video";
 import Login from "./pages/SignIn";
 
 import { useScreen } from "./context/ScreenContext";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import ContactDeveloper from "./components/ContactDeveloper";
+import TermsAndConditions from "./components/TermsAndConditions";
 
 const Container = styled.div`
   display: flex;
@@ -36,7 +39,7 @@ function App() {
         <BrowserRouter>
           {!isMobile && <Menu theme={theme} setTheme={setTheme} />}
           <Main>
-            <Navbar />
+            <Navbar setTheme={setTheme} theme={theme} />
             <Wrapper>
               <Routes>
                 <Route path="/">
@@ -45,6 +48,12 @@ function App() {
                     <Route path=":id" element={<Video />} />
                   </Route>
                   <Route path="login" element={<Login />} />
+                  <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="contact-developer" element={<ContactDeveloper />} />
+                  <Route
+                    path="terms-and-conditions"
+                    element={<TermsAndConditions />}
+                  />
                 </Route>
               </Routes>
             </Wrapper>

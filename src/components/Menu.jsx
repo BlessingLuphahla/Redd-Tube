@@ -56,7 +56,7 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.div`
-  display: flex;
+  display: ${({ isMobile }) => (isMobile ? "none" : "flex")};
   align-items: center;
   gap: 5px;
   font-weight: bold;
@@ -114,22 +114,27 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-function Menu({ setTheme, theme }) {
+function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
   const handleSetTheme = () => {
     if (theme === LightTheme) setTheme(DarkTheme);
     else setTheme(LightTheme);
+    isMobile && handleMenuToggle();
   };
 
   return (
     <Container>
       <Wrapper>
         <Link to="/" style={{ textDecoration: "none" }}>
-          <Logo>
+          <Logo isMobile={isMobile}>
             <Img src={LogoImg} alt="logo" />
             Axe-Media
           </Logo>
         </Link>
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link
+          to="/"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
           <Item>
             <HomeIcon />
             Home
@@ -157,7 +162,11 @@ function Menu({ setTheme, theme }) {
           {theme === LightTheme ? "Dark Mode" : "Light Mode"}
         </Item>
         <Hr />
-        <Link to="/login" style={{ textDecoration: "none" }}>
+        <Link
+          to="/login"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
           <Login>
             Sign in to like videos, comment, and subscribe.
             <Button>
