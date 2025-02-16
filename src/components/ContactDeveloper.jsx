@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const ContactDeveloper = () => {
   return (
     <div>
@@ -7,7 +9,12 @@ const ContactDeveloper = () => {
       </p>
       <p>
         You can contact me directly via email at{" "}
-        <a href="mailto:developer@example.com">developer@example.com</a>
+        <Link
+          style={{ textDecoration: "none" }}
+          to="mailto:luphahlablessingthamsanqa@gmail.com"
+        >
+          luphahlablessingthamsanqa@gmail.com
+        </Link>
       </p>
       <p>
         Alternatively, you can connect with me on social media:
@@ -23,7 +30,7 @@ const ContactDeveloper = () => {
           </li>
           <li>
             <a
-              href="https://github.com/developer"
+              href="https://github.com/BlessingLuphahla"
               target="_blank"
               rel="noopener noreferrer"
             >
