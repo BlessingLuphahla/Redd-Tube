@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { Link } from "react-router";
 import styled from "styled-components";
+import { useScreen } from "../context/ScreenContext";
 
 const Container = styled.div`
   display: flex;
@@ -76,6 +78,7 @@ const Links = styled.div`
 `;
 
 function SignIn() {
+  
   return (
     <Container>
       <MainWrapper>
@@ -95,7 +98,7 @@ function SignIn() {
         </SignUpWrapper>
       </MainWrapper>
       <More>
-        English(User)
+        English(USA)
         <Links>
           <Link style={{ textDecoration: "none", color: "inherit" }}>Help</Link>
           <Link style={{ textDecoration: "none", color: "inherit" }}>
