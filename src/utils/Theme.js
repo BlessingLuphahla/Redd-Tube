@@ -13,3 +13,8 @@ export const LightTheme = {
   textSoft: "#57606A",
   soft: "#E3E6E8",
 };
+
+export const MediaQueryBreakPoints = {
+  mobile: "768px",
+  tablet: "1024px",
+};

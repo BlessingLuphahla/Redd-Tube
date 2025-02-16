@@ -3,6 +3,7 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
+import Comments from "../components/Comments";
 
 const Container = styled.div`
   display: flex;
@@ -83,7 +84,9 @@ const ChannelDetail = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-const ChannelName = styled.span``;
+const ChannelName = styled.span`
+  font-size: 16px;
+`;
 
 const ChannelCounter = styled.span`
   margin-top: 5px;
@@ -92,9 +95,21 @@ const ChannelCounter = styled.span`
   font-size: 12px;
 `;
 
-const ChannelDescription = styled.p``;
+const ChannelDescription = styled.p`
+  font-size: 14px;
+`;
 
-const Subscribe = styled.button``;
+const Subscribe = styled.button`
+  outline: none;
+  border: none;
+  background-color: #cc1a00;
+  font-weight: 500;
+  color: white;
+  width: 100px;
+  height: 45px;
+  border-radius: 20px;
+  cursor: pointer;
+`;
 
 function Video() {
   return (
@@ -141,6 +156,8 @@ function Video() {
             <Subscribe>SUBSCRIBE</Subscribe>
           </ChannelInfo>
         </Channel>
+        <Hr />
+        <Comments />
       </Content>
       <Recommendation>Recomendation</Recommendation>
     </Container>
