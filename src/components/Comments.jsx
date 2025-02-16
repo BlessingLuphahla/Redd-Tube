@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 const Container = styled.div``;
 
+import { dummyComments } from "../utils/DummyComments";
+
 const NewComment = styled.div`
   display: flex;
   align-items: center;
@@ -32,6 +34,17 @@ function Comments() {
         <Avatar src="https://images.pexels.com/photos/30415724/pexels-photo-30415724/free-photo-of-chicago-skyline-with-modern-architecture.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
         <Input placeholder="Add a comment" />
       </NewComment>
+      {dummyComments.map((comment, index) => {
+        return (
+          <Comment
+            key={comment + index}
+            text={comment.text}
+            image={comment.image}
+          >
+            {}
+          </Comment>
+        );
+      })}
     </Container>
   );
 }
