@@ -153,13 +153,15 @@ function Menu({ setTheme, theme }) {
           {theme === LightTheme ? "Dark Mode" : "Light Mode"}
         </Item>
         <Hr />
-        <Login>
-          Sign in to like videos, comment, and subscribe.
-          <Button>
-            <PersonIcon />
-            Sign In
-          </Button>
-        </Login>
+        <Link to='/signIn'>
+          <Login>
+            Sign in to like videos, comment, and subscribe.
+            <Button>
+              <PersonIcon />
+              Sign In
+            </Button>
+          </Login>
+        </Link>
         <Hr />
         <Item>
           <LibraryMusicIcon />

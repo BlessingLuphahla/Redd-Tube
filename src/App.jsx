@@ -15,7 +15,7 @@ const Main = styled.div`
   flex: 7;
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text};
-  `;
+`;
 
 const Wrapper = styled.div`
   flex: 1;
@@ -39,6 +39,7 @@ function App() {
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
                   </Route>
+                  <Route path="signIn"></Route>
                 </Route>
               </Routes>
             </Wrapper>

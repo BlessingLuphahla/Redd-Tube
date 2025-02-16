@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
+import { Link } from "react-router";
 
 const Container = styled.div`
   position: sticky;
@@ -71,10 +72,12 @@ function Navbar() {
           <Input placeholder="Search" />
           <SearchIcon />
         </Search>
-        <Button>
-          <PersonIcon />
-          Sign In
-        </Button>
+        <Link to="/signIn">
+          <Button>
+            <PersonIcon />
+            Sign In
+          </Button>
+        </Link>
       </Wrapper>
     </Container>
   );

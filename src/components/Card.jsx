@@ -5,26 +5,26 @@ import styled from "styled-components";
 const Container = styled.div`
   cursor: pointer;
   width: ${(props) => props.type !== "sm" && "100%"};
+  display: ${(props) => props.type === "sm" && "flex"};
   margin-top: ${(props) => (props.type === "sm" ? "10px" : "45px")};
   justify-content: center;
   padding: 5px;
-  display: ${(props) => props.type === "sm" && "flex"};
 `;
 
 const Image = styled.img`
   width: ${(props) => (props.type === "sm" ? "50%" : "100%")};
   height: ${(props) => (props.type === "sm" ? "120px" : "202px")};
-  background-color: #999;
   flex: ${(props) => props.type === "sm" && "1"};
+  background-color: #999;
 `;
 
 const Details = styled.div`
-  display: flex;
   margin-top: ${(props) => props.type !== "sm" && "16px"};
-  gap: 12px;
   flex-direction: ${(props) => props.type === "sm" && "column"};
   margin-left: ${(props) => props.type === "sm" && "15px"};
   flex: ${(props) => props.type === "sm" && "1"};
+  display: flex;
+  gap: 12px;
 `;
 
 const ChannelImage = styled.img`
@@ -36,11 +36,11 @@ const ChannelImage = styled.img`
 `;
 
 const Texts = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
   height: ${(props) => props.type === "sm" && "100%"};
   justify-content: ${(props) => props.type === "sm" && "center"};
+  flex-direction: column;
+  display: flex;
+  gap: 5px;
 `;
 
 const Title = styled.h1`
