@@ -1,10 +1,12 @@
+import { Link } from "react-router";
 import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  flex-direction: column;
+  height: calc(100vh - 70px);
 `;
 
 const MainWrapper = styled.div`
@@ -12,7 +14,7 @@ const MainWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.soft};
   padding: 20px;
   text-align: center;
-  width: 20vw;
+  width: 300px;
 `;
 
 const SignInWrapper = styled.div`
@@ -57,6 +59,19 @@ const Button = styled.button`
   color: ${({ theme }) => theme.text};
 `;
 
+const More = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
+const Links = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: ${({ theme }) => theme.text};
+`;
+
 function SignIn() {
   return (
     <Container>
@@ -76,6 +91,14 @@ function SignIn() {
           <Button>Sign Up</Button>
         </SignUpWrapper>
       </MainWrapper>
+      <More>
+        English(User)
+        <Links>
+          <Link style={{ textDecoration: "none" }}>Help</Link>
+          <Link style={{ textDecoration: "none" }}>Privacy</Link>
+          <Link style={{ textDecoration: "none" }}>Privacy</Link>
+        </Links>
+      </More>
     </Container>
   );
 }
