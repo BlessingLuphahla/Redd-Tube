@@ -6,7 +6,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 90px);
 `;
 
 const MainWrapper = styled.div`
@@ -62,6 +62,9 @@ const Button = styled.button`
 const More = styled.div`
   display: flex;
   gap: 20px;
+  font-size: 14px;
+  margin-top: 10px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Links = styled.div`
@@ -94,9 +97,13 @@ function SignIn() {
       <More>
         English(User)
         <Links>
-          <Link style={{ textDecoration: "none" }}>Help</Link>
-          <Link style={{ textDecoration: "none" }}>Privacy</Link>
-          <Link style={{ textDecoration: "none" }}>Privacy</Link>
+          <Link style={{ textDecoration: "none", color: "inherit" }}>Help</Link>
+          <Link style={{ textDecoration: "none", color: "inherit" }}>
+            Privacy
+          </Link>
+          <Link style={{ textDecoration: "none", color: "inherit" }}>
+            Privacy
+          </Link>
         </Links>
       </More>
     </Container>

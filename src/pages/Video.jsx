@@ -168,7 +168,7 @@ function Video() {
         {dummyShit.map((i, index) => {
           return (
             <Card
-              src="https://images.pexels.com/photos/30157461/pexels-photo-30157461/free-photo-of-elegant-interior-of-markgrafliches-opernhaus.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+              src="https://images.pexels.com/photos/30337253/pexels-photo-30337253/free-photo-of-footprints-in-sand-on-casablanca-beach.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
               type="sm"
               key={index}
               data={i}
