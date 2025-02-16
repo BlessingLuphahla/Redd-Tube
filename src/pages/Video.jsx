@@ -64,7 +64,20 @@ const Channel = styled.div`
   justify-content: space-between;
 `;
 
-const ChannelInfo = styled.div``;
+const ChannelInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Image = styled.img``;
+
+const ChannelDetail = styled.div``;
+
+const ChannelName = styled.span``;
+
+const ChannelCounter = styled.span``;
+
+const ChannelDescription = styled.p``;
 
 const Subscribe = styled.button``;
 
@@ -101,6 +114,16 @@ function Video() {
         <Hr />
         <Channel>
           <ChannelInfo>
+            <Image src="https://images.pexels.com/photos/30243611/pexels-photo-30243611/free-photo-of-cozy-minimalist-interior-with-beige-sofa.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
+            <ChannelDetail>
+              <ChannelName>REDD AXE</ChannelName>
+              <ChannelCounter>200K Subscribers</ChannelCounter>
+              <ChannelDescription>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Dolorum perspiciatis excepturi ea, doloremque enim impedit
+                porro! Laborum aut consequuntur suscipit!
+              </ChannelDescription>
+            </ChannelDetail>
             <Subscribe>SUBSCRIBE</Subscribe>
           </ChannelInfo>
         </Channel>
