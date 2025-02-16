@@ -6,6 +6,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
+import Login from "./pages/Login";
 
 const Container = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ function App() {
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
                   </Route>
-                  <Route path="signIn"></Route>
+                  <Route path="login" element={<Login />} />
                 </Route>
               </Routes>
             </Wrapper>

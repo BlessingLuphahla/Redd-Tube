@@ -9,8 +9,8 @@ const SignUpWrapper = styled.div``;
 function Login() {
   return (
     <Container>
-      <SignInWrapper></SignInWrapper>
-      <SignUpWrapper></SignUpWrapper>
+      <SignInWrapper>u</SignInWrapper>
+      <SignUpWrapper>i</SignUpWrapper>
     </Container>
   );
 }

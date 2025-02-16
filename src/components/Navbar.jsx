@@ -72,7 +72,7 @@ function Navbar() {
           <Input placeholder="Search" />
           <SearchIcon />
         </Search>
-        <Link to="/signIn">
+        <Link to="/login" style={{ textDecoration: "none" }}>
           <Button>
             <PersonIcon />
             Sign In

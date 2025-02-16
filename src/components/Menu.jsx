@@ -79,6 +79,7 @@ const Item = styled.div`
   cursor: pointer;
   padding: 7.5px 0px;
   font-size: 16px;
+  color: ${({ theme }) => theme.text};
 
   &:hover {
     background-color: ${({ theme }) => theme.soft};
@@ -94,6 +95,7 @@ const Login = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 14px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Button = styled.button`
@@ -127,10 +129,12 @@ function Menu({ setTheme, theme }) {
             Axe-Media
           </Logo>
         </Link>
-        <Item>
-          <HomeIcon />
-          Home
-        </Item>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Item>
+            <HomeIcon />
+            Home
+          </Item>
+        </Link>
         <Item>
           <ExploreIcon />
           Explore
@@ -153,7 +157,7 @@ function Menu({ setTheme, theme }) {
           {theme === LightTheme ? "Dark Mode" : "Light Mode"}
         </Item>
         <Hr />
-        <Link to='/signIn'>
+        <Link to="/login" style={{ textDecoration: "none" }}>
           <Login>
             Sign in to like videos, comment, and subscribe.
             <Button>
