@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router";
+import { useScreen } from "../context/ScreenContext";
 
 const Container = styled.div`
   position: sticky;
@@ -15,7 +16,8 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  justify-content: flex-end;
+  justify-content: ${({ isMobile }) =>
+    isMobile ? "space-between" : "flex-end"};
   position: relative;
 `;
 
@@ -24,14 +26,15 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   gap: 5px;
-  width: 105px;
-  height: 45px;
+  width: ${({ isMobile }) => (isMobile ? "90px" : "105px")};
+  height: ${({ isMobile }) => (isMobile ? "fit-content" : "45px")};
   background-color: transparent;
   border: 1px solid #3eafff;
   color: #3eafff;
   border-radius: 3px;
   outline: none;
   margin-top: 10px;
+  padding: ${({ isMobile }) => isMobile && "5px"};
   cursor: pointer;
 `;
 
@@ -51,10 +54,10 @@ const Search = styled.div`
 `;
 const Input = styled.input`
   border: none;
-  width: 92%;
+  width: ${({ isMobile }) => (isMobile ? "80%" : "92%")};
   padding: 5px;
   background-color: transparent;
-  height: 100%;
+  height: ${({ isMobile }) => (isMobile ? "80%" : "100%")};
   font-size: 16px;
   color: ${({ theme }) => theme.text};
 
@@ -65,15 +68,18 @@ const Input = styled.input`
 `;
 
 function Navbar() {
+  const { isMobile } = useScreen();
+
   return (
     <Container>
-      <Wrapper>
-        <Search>
-          <Input placeholder="Search" />
+      <Wrapper isMobile={isMobile}>
+        {isMobile && <div>test</div>}
+        <Search isMobile={isMobile}>
+          <Input isMobile={isMobile} placeholder="Search" />
           <SearchIcon />
         </Search>
         <Link to="/login" style={{ textDecoration: "none" }}>
-          <Button>
+          <Button isMobile={isMobile}>
             <PersonIcon />
             Sign In
           </Button>

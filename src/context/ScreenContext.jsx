@@ -6,12 +6,12 @@ const ScreenContext = createContext();
 
 export const ScreenProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(
-    window.innerWidth < parseInt(MediaQueryBreakPoints.mobile)
+    window.innerWidth < MediaQueryBreakPoints.mobile
   );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < parseInt(MediaQueryBreakPoints.mobile));
+      setIsMobile(window.innerWidth < MediaQueryBreakPoints.mobile);
     };
 
     window.addEventListener("resize", handleResize);

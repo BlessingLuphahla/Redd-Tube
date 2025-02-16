@@ -2,8 +2,10 @@
 
 function MobileMenu() {
   return (
-    <div>MobileMenu</div>
-  )
+    <>
+      <div>MobileMenu</div>
+    </>
+  );
 }
 
-export default MobileMenu
+export default MobileMenu;

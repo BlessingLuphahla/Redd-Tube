@@ -1,7 +1,5 @@
-import { useContext } from "react";
 import { Link } from "react-router";
 import styled from "styled-components";
-import { useScreen } from "../context/ScreenContext";
 
 const Container = styled.div`
   display: flex;

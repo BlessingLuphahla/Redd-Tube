@@ -15,6 +15,6 @@ export const LightTheme = {
 };
 
 export const MediaQueryBreakPoints = {
-  mobile: "768px",
-  tablet: "1024px",
+  mobile: 768,
+  tablet: 1024,
 };

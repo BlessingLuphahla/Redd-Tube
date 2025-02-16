@@ -8,10 +8,7 @@ import Home from "./pages/Home";
 import Video from "./pages/Video";
 import Login from "./pages/SignIn";
 
-import useScreenWidth from "./hooks/useScreenWidth";
-import { MediaQueryBreakPoints } from "./utils/Theme";
-
-import { ScreenProvider } from "./context/ScreenContext";
+import { useScreen } from "./context/ScreenContext";
 
 const Container = styled.div`
   display: flex;
@@ -31,38 +28,30 @@ const Wrapper = styled.div`
 function App() {
   const [theme, setTheme] = useState(DarkTheme);
 
-  const screenWidth = useScreenWidth();
-
-  const isMobile = screenWidth < parseInt(MediaQueryBreakPoints.mobile);
+  const { isMobile } = useScreen();
 
   return (
-    <ScreenProvider>
-      <ThemeProvider theme={theme}>
-        <Container>
-          <BrowserRouter>
-            {isMobile ? (
-              <Menu theme={theme} setTheme={setTheme} />
-            ) : (
-              <MobileMenu />
-            )}
-            <Main>
-              <Navbar />
-              <Wrapper>
-                <Routes>
-                  <Route path="/">
-                    <Route index element={<Home />} />
-                    <Route path="video">
-                      <Route path=":id" element={<Video />} />
-                    </Route>
-                    <Route path="login" element={<Login />} />
+    <ThemeProvider theme={theme}>
+      <Container>
+        <BrowserRouter>
+          {!isMobile && <Menu theme={theme} setTheme={setTheme} />}
+          <Main>
+            <Navbar />
+            <Wrapper>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<Home />} />
+                  <Route path="video">
+                    <Route path=":id" element={<Video />} />
                   </Route>
-                </Routes>
-              </Wrapper>
-            </Main>
-          </BrowserRouter>
-        </Container>
-      </ThemeProvider>
-    </ScreenProvider>
+                  <Route path="login" element={<Login />} />
+                </Route>
+              </Routes>
+            </Wrapper>
+          </Main>
+        </BrowserRouter>
+      </Container>
+    </ThemeProvider>
   );
 }
 
