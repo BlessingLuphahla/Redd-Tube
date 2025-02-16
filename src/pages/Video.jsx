@@ -67,15 +67,30 @@ const Channel = styled.div`
 const ChannelInfo = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 20px;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
 
-const ChannelDetail = styled.div``;
+const ChannelDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: ${({ theme }) => theme.text};
+`;
 
 const ChannelName = styled.span``;
 
-const ChannelCounter = styled.span``;
+const ChannelCounter = styled.span`
+  margin-top: 5px;
+  margin-bottom: 20px;
+  color: ${({ theme }) => theme.textSoft};
+  font-size: 12px;
+`;
 
 const ChannelDescription = styled.p``;
 
@@ -120,8 +135,7 @@ function Video() {
               <ChannelCounter>200K Subscribers</ChannelCounter>
               <ChannelDescription>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Dolorum perspiciatis excepturi ea, doloremque enim impedit
-                porro! Laborum aut consequuntur suscipit!
+                Dolorum perspiciatis excepturi ea, doloremque enim!
               </ChannelDescription>
             </ChannelDetail>
             <Subscribe>SUBSCRIBE</Subscribe>
