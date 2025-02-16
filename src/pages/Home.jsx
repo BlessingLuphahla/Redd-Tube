@@ -16,7 +16,13 @@ function Home() {
   return (
     <Container>
       {dummyShit.map((i, index) => {
-        return <Card key={index} data={i} />;
+        return (
+          <Card
+            src="https://images.pexels.com/photos/13246022/pexels-photo-13246022.jpeg?auto=compress&cs=tinysrgb&w=600"
+            key={index}
+            data={i}
+          />
+        );
       })}
     </Container>
   );

@@ -4,6 +4,7 @@ import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
+import Card from "../components/Card";
 
 const Container = styled.div`
   display: flex;
@@ -13,6 +14,10 @@ const Container = styled.div`
 const Content = styled.div`
   flex: 5;
 `;
+
+const dummyShit = [];
+
+for (let i = 1; i < 10; i++) dummyShit.push(i * 23);
 
 const Title = styled.h1`
   font-size: 18px;
@@ -159,7 +164,18 @@ function Video() {
         <Hr />
         <Comments />
       </Content>
-      <Recommendation>Recomendation</Recommendation>
+      <Recommendation>
+        {dummyShit.map((i, index) => {
+          return (
+            <Card
+              src="https://images.pexels.com/photos/30157461/pexels-photo-30157461/free-photo-of-elegant-interior-of-markgrafliches-opernhaus.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+              type="sm"
+              key={index}
+              data={i}
+            />
+          );
+        })}
+      </Recommendation>
     </Container>
   );
 }

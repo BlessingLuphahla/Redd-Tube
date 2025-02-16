@@ -4,6 +4,7 @@ const Container = styled.div`
   display: flex;
   gap: 10px;
   margin: 20px 0px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Avatar = styled.img`
@@ -13,11 +14,21 @@ const Avatar = styled.img`
   object-fit: cover;
 `;
 
-const Name = styled.span``;
+const Name = styled.span`
+  display: flex;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 13px;
+`;
 
-const Date = styled.span``;
+const Date = styled.span`
+  font-size: 10px;
+  color: ${({ theme }) => theme.textSoft};
+`;
 
-const Text = styled.span``;
+const Text = styled.span`
+  font-size: 13px;
+`;
 
 const Details = styled.div`
   display: flex;
@@ -30,8 +41,10 @@ function Comment({ text, image, date, name }) {
     <Container>
       <Avatar src="https://images.pexels.com/photos/30474533/pexels-photo-30474533/free-photo-of-rustic-italian-architecture-with-terra-cotta-rooftops.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
       <Details>
-        <Name>{name}</Name>
-        <Date>{date}</Date>
+        <Name>
+          {name}
+          <Date>{date}</Date>
+        </Name>
         <Text>{text}</Text>
       </Details>
     </Container>
