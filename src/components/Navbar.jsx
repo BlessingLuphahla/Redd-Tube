@@ -33,8 +33,8 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   gap: 5px;
-  width: "105px";
-  height: "45px";
+  width: 105px;
+  height: 45px;
   background-color: transparent;
   border: 1px solid #3eafff;
   color: #3eafff;
