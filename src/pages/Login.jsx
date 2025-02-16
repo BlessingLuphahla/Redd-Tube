@@ -11,25 +11,43 @@ const MainWrapper = styled.div`
   background-color: ${({ theme }) => theme.bgLighter};
   border: 1px solid ${({ theme }) => theme.soft};
   padding: 20px;
+  text-align: center;
+  width: 20vw;
 `;
 
 const SignInWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  align-items: center;
 `;
 
 const SignUpWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
 `;
 
-const HeaderText = styled.h1``;
+const HeaderText = styled.h1`
+  font-size: 20px;
+`;
 
-const SubText = styled.h2``;
+const SubText = styled.h2`
+  font-size: 16px;
+`;
 
-const Input = styled.input``;
+const Input = styled.input`
+  outline: none;
+  border: none;
+  height: 40px;
+  padding: 10px;
+  background-color: transparent;
+  border: 1px solid ${({ theme }) => theme.soft};
+`;
 
-const Button = styled.button``;
+const Button = styled.button`
+    width: 100px;
+`;
 
 function Login() {
   return (
