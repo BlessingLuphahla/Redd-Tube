@@ -19,7 +19,7 @@ const Input = styled.input`
   border: none;
   outline: none;
   background-color: transparent;
-  border-bottom: 1px solid ${({ theme }) => theme.textSoft};
+  border-bottom: 1px solid ${({ theme }) => theme.soft};
   color: ${({ theme }) => theme.text};
   font-size: 15px;
   padding: 10px;
