@@ -64,6 +64,10 @@ const Channel = styled.div`
   justify-content: space-between;
 `;
 
+const ChannelInfo = styled.div``;
+
+const Subscribe = styled.button``;
+
 function Video() {
   return (
     <Container>
@@ -71,7 +75,7 @@ function Video() {
         <VideoWrapper>
           <iframe
             width="100%"
-            height="620"
+            height="520"
             src="https://www.youtube.com/embed/M2WWYcVKvSc"
             allowFullScreen
           ></iframe>
@@ -95,6 +99,11 @@ function Video() {
           </ButtonContainer>
         </Details>
         <Hr />
+        <Channel>
+          <ChannelInfo>
+            <Subscribe>SUBSCRIBE</Subscribe>
+          </ChannelInfo>
+        </Channel>
       </Content>
       <Recommendation>Recomendation</Recommendation>
     </Container>
