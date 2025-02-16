@@ -3,6 +3,7 @@ import styled from "styled-components";
 const Container = styled.div``;
 
 import { dummyComments } from "../utils/DummyComments";
+import Comment from "./Comment";
 
 const NewComment = styled.div`
   display: flex;
@@ -25,6 +26,8 @@ const Input = styled.input`
   color: ${({ theme }) => theme.text};
   font-size: 15px;
   padding: 10px;
+  width: 100%;
+  margin: 10px 0px;
 `;
 
 function Comments() {
@@ -40,6 +43,8 @@ function Comments() {
             key={comment + index}
             text={comment.text}
             image={comment.image}
+            date={comment.date}
+            name={comment.name}
           >
             {}
           </Comment>
