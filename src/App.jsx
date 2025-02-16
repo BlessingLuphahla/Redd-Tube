@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
-import Login from "./pages/Login";
+import Login from "./pages/SignIn";
 
 const Container = styled.div`
   display: flex;

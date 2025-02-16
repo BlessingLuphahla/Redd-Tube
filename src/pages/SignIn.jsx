@@ -26,6 +26,7 @@ const SignUpWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
 `;
 
 const HeaderText = styled.h1`
@@ -43,19 +44,26 @@ const Input = styled.input`
   padding: 10px;
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.soft};
+  width: 95%;
 `;
 
 const Button = styled.button`
-    width: 100px;
+  width: 100px;
+  padding: 13px 0px;
+  margin-bottom: 10px;
+  background-color: ${({ theme }) => theme.bg};
+  border: none;
+  outline: none;
+  color: ${({ theme }) => theme.text};
 `;
 
-function Login() {
+function SignIn() {
   return (
     <Container>
       <MainWrapper>
         <SignInWrapper>
           <HeaderText>Sign In</HeaderText>
-          <SubText>to continue AXE-MEDIA</SubText>
+          <SubText>to continue AXE MEDIA</SubText>
           <Input type="text" placeholder="username" />
           <Input type="password" placeholder="password" />
           <Button>Sign In</Button>
@@ -72,4 +80,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;
