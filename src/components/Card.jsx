@@ -4,17 +4,18 @@ import styled from "styled-components";
 
 const Container = styled.div`
   cursor: pointer;
-  width: 360px;
+  width: ${(props) => props.type !== "sm" && "100%"};
   margin-top: ${(props) => (props.type === "sm" ? "10px" : "45px")};
   justify-content: center;
-  padding-bottom: 20px;
+  padding: 5px;
   display: ${(props) => props.type === "sm" && "flex"};
 `;
 
 const Image = styled.img`
-  width: ${(props) => (props.type === "sm" ? "70%" : "100%")};
-  height: ${(props) => (props.type === "sm" ? "170px" : "202px")};
+  width: ${(props) => (props.type === "sm" ? "50%" : "100%")};
+  height: ${(props) => (props.type === "sm" ? "120px" : "202px")};
   background-color: #999;
+  flex: ${(props) => props.type === "sm" && "1"};
 `;
 
 const Details = styled.div`
@@ -23,6 +24,7 @@ const Details = styled.div`
   gap: 12px;
   flex-direction: ${(props) => props.type === "sm" && "column"};
   margin-left: ${(props) => props.type === "sm" && "15px"};
+  flex: ${(props) => props.type === "sm" && "1"};
 `;
 
 const ChannelImage = styled.img`
@@ -70,7 +72,7 @@ function Card({ data, src, type }) {
           <Texts type={type}>
             <Title>Poison</Title>
             <ChannelName>Redd Axe {data}</ChannelName>
-            <Info>660,900 views • {type === "sm" && <br />}1 day ago </Info>
+            <Info>660,900 views • 1 day ago </Info>
           </Texts>
         </Details>
       </Container>
