@@ -1,4 +1,6 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
+import { useScreen } from "../context/ScreenContext";
 
 const Container = styled.div`
   display: flex;
@@ -18,16 +20,16 @@ const Name = styled.span`
   display: flex;
   gap: 10px;
   font-weight: 500;
-  font-size: 13px;
+  font-size: ${({ isMobile }) => (isMobile ? "9px" : "13px")};
 `;
 
 const Date = styled.span`
-  font-size: 10px;
+  font-size: ${({ isMobile }) => (isMobile ? "6px" : "10px")};
   color: ${({ theme }) => theme.textSoft};
 `;
 
 const Text = styled.span`
-  font-size: 13px;
+  font-size: ${({ isMobile }) => (isMobile ? "9px" : "13px")};
 `;
 
 const Details = styled.div`
@@ -36,16 +38,18 @@ const Details = styled.div`
   gap: 10px;
 `;
 
-function Comment({ text, image, date, name }) {
+function Comment({ text, date, name }) {
+  const { isMobile } = useScreen();
+
   return (
     <Container>
       <Avatar src="https://images.pexels.com/photos/30474533/pexels-photo-30474533/free-photo-of-rustic-italian-architecture-with-terra-cotta-rooftops.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
-      <Details>
-        <Name>
+      <Details isMobile={isMobile}>
+        <Name isMobile={isMobile}>
           {name}
-          <Date>{date}</Date>
+          <Date isMobile={isMobile}>{date}</Date>
         </Name>
-        <Text>{text}</Text>
+        <Text isMobile={isMobile}>{text}</Text>
       </Details>
     </Container>
   );

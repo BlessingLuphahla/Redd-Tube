@@ -152,7 +152,7 @@ function Video() {
         </VideoWrapper>
         <Title>Test Video</Title>
         <Details isMobile={isMobile}>
-          <Info>234, 121, 121 views • Jan 22, 2025</Info>
+          <Info isMobile={isMobile}>234, 121, 121 views • Jan 22, 2025</Info>
           <ButtonContainer>
             <Button>
               <ThumbUpAltOutlinedIcon /> 123
@@ -170,12 +170,14 @@ function Video() {
         </Details>
         <Hr />
         <Channel>
-          <ChannelInfo>
+          <ChannelInfo isMobile={isMobile}>
             <Image src="https://images.pexels.com/photos/30243611/pexels-photo-30243611/free-photo-of-cozy-minimalist-interior-with-beige-sofa.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
-            <ChannelDetail>
-              <ChannelName>REDD AXE</ChannelName>
-              <ChannelCounter>200K Subscribers</ChannelCounter>
-              <ChannelDescription>
+            <ChannelDetail isMobile={isMobile}>
+              <ChannelName isMobile={isMobile}>REDD AXE</ChannelName>
+              <ChannelCounter isMobile={isMobile}>
+                200K Subscribers
+              </ChannelCounter>
+              <ChannelDescription isMobile={isMobile}>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                 Dolorum perspiciatis excepturi ea, doloremque enim!
               </ChannelDescription>
