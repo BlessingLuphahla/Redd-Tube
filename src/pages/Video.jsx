@@ -55,11 +55,11 @@ const Info = styled.span`
 `;
 
 const ButtonContainer = styled.div`
+  flex-direction: ${({ isMobile }) => isMobile && "column"};
+  padding: ${({ isMobile }) => !isMobile && "10px"};
+  color: ${({ theme }) => theme.text};
   display: flex;
   gap: 20px;
-  padding: 10px;
-  color: ${({ theme }) => theme.text};
-  flex-direction: ${({ isMobile }) => isMobile && "column"};
 `;
 
 const Hr = styled.hr`
@@ -76,6 +76,7 @@ const Button = styled.button`
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  font-size: ${({ isMobile }) => isMobile && "10px"};
 `;
 
 const Recommendation = styled.div`
@@ -91,7 +92,10 @@ const ChannelInfo = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
+
+  // media queries
   flex-direction: ${({ isMobile }) => isMobile && "column"};
+  align-items: ${({ isMobile }) => isMobile && "column"};
 `;
 
 const Image = styled.img`
@@ -154,17 +158,17 @@ function Video() {
         <Details isMobile={isMobile}>
           <Info isMobile={isMobile}>234, 121, 121 views • Jan 22, 2025</Info>
           <ButtonContainer>
-            <Button>
-              <ThumbUpAltOutlinedIcon /> 123
+            <Button isMobile={isMobile}>
+              <ThumbUpAltOutlinedIcon fontSize="inherit" /> 123
             </Button>
             <Button>
-              <ThumbDownAltOutlinedIcon /> Dislike
+              <ThumbDownAltOutlinedIcon fontSize="inherit" /> Dislike
             </Button>
             <Button>
-              <ReplyOutlinedIcon /> Share
+              <ReplyOutlinedIcon fontSize="inherit" /> Share
             </Button>
             <Button>
-              <AddTaskOutlinedIcon /> Save
+              <AddTaskOutlinedIcon fontSize="inherit" /> Save
             </Button>
           </ButtonContainer>
         </Details>
