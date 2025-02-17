@@ -52,6 +52,7 @@ const Details = styled.div`
 
 const Info = styled.span`
   color: ${({ theme }) => theme.textSoft};
+  font-size: ${({ isMobile }) => isMobile && "13px"};
 `;
 
 const ButtonContainer = styled.div`
@@ -76,7 +77,7 @@ const Button = styled.button`
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  font-size: ${({ isMobile }) => isMobile && "10px"};
+  font-size: ${({ isMobile }) => isMobile && "13px"};
 `;
 
 const Recommendation = styled.div`
@@ -90,12 +91,12 @@ const Channel = styled.div`
 
 const ChannelInfo = styled.div`
   display: flex;
-  justify-content: space-between;
   gap: 20px;
 
   // media queries
   flex-direction: ${({ isMobile }) => isMobile && "column"};
-  align-items: ${({ isMobile }) => isMobile && "column"};
+  align-items: ${({ isMobile }) => isMobile && "center"};
+  justify-content: ${({ isMobile }) => (isMobile ? "center" : "space-between")};
 `;
 
 const Image = styled.img`
@@ -109,6 +110,10 @@ const ChannelDetail = styled.div`
   display: flex;
   flex-direction: column;
   color: ${({ theme }) => theme.text};
+
+  // media queries
+  align-items: ${({ isMobile }) => isMobile && "center"};
+  justify-content: ${({ isMobile }) => isMobile && "center"};
 `;
 
 const ChannelName = styled.span`
@@ -124,6 +129,7 @@ const ChannelCounter = styled.span`
 
 const ChannelDescription = styled.p`
   font-size: ${({ isMobile }) => (isMobile ? "10px" : "14px")};
+  width: ${({ isMobile }) => isMobile && "90%"};
 `;
 
 const Subscribe = styled.button`
@@ -154,20 +160,20 @@ function Video() {
             allowFullScreen
           ></iframe>
         </VideoWrapper>
-        <Title>Test Video</Title>
+        <Title>Hamsel Third Round Against Yunus</Title>
         <Details isMobile={isMobile}>
           <Info isMobile={isMobile}>234, 121, 121 views • Jan 22, 2025</Info>
           <ButtonContainer>
             <Button isMobile={isMobile}>
               <ThumbUpAltOutlinedIcon fontSize="inherit" /> 123
             </Button>
-            <Button>
+            <Button isMobile={isMobile}>
               <ThumbDownAltOutlinedIcon fontSize="inherit" /> Dislike
             </Button>
-            <Button>
+            <Button isMobile={isMobile}>
               <ReplyOutlinedIcon fontSize="inherit" /> Share
             </Button>
-            <Button>
+            <Button isMobile={isMobile}>
               <AddTaskOutlinedIcon fontSize="inherit" /> Save
             </Button>
           </ButtonContainer>
