@@ -5,22 +5,37 @@ import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
 import Card from "../components/Card";
-
-const Container = styled.div`
-  display: flex;
-  gap: 24px;
-`;
-
-const Content = styled.div`
-  flex: 5;
-`;
+import { useScreen } from "../context/ScreenContext";
 
 const dummyShit = [];
 
 for (let i = 1; i < 10; i++) dummyShit.push(i * 23);
 
+const Container = styled.div`
+  display: flex;
+
+  // media queries
+  gap: ${({ isMobile }) => !isMobile && "24px"};
+  flex-direction: ${({ isMobile }) => (isMobile ? "column" : "row")};
+  position: ${({ isMobile }) => isMobile && "absolute"};
+  right: ${({ isMobile }) => isMobile && 0};
+  left: ${({ isMobile }) => isMobile && 0};
+  top: ${({ isMobile }) => isMobile && "100px"};
+  background-color: ${({ isMobile, theme }) => isMobile && theme.bg};
+`;
+
+const Content = styled.div`
+  flex: 5;
+
+  //media queires
+  display: ${({ isMobile }) => isMobile && "flex"};
+  flex-direction: ${({ isMobile }) => isMobile && "column"};
+  align-items: ${({ isMobile }) => isMobile && "center"};
+  justify-content: ${({ isMobile }) => isMobile && "center"};
+`;
+
 const Title = styled.h1`
-  font-size: 18px;
+  font-size: ${({ isMobile }) => (isMobile ? "12px" : "18px")};
   font-weight: 400;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -31,6 +46,8 @@ const Details = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: ${({ isMobile }) => isMobile && "column"};
+  flex-wrap: ${({ isMobile }) => isMobile && "wrap"};
 `;
 
 const Info = styled.span`
@@ -42,9 +59,8 @@ const ButtonContainer = styled.div`
   gap: 20px;
   padding: 10px;
   color: ${({ theme }) => theme.text};
+  flex-direction: ${({ isMobile }) => isMobile && "column"};
 `;
-
-const VideoWrapper = styled.div``;
 
 const Hr = styled.hr`
   margin: 15px 0px;
@@ -68,12 +84,14 @@ const Recommendation = styled.div`
 const Channel = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-direction: ${({ isMobile }) => isMobile && "column"};
 `;
 
 const ChannelInfo = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  flex-direction: ${({ isMobile }) => isMobile && "column"};
 `;
 
 const Image = styled.img`
@@ -90,18 +108,18 @@ const ChannelDetail = styled.div`
 `;
 
 const ChannelName = styled.span`
-  font-size: 16px;
+  font-size: ${({ isMobile }) => (isMobile ? "10px" : "16px")};
 `;
 
 const ChannelCounter = styled.span`
   margin-top: 5px;
   margin-bottom: 20px;
   color: ${({ theme }) => theme.textSoft};
-  font-size: 12px;
+  font-size: ${({ isMobile }) => (isMobile ? "9px" : "12px")};
 `;
 
 const ChannelDescription = styled.p`
-  font-size: 14px;
+  font-size: ${({ isMobile }) => (isMobile ? "10px" : "14px")};
 `;
 
 const Subscribe = styled.button`
@@ -116,20 +134,24 @@ const Subscribe = styled.button`
   cursor: pointer;
 `;
 
+const VideoWrapper = styled.div``;
+
 function Video() {
+  const { isMobile } = useScreen();
+
   return (
-    <Container>
-      <Content>
-        <VideoWrapper>
+    <Container isMobile={isMobile}>
+      <Content isMobile={isMobile}>
+        <VideoWrapper isMobile={isMobile}>
           <iframe
-            width="100%"
-            height="520"
+            width={!isMobile && "100%"}
+            height={!isMobile && "520"}
             src="https://www.youtube.com/embed/M2WWYcVKvSc"
             allowFullScreen
           ></iframe>
         </VideoWrapper>
         <Title>Test Video</Title>
-        <Details>
+        <Details isMobile={isMobile}>
           <Info>234, 121, 121 views • Jan 22, 2025</Info>
           <ButtonContainer>
             <Button>

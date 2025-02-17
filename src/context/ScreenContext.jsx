@@ -5,6 +5,7 @@ import { MediaQueryBreakPoints } from "../utils/Theme";
 const ScreenContext = createContext();
 
 export const ScreenProvider = ({ children }) => {
+
   const [isMobile, setIsMobile] = useState(
     window.innerWidth < MediaQueryBreakPoints.mobile
   );

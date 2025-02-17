@@ -4,6 +4,7 @@ const Container = styled.div``;
 
 import { dummyComments } from "../utils/DummyComments";
 import Comment from "./Comment";
+import { useScreen } from "../context/ScreenContext";
 
 const NewComment = styled.div`
   display: flex;
@@ -31,6 +32,8 @@ const Input = styled.input`
 `;
 
 function Comments() {
+  const { isMobile } = useScreen();
+
   return (
     <Container>
       <NewComment>
@@ -38,6 +41,11 @@ function Comments() {
         <Input placeholder="Add a comment" />
       </NewComment>
       {dummyComments.map((comment, index) => {
+        if (isMobile && index > 4) return;
+
+        console.log(index);
+        console.log(typeof index);
+
         return (
           <Comment
             key={comment + index}
