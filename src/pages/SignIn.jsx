@@ -8,6 +8,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   height: calc(100vh - 90px);
+  position: relative;
 `;
 
 const MainWrapper = styled.div`
@@ -16,6 +17,8 @@ const MainWrapper = styled.div`
   padding: 20px;
   text-align: center;
   width: ${({ isMobile }) => (isMobile ? "320px" : "350px")};
+  margin-top: ${({ isMobile }) => isMobile && "20px"};
+  overflow: scroll;
 `;
 
 const SignInWrapper = styled.div`

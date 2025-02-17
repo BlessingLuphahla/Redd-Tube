@@ -13,14 +13,8 @@ for (let i = 1; i < 10; i++) dummyShit.push(i * 23);
 
 const Container = styled.div`
   display: flex;
-
-  // media queries
-  gap: ${({ isMobile }) => !isMobile && "24px"};
+  gap: ${({ isMobile }) => (isMobile ? "0" : "24px")};
   flex-direction: ${({ isMobile }) => (isMobile ? "column" : "row")};
-  position: ${({ isMobile }) => isMobile && "absolute"};
-  right: ${({ isMobile }) => isMobile && 0};
-  left: ${({ isMobile }) => isMobile && 0};
-  top: ${({ isMobile }) => isMobile && "100px"};
   background-color: ${({ isMobile, theme }) => isMobile && theme.bg};
 `;
 
@@ -145,7 +139,9 @@ const Subscribe = styled.button`
   cursor: pointer;
 `;
 
-const VideoWrapper = styled.div``;
+const VideoWrapper = styled.div`
+  margin-top: ${({ isMobile }) => isMobile && "20px"};
+`;
 
 function Video() {
   const { isMobile } = useScreen();

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
-import Login from "./pages/SignIn";
+import SignIn from "./pages/SignIn";
 
 import { useScreen } from "./context/ScreenContext";
 import PrivacyPolicy from "./components/PrivacyPolicy";
@@ -40,16 +40,23 @@ function App() {
           {!isMobile && <Menu theme={theme} setTheme={setTheme} />}
           <Main>
             <Navbar setTheme={setTheme} theme={theme} />
-            <Wrapper>
+            <Wrapper
+              style={{
+                padding: location.pathname === "/login" ? "0px" : "22px 45px",
+              }}
+            >
               <Routes>
                 <Route path="/">
                   <Route index element={<Home />} />
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
                   </Route>
-                  <Route path="login" element={<Login />} />
+                  <Route path="login" element={<SignIn />} />
                   <Route path="privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="contact-developer" element={<ContactDeveloper />} />
+                  <Route
+                    path="contact-developer"
+                    element={<ContactDeveloper />}
+                  />
                   <Route
                     path="terms-and-conditions"
                     element={<TermsAndConditions />}
