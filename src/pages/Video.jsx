@@ -138,8 +138,9 @@ const Subscribe = styled.button`
   background-color: #cc1a00;
   font-weight: 500;
   color: white;
-  width: 100px;
-  height: 45px;
+  width: ${({ isMobile }) => (isMobile ? "100px" : "100px")};
+  height: ${({ isMobile }) => (isMobile ? "35px" : "45px")};
+  font-size: ${({ isMobile }) => isMobile && "14px"};
   border-radius: 20px;
   cursor: pointer;
 `;
@@ -192,7 +193,7 @@ function Video() {
                 Dolorum perspiciatis excepturi ea, doloremque enim!
               </ChannelDescription>
             </ChannelDetail>
-            <Subscribe>SUBSCRIBE</Subscribe>
+            <Subscribe isMobile={isMobile}>SUBSCRIBE</Subscribe>
           </ChannelInfo>
         </Channel>
         <Hr />
