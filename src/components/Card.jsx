@@ -86,6 +86,7 @@ function Card({ src, type, views, date, title, userId,videoId }) {
     };
 
     getUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
