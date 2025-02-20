@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
@@ -10,7 +11,7 @@ const Container = styled.div`
   gap: 1px;
 `;
 
-function Home() {
+function Home({ type }) {
   const API = import.meta.env.VITE_API_URL;
   const [videos, setVideos] = useState([]);
 
@@ -18,7 +19,7 @@ function Home() {
     const getRandomVideos = async () => {
       try {
         const res = await axios.get(`
-          ${API}/api/videos/random
+          ${API}/api/videos/${type}
         `);
         setVideos(res.data);
       } catch (error) {
@@ -27,8 +28,12 @@ function Home() {
     };
 
     getRandomVideos();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type]);
+
+  console.log(type);
+  console.log(videos);
+  console.log(type);
 
   return (
     <Container>

@@ -140,14 +140,26 @@ function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
             Home
           </Item>
         </Link>
-        <Item>
-          <ExploreIcon />
-          Explore
-        </Item>
-        <Item>
-          <SubscriptionsIcon />
-          Subscriptions
-        </Item>
+        <Link
+          to="/trends"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
+          <Item>
+            <ExploreIcon />
+            Explore
+          </Item>
+        </Link>
+        <Link
+          to="/subscriptions"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
+          <Item>
+            <SubscriptionsIcon />
+            Subscriptions
+          </Item>
+        </Link>
         <Hr />
         <Item>
           <SportsEsportsIcon />

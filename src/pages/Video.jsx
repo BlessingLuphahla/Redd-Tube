@@ -222,12 +222,17 @@ function Video() {
     <Container isMobile={isMobile}>
       <Content isMobile={isMobile}>
         <VideoWrapper isMobile={isMobile}>
-          <StyledVideo controls autoPlay isMobile={isMobile} src={currentVideo?.VideoUrl} />
+          <StyledVideo
+            controls
+            autoPlay
+            isMobile={isMobile}
+            src={currentVideo?.VideoUrl}
+          />
         </VideoWrapper>
         <Title>{currentVideo?.title}</Title>
         <Details isMobile={isMobile}>
           <Info isMobile={isMobile}>
-            {currentVideo?.views} views •{" "}
+            {currentVideo?.views} views •
             {formatDistanceToNow(
               new Date(currentVideo?.createdAt || Date.now()),
               {
