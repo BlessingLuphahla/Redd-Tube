@@ -7,8 +7,10 @@ import Comments from "../components/Comments";
 import Card from "../components/Card";
 import { useScreen } from "../context/ScreenContext";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router";
+import { DEFAULT_PROFILE_PIC } from "../utils/constants";
+
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -142,13 +144,26 @@ const VideoWrapper = styled.div`
   margin-top: ${({ isMobile }) => isMobile && "20px"};
 `;
 
+const StyledVideo = styled.video`
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+`;
+
 function Video() {
   const { isMobile } = useScreen();
 
   const API = import.meta.env.VITE_API_URL;
   const [videos, setVideos] = useState([]);
 
-  const { videoId } = useParams();
+  const { videoId: currentVideoId } = useParams();
+
+  const [currentVideo, setCurrentVideo] = useState({});
+
+  const [videoUser, setVideoUser] = useState({});
+
+  const [videoUserId, setVideoUserId] = useState("");
 
   useEffect(() => {
     const getTrends = async () => {
@@ -163,30 +178,66 @@ function Video() {
     };
 
     getTrends();
-  }, []);
+  }, [API]);
 
-  console.log(videoId);
+  useEffect(() => {
+    const getCurrentVideo = async () => {
+      try {
+        const res = await axios.get(`
+          ${API}/api/videos/find/${currentVideoId}
+        `);
+        setCurrentVideo(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getCurrentVideo();
+  }, [API, currentVideoId]);
+
+  useEffect(() => {
+    if (currentVideo) setVideoUserId(currentVideo?.userId);
+    else return;
+  }, [currentVideo]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      if (!videoUserId) return;
+
+      try {
+        const res = await axios.get(`
+        ${API}/api/users/find/${videoUserId}
+      `);
+        setVideoUser(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUser();
+  }, [API, videoUserId]);
+
+  console.log(videoUser);
 
   return (
     <Container isMobile={isMobile}>
       <Content isMobile={isMobile}>
         <VideoWrapper isMobile={isMobile}>
-          <iframe
-            width={!isMobile && "100%"}
-            height={!isMobile && "520"}
-            src="https://www.youtube.com/embed/M2WWYcVKvSc"
-            allowFullScreen
-          ></iframe>
+          <StyledVideo isMobile={isMobile} src={currentVideo?.VideoUrl} />
         </VideoWrapper>
-        <Title>Hamsel Third Round Against Yunus</Title>
+        <Title>{currentVideo?.title}</Title>
         <Details isMobile={isMobile}>
-          <Info isMobile={isMobile}>234, 121, 121 views • Jan 22, 2025</Info>
+          <Info isMobile={isMobile}>
+            {currentVideo?.views} views • {currentVideo?.createdAt}
+          </Info>
           <ButtonContainer>
             <Button isMobile={isMobile}>
-              <ThumbUpAltOutlinedIcon fontSize="inherit" /> 123
+              <ThumbUpAltOutlinedIcon fontSize="inherit" />{" "}
+              {currentVideo?.likes?.length}
             </Button>
             <Button isMobile={isMobile}>
-              <ThumbDownAltOutlinedIcon fontSize="inherit" /> Dislike
+              <ThumbDownAltOutlinedIcon fontSize="inherit" />{" "}
+              {currentVideo?.dislikes?.length}
             </Button>
             <Button isMobile={isMobile}>
               <ReplyOutlinedIcon fontSize="inherit" /> Share
@@ -199,15 +250,22 @@ function Video() {
         <Hr />
         <Channel>
           <ChannelInfo isMobile={isMobile}>
-            <Image src="https://images.pexels.com/photos/30243611/pexels-photo-30243611/free-photo-of-cozy-minimalist-interior-with-beige-sofa.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
+            <Image
+              src={
+                videoUser?.profilePic
+                  ? videoUser?.profilePic
+                  : DEFAULT_PROFILE_PIC
+              }
+            />
             <ChannelDetail isMobile={isMobile}>
-              <ChannelName isMobile={isMobile}>REDD AXE</ChannelName>
+              <ChannelName isMobile={isMobile}>
+                {videoUser?.username}
+              </ChannelName>
               <ChannelCounter isMobile={isMobile}>
-                200K Subscribers
+                {videoUser?.subscribers} Subscribers
               </ChannelCounter>
               <ChannelDescription isMobile={isMobile}>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Dolorum perspiciatis excepturi ea, doloremque enim!
+                {currentVideo?.desc}
               </ChannelDescription>
             </ChannelDetail>
             <Subscribe isMobile={isMobile}>SUBSCRIBE</Subscribe>

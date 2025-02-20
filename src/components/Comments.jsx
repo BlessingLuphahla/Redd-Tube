@@ -44,9 +44,6 @@ function Comments() {
       {dummyComments.map((comment, index) => {
         if (isMobile && index > 4) return;
 
-        console.log(index);
-        console.log(typeof index);
-
         return (
           <Comment
             key={comment + index}
