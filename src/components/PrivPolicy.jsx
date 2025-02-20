@@ -1,4 +1,4 @@
-const PrivacyPolicy = () => {
+const PrivPolicy = () => {
   return (
     <div>
       <h1>Privacy Policy</h1>
@@ -6,9 +6,13 @@ const PrivacyPolicy = () => {
         Your privacy is important to us. This privacy policy explains the
         information we collect, how we use it, and how we protect it.
       </p>
-      <p>{/* Add the detailed privacy policy text here */}</p>
+      <p>
+
+    
+
+      </p>
     </div>
   );
 };
 
-export default PrivacyPolicy;
+export default PrivPolicy;

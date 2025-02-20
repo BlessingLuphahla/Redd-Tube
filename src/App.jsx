@@ -9,9 +9,9 @@ import Video from "./pages/Video";
 import SignIn from "./pages/SignIn";
 
 import { useScreen } from "./context/ScreenContext";
-import PrivacyPolicy from "./components/PrivacyPolicy";
 import ContactDeveloper from "./components/ContactDeveloper";
 import TermsAndConditions from "./components/TermsAndConditions";
+import PrivPolicy from "./components/PrivPolicy";
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +52,7 @@ function App() {
                     <Route path=":id" element={<Video />} />
                   </Route>
                   <Route path="login" element={<SignIn />} />
-                  <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="privacy-policy" element={<PrivPolicy />} />
                   <Route
                     path="contact-developer"
                     element={<ContactDeveloper />}
