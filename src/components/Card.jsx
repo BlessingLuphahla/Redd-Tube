@@ -1,6 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router";
 import styled from "styled-components";
+import { formatDistanceToNow } from "date-fns";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { DEFAULT_PROFILE_PIC, DEFAULT_VIDEO_IMAGE } from "../utils/constants";
 
 const Container = styled.div`
   cursor: pointer;
@@ -59,20 +63,46 @@ const Info = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-function Card({ data, src, type }) {
+function Card({ src, type, views, date, title, userId,videoId }) {
+  const API = import.meta.env.VITE_API_URL;
+
+  const [user, setUser] = useState({});
+
+  const createdAt = new Date(date);
+  const formattedDate = formatDistanceToNow(new Date(createdAt), {
+    addSuffix: true,
+  });
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await axios.get(`
+        ${API}/api/users/find/${userId}
+      `);
+        setUser(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUser();
+  }, []);
+
   return (
-    <Link to="video/test" style={{ textDecoration: "none" }}>
+    <Link to={`video/${videoId}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
-        <Image type={type} src={src} />
+        <Image type={type} src={src ? src : DEFAULT_VIDEO_IMAGE} />
         <Details type={type}>
           <ChannelImage
             type={type}
-            src="https://images.pexels.com/photos/17089904/pexels-photo-17089904/free-photo-of-table-with-wineglasses.jpeg?auto=compress&cs=tinysrgb&w=600"
+            src={user?.profilePic ? user?.profilePic : DEFAULT_PROFILE_PIC}
           />
           <Texts type={type}>
-            <Title>Poison</Title>
-            <ChannelName>Redd Axe {data}</ChannelName>
-            <Info>660,900 views • 1 day ago </Info>
+            <Title>{title}</Title>
+            <ChannelName>{user?.username}</ChannelName>
+            <Info>
+              {views} views • {formattedDate.replace("about ", "")}
+            </Info>
           </Texts>
         </Details>
       </Container>

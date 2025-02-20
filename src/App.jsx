@@ -49,7 +49,7 @@ function App() {
                 <Route path="/">
                   <Route index element={<Home />} />
                   <Route path="video">
-                    <Route path=":id" element={<Video />} />
+                    <Route path=":videoId" element={<Video />} />
                   </Route>
                   <Route path="login" element={<SignIn />} />
                   <Route path="privacy-policy" element={<PrivPolicy />} />

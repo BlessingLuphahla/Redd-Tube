@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Card from "../components/Card";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -8,19 +10,37 @@ const Container = styled.div`
   gap: 1px;
 `;
 
-const dummyShit = [];
-
-for (let i = 1; i < 200; i++) dummyShit.push(i * 23);
-
 function Home() {
+  const API = import.meta.env.VITE_API_URL;
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    const getRandomVideos = async () => {
+      try {
+        const res = await axios.get(`
+          ${API}/api/videos/random
+        `);
+        setVideos(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getRandomVideos();
+  }, []);
+
   return (
     <Container>
-      {dummyShit.map((i, index) => {
+      {videos?.map((video, index) => {
         return (
           <Card
-            src="https://images.pexels.com/photos/13246022/pexels-photo-13246022.jpeg?auto=compress&cs=tinysrgb&w=600"
-            key={index}
-            data={i}
+            key={video._id + index}
+            src={video.videoUrl}
+            views={video.views}
+            date={video.createdAt}
+            title={video.title}
+            userId={video.userId}
+            videoId={video._id}
           />
         );
       })}

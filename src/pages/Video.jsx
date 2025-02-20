@@ -6,10 +6,9 @@ import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
 import Card from "../components/Card";
 import { useScreen } from "../context/ScreenContext";
-
-const dummyShit = [];
-
-for (let i = 1; i < 10; i++) dummyShit.push(i * 23);
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router";
 
 const Container = styled.div`
   display: flex;
@@ -146,6 +145,28 @@ const VideoWrapper = styled.div`
 function Video() {
   const { isMobile } = useScreen();
 
+  const API = import.meta.env.VITE_API_URL;
+  const [videos, setVideos] = useState([]);
+
+  const { videoId } = useParams();
+
+  useEffect(() => {
+    const getTrends = async () => {
+      try {
+        const res = await axios.get(`
+          ${API}/api/videos/trends
+        `);
+        setVideos(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getTrends();
+  }, []);
+
+  console.log(videoId);
+
   return (
     <Container isMobile={isMobile}>
       <Content isMobile={isMobile}>
@@ -196,13 +217,15 @@ function Video() {
         <Comments />
       </Content>
       <Recommendation>
-        {dummyShit.map((i, index) => {
+        {videos?.map((video, index) => {
           return (
             <Card
-              src="https://images.pexels.com/photos/30337253/pexels-photo-30337253/free-photo-of-footprints-in-sand-on-casablanca-beach.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-              type="sm"
-              key={index}
-              data={i}
+              key={video._id + index}
+              src={video.videoUrl}
+              views={video.views}
+              date={video.createdAt}
+              title={video.title}
+              userId={video.userId}
             />
           );
         })}
