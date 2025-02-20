@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import styled from "styled-components";
 import { useScreen } from "../context/ScreenContext";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +20,7 @@ const MainWrapper = styled.div`
   text-align: center;
   width: ${({ isMobile }) => (isMobile ? "320px" : "350px")};
   margin-top: ${({ isMobile }) => isMobile && "20px"};
-  overflow: scroll;
+  overflow-y: ${({ isMobile }) => isMobile && "scroll"};
 `;
 
 const SignInWrapper = styled.div`
@@ -51,6 +53,7 @@ const Input = styled.input`
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.soft};
   width: 95%;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Button = styled.button`
@@ -61,6 +64,7 @@ const Button = styled.button`
   border: none;
   outline: none;
   color: ${({ theme }) => theme.text};
+  cursor: pointer;
 `;
 
 const Links = styled.div`
@@ -73,25 +77,130 @@ const Links = styled.div`
 
 function SignIn() {
   const { isMobile } = useScreen();
+  // const navigate = useNavigate();
+
+  // State for sign-in form
+  const [signInData, setSignInData] = useState({ username: "", password: "" });
+  const [error, setError] = useState(null);
+  const API = import.meta.env.VITE_API_URL;
+
+  // State for sign-up form
+  const [signUpData, setSignUpData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  // Handle input changes
+  const handleChange = (e, form) => {
+    const { name, value } = e.target;
+    if (form === "signIn") {
+      setSignInData((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setSignUpData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // Sign in function
+  const handleSignIn = async () => {
+    setError(null);
+    if (!signInData.username || !signInData.password) {
+      setError("All fields are required");
+      return;
+    }
+
+    try {
+      const res = await axios.post(`
+        ${API}/api/auth/signin
+      `, signInData);
+
+        console.log(res);
+        
+
+      // navigate("/subscription"); 
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // Sign up function
+  const handleSignUp = async () => {
+    setError(null);
+    if (!signUpData.username || !signUpData.email || !signUpData.password) {
+      setError("All fields are required");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signUpData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Sign-up failed");
+
+      alert("Sign-up successful. Please sign in.");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <Container>
       <MainWrapper isMobile={isMobile}>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {/* Sign In */}
         <SignInWrapper>
           <HeaderText>Sign In</HeaderText>
           <SubText>to continue AXE MEDIA</SubText>
-          <Input type="text" placeholder="username" />
-          <Input type="password" placeholder="password" />
-          <Button>Sign In</Button>
+          <Input
+            type="text"
+            placeholder="username"
+            name="username"
+            value={signInData.username}
+            onChange={(e) => handleChange(e, "signIn")}
+          />
+          <Input
+            type="password"
+            placeholder="password"
+            name="password"
+            value={signInData.password}
+            onChange={(e) => handleChange(e, "signIn")}
+          />
+          <Button onClick={handleSignIn}>Sign In</Button>
         </SignInWrapper>
+
+        {/* Sign Up */}
         <SignUpWrapper>
           <SubText>or</SubText>
-          <Input type="text" placeholder="username" />
-          <Input type="email" placeholder="email" />
-          <Input type="password" placeholder="password" />
-          <Button>Sign Up</Button>
+          <Input
+            type="text"
+            placeholder="username"
+            name="username"
+            value={signUpData.username}
+            onChange={(e) => handleChange(e, "signUp")}
+          />
+          <Input
+            type="email"
+            placeholder="email"
+            name="email"
+            value={signUpData.email}
+            onChange={(e) => handleChange(e, "signUp")}
+          />
+          <Input
+            type="password"
+            placeholder="password"
+            name="password"
+            value={signUpData.password}
+            onChange={(e) => handleChange(e, "signUp")}
+          />
+          <Button onClick={handleSignUp}>Sign Up</Button>
         </SignUpWrapper>
       </MainWrapper>
+
       <Links>
         <Link
           to="/contact-developer"

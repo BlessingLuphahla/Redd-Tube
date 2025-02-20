@@ -4,6 +4,7 @@ import { useScreen } from "../context/ScreenContext";
 import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { formatDistanceToNow } from "date-fns";
 
 const Container = styled.div``;
 
@@ -54,23 +55,28 @@ function Comments({ currentVideoId }) {
     getComments();
   }, []);
 
+  console.log(comments);
+
   return (
     <Container>
       <NewComment isMobile={isMobile}>
         <Avatar src="https://images.pexels.com/photos/30253635/pexels-photo-30253635/free-photo-of-dramatic-sand-dunes-texture-in-algerian-desert.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
-        #
         <Input isMobile={isMobile} placeholder="Add a comment" />
       </NewComment>
       {comments?.map((comment, index) => {
-        console.log(comment);
-
         return (
           <Comment
             key={comment + index}
-            text={comment.text}
-            image={comment.image}
-            date={comment.date}
-            name={comment.name}
+            text={comment.desc}
+            userId={comment.userId}
+            date={formatDistanceToNow(
+              new Date(comment?.createdAt || Date.now()),
+              {
+                addSuffix: true,
+              }
+            )
+              .replace("about ", "")
+              .replace("less than a minute ago", "just now")}
           >
             {}
           </Comment>

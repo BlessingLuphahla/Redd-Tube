@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { useScreen } from "../context/ScreenContext";
+import { useEffect, useState } from "react";
+import { DEFAULT_PROFILE_PIC } from "../utils/constants";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -38,15 +41,39 @@ const Details = styled.div`
   gap: 10px;
 `;
 
-function Comment({ text, date, name }) {
+function Comment({ text, date, userId }) {
   const { isMobile } = useScreen();
+
+  const [commentUser, setCommentUser] = useState();
+  const API = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const getCommentUser = async () => {
+      try {
+        const res = await axios.get(`
+        ${API}/api/users/find/${userId}
+      `);
+        setCommentUser(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getCommentUser();
+  }, []);
 
   return (
     <Container>
-      <Avatar src="https://images.pexels.com/photos/30474533/pexels-photo-30474533/free-photo-of-rustic-italian-architecture-with-terra-cotta-rooftops.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" />
+      <Avatar
+        src={
+          commentUser?.profilePic
+            ? commentUser?.profilePic
+            : DEFAULT_PROFILE_PIC
+        }
+      />
       <Details isMobile={isMobile}>
         <Name isMobile={isMobile}>
-          {name}
+          {commentUser?.username}
           <Date isMobile={isMobile}>{date}</Date>
         </Name>
         <Text isMobile={isMobile}>{text}</Text>
