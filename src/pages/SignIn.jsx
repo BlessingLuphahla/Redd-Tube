@@ -110,14 +110,16 @@ function SignIn() {
     }
 
     try {
-      const res = await axios.post(`
+      const res = await axios.post(
+        `
         ${API}/api/auth/signin
-      `, signInData);
+      `,
+        signInData
+      );
 
-        console.log(res);
-        
+      console.log(res);
 
-      // navigate("/subscription"); 
+      // navigate("/subscription");
     } catch (err) {
       setError(err.message);
     }
@@ -132,17 +134,14 @@ function SignIn() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(signUpData),
-      });
+      const res = await axios.post(
+        `
+        ${API}/api/auth/signin
+      `,
+        signUpData
+      );
 
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.message || "Sign-up failed");
-
-      alert("Sign-up successful. Please sign in.");
+      console.log(res);
     } catch (err) {
       setError(err.message);
     }
