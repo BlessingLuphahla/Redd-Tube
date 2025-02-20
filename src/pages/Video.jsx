@@ -9,6 +9,7 @@ import { useScreen } from "../context/ScreenContext";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { DEFAULT_PROFILE_PIC } from "../utils/constants";
+import { formatDistanceToNow } from "date-fns";
 
 import axios from "axios";
 
@@ -217,8 +218,6 @@ function Video() {
     getUser();
   }, [API, videoUserId]);
 
-  console.log(videoUser);
-
   return (
     <Container isMobile={isMobile}>
       <Content isMobile={isMobile}>
@@ -228,7 +227,15 @@ function Video() {
         <Title>{currentVideo?.title}</Title>
         <Details isMobile={isMobile}>
           <Info isMobile={isMobile}>
-            {currentVideo?.views} views • {currentVideo?.createdAt}
+            {currentVideo?.views} views •{" "}
+            {formatDistanceToNow(
+              new Date(currentVideo?.createdAt || Date.now()),
+              {
+                addSuffix: true,
+              }
+            )
+              .replace("about ", "")
+              .replace("less than a minute ago", "just now")}
           </Info>
           <ButtonContainer>
             <Button isMobile={isMobile}>
@@ -272,7 +279,7 @@ function Video() {
           </ChannelInfo>
         </Channel>
         <Hr />
-        <Comments />
+        <Comments currentVideoId={currentVideoId} />
       </Content>
       <Recommendation>
         {videos?.map((video, index) => {
