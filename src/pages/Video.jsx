@@ -267,7 +267,6 @@ function Video() {
     return () => clearTimeout(timeout);
   }, [error]);
 
-
   return (
     <Container isMobile={isMobile}>
       <Content isMobile={isMobile}>
