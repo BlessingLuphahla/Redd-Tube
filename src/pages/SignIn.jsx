@@ -203,8 +203,6 @@ function SignIn() {
     getRedirectResult(auth)
       .then(async (data) => {
         if (data) {
-          console.log("User Data:", data);
-
           dispatch(loginStart());
           const userCredentials = {
             username: data.user.displayName,

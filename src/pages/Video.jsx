@@ -7,6 +7,8 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import Comments from "../components/Comments";
 import Card from "../components/Card";
 import { useScreen } from "../context/ScreenContext";
@@ -177,6 +179,13 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
+const Loading = styled.div`
+  color: ${({ theme }) => theme.textSoft};
+  font-size: 18px;
+  margin-top: 5px;
+  text-align: center;
+`;
+
 function Video() {
   const { isMobile } = useScreen();
   const API = import.meta.env.VITE_API_URL;
@@ -301,11 +310,21 @@ function Video() {
           </Info>
           <ButtonContainer>
             <Button isMobile={isMobile} onClick={handleLike}>
-              <ThumbUpAltOutlinedIcon fontSize="inherit" />
+              {video?.likes?.includes(currentUser._id) ? (
+                <ThumbUpIcon fontSize="inherit" />
+              ) : (
+                <ThumbUpAltOutlinedIcon fontSize="inherit" />
+              )}
+
               {video?.likes?.length}
             </Button>
-            <Button isMobile={isMobile}  onClick={handleDislike}>
-              <ThumbDownAltOutlinedIcon fontSize="inherit" />
+            <Button isMobile={isMobile} onClick={handleDislike}>
+              {video?.dislikes?.includes(currentUser._id) ? (
+                <ThumbDownIcon fontSize="inherit" />
+              ) : (
+                <ThumbDownAltOutlinedIcon fontSize="inherit" />
+              )}
+
               {video?.dislikes?.length}
             </Button>
             <Button isMobile={isMobile}>
@@ -319,6 +338,7 @@ function Video() {
         <Hr />
         <Channel>
           <ChannelInfo isMobile={isMobile}>
+            {userLoading && <Loading>Loading...</Loading>}
             <Image
               src={
                 currentUser?.profilePic
@@ -344,6 +364,7 @@ function Video() {
         <Comments currentVideoId={currentVideoId} />
       </Content>
       <Recommendation>
+        {videoLoading && <Loading>Loading...</Loading>}
         {videos?.map((video) => (
           <Card
             key={video._id}
