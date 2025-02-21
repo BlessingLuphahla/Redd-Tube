@@ -6,7 +6,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 import { auth, provider } from "../../firebase";
-import { signInWithPopup } from "firebase/auth";
+import { getRedirectResult, signInWithRedirect } from "firebase/auth";
 
 axios.defaults.withCredentials = true;
 
@@ -195,8 +195,16 @@ function SignIn() {
   };
 
   const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(async (data) => {
+    signInWithRedirect(auth, provider);
+  };
+
+  // Handle the redirect result on page load
+  getRedirectResult(auth)
+    .then(async (data) => {
+      if (data) {
+        console.log("data");
+        console.log(data);
+
         dispatch(loginStart());
         const userCredentials = {
           username: data?.user.displayName,
@@ -206,12 +214,11 @@ function SignIn() {
 
         await axios.post(`${API}/auth/google`, userCredentials);
         dispatch(loginSuccess(userCredentials));
-      })
-      .catch((error) => {
-        setError(error.response.data.message);
-        dispatch(loginFailure());
-      });
-  };
+      }
+    })
+    .catch((error) => {
+      console.error("Error during authentication: ", error);
+    });
 
   return (
     <Container>
