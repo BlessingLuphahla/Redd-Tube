@@ -40,3 +40,4 @@ export const store = configureStore({
 
 // Persistor for rehydrating the store
 export const persistor = persistStore(store);
+

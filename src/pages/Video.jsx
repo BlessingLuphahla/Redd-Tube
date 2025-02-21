@@ -194,7 +194,6 @@ function Video() {
       const response = await axios.put(`
             ${API}/api/users/dislike/${currentVideoId}
           `);
-      console.log(response);
 
       if (response.status === 200) {
         setIsLiked(!isLiked);
