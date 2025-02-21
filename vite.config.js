@@ -1,22 +1,23 @@
-import { defineConfig } from "vite";
+/* eslint-disable no-undef */
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 
-console.log('lets see if this works');
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    cors: true,
-    credentials: true,
-    proxy: {
-      "/api": {
-        target: "http://localhost:4503",
-        changeOrigin: true,
-        secure: false,
+  const targetAPI = env.VITE_API_URL;
+
+  return {
+    plugins: [react()],
+    server: {
+      cors: true,
+      proxy: {
+        "/api": {
+          target: targetAPI,
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
-  },
+  };
 });
-
-
