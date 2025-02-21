@@ -33,8 +33,9 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     subSuccess: (state, action) => {
-      if (!state.user.subscribedUsers.includes(action.payload)) {
-        state.user.subscribedUsers.push(action.payload); // Add the channel owner's ID to subscribedUsers
+      const { userId } = action.payload; // userId of the channel owner
+      if (!state.user.subscribedUsers.includes(userId)) {
+        state.user.subscribedUsers.push(userId); // Add the channel owner's ID to subscribedUsers
       }
       state.loading = false;
     },

@@ -314,8 +314,8 @@ function Video() {
         dispatch(unsubSuccess({ userId: user._id })); // Update Redux state
       }
     } catch (error) {
-      console.error(error);
-      dispatch(subFailure());
+      console.error("Failed to subscribe/unsubscribe", error);
+      dispatch(subFailure()); // Handle error
     }
   };
 
