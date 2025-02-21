@@ -198,27 +198,29 @@ function SignIn() {
     signInWithRedirect(auth, provider);
   };
 
-  // Handle the redirect result on page load
-  getRedirectResult(auth)
-    .then(async (data) => {
-      if (data) {
-        console.log("data");
-        console.log(data);
+  // Handle the authentication result after redirect
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then(async (data) => {
+        if (data) {
+          console.log("User Data:", data);
 
-        dispatch(loginStart());
-        const userCredentials = {
-          username: data?.user.displayName,
-          email: data?.user.email,
-          profilePic: data?.user.photoURL,
-        };
+          dispatch(loginStart());
+          const userCredentials = {
+            username: data.user.displayName,
+            email: data.user.email,
+            profilePic: data.user.photoURL,
+          };
 
-        await axios.post(`${API}/auth/google`, userCredentials);
-        dispatch(loginSuccess(userCredentials));
-      }
-    })
-    .catch((error) => {
-      console.error("Error during authentication: ", error);
-    });
+          await axios.post(`${API}/auth/google`, userCredentials);
+          dispatch(loginSuccess(userCredentials));
+        }
+      })
+      .catch((error) => {
+        console.error("Error during authentication: ", error);
+        dispatch(loginFailure());
+      });
+  }, []);
 
   return (
     <Container>
