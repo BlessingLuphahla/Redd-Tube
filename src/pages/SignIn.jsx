@@ -220,7 +220,7 @@ function SignIn() {
         console.error("Error during authentication: ", error);
         dispatch(loginFailure());
       });
-  }, []);
+  }, [API, dispatch]);
 
   return (
     <Container>

@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
@@ -6,12 +10,25 @@ import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
 import Card from "../components/Card";
 import { useScreen } from "../context/ScreenContext";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 import { formatDistanceToNow } from "date-fns";
-
 import axios from "axios";
+import {
+  videoFetchStart,
+  videoFetchSuccess,
+  videoFetchFailure,
+  like,
+  videosFetchSuccess,
+  videosFetchFailure,
+  videosFetchStart,
+  dislike,
+} from "../redux/videoSlice";
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+} from "../redux/userSlice";
 
 const Container = styled.div`
   display: flex;
@@ -163,132 +180,100 @@ const ErrorMessage = styled.div`
 function Video() {
   const { isMobile } = useScreen();
   const API = import.meta.env.VITE_API_URL;
-  const [videos, setVideos] = useState([]);
   const { videoId: currentVideoId } = useParams();
-  const [currentVideo, setCurrentVideo] = useState({});
-  const [videoUser, setVideoUser] = useState({});
-  const [videoUserId, setVideoUserId] = useState("");
+  const dispatch = useDispatch();
+
+  // Redux state
+  const {
+    video,
+    loading: videoLoading,
+    error: videoError,
+    videos,
+  } = useSelector((state) => state.video);
+  const {
+    user: currentUser,
+    loading: userLoading,
+    error: userError,
+  } = useSelector((state) => state.user);
   const [isLiked, setIsLiked] = useState(false);
-  const [error, setError] = useState(null);
 
-  const likeAVideo = async () => {
-    if (isLiked || !currentVideoId) return;
+  // Fetch video data
+  useEffect(() => {
+    const fetchVideos = async () => {
+      dispatch(videosFetchStart());
 
-    // Optimistically update the UI
-    setIsLiked(true);
-    setCurrentVideo((prev) => ({
-      ...prev,
-      likes: prev.likes + 1, // Update the likes count
-    }));
+      try {
+        const res = await axios.get(`${API}/api/videos/trends`);
+        dispatch(videosFetchSuccess(res.data));
+      } catch (error) {
+        dispatch(videosFetchFailure());
+      }
+    };
+
+    fetchVideos();
+  }, [dispatch, currentVideoId, API]);
+
+  useEffect(() => {
+    const fetchVideoData = async () => {
+      dispatch(videoFetchStart());
+
+      try {
+        const res = await axios.get(`${API}/api/videos/find/${currentVideoId}`);
+        dispatch(videoFetchSuccess(res.data));
+      } catch (error) {
+        dispatch(videoFetchFailure());
+      }
+    };
+
+    fetchVideoData();
+  }, [dispatch, currentVideoId, API]);
+
+  // Fetch user data
+  useEffect(() => {
+    if (video?.userId) {
+      const fetchUserData = async () => {
+        dispatch(loginStart());
+        try {
+          const res = await axios.get(`${API}/api/users/find/${video.userId}`);
+          dispatch(loginSuccess(res.data));
+        } catch (error) {
+          dispatch(loginFailure());
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [dispatch, video?.userId, API]);
+
+  // Handle like functionality
+  const handleLike = async () => {
+    if (!currentUser) return;
 
     try {
-      const response = await axios.put(
-        `${API}/api/users/like/${currentVideoId}`
-      );
-      if (response.status !== 200) {
-        throw new Error("Failed to like the video");
-      }
-    } catch (error) {
-      // Revert the state if the request fails
+      await axios.put(`${API}/api/users/like/${video._id}`, {
+        userId: currentUser._id,
+      });
+      dispatch(like(currentUser._id)); // Dispatch like action
       setIsLiked(!isLiked);
-      setCurrentVideo((prev) => ({
-        ...prev,
-        likes: prev.likes - 1,
-      }));
-      setError(error.response?.data?.message || "An error occurred");
+    } catch (error) {
+      console.error("Failed to like the video", error);
     }
   };
 
-  const dislikeAVideo = async () => {
-    if (!isLiked || !currentVideoId) return;
-
-    // Optimistically update the UI
-    setIsLiked(!isLiked);
-    setCurrentVideo((prev) => ({
-      ...prev,
-      dislikes: prev.dislikes + 1, // Update the dislikes count
-    }));
+  // Handle like functionality
+  const handleDislike = async () => {
+    if (!currentUser) return;
 
     try {
-      const response = await axios.put(
-        `${API}/api/users/dislike/${currentVideoId}`
-      );
-      if (response.status !== 200) {
-        throw new Error("Failed to dislike the video");
-      }
+      await axios.put(`${API}/api/users/dislike/${video._id}`, {
+        userId: currentUser._id,
+      });
+      dispatch(dislike(currentUser._id)); // Dispatch like action
+      setIsLiked(!isLiked);
     } catch (error) {
-      // Revert the state if the request fails
-      setIsLiked(true);
-      setCurrentVideo((prev) => ({
-        ...prev,
-        dislikes: prev.dislikes - 1,
-      }));
-      setError(error.response?.data?.message || "An error occurred");
+      console.error("Failed to like the video", error);
     }
   };
-
-  useEffect(() => {
-    const getTrends = async () => {
-      try {
-        const res = await axios.get(`
-          ${API}/api/videos/trends
-        `);
-        setVideos(res.data);
-      } catch (error) {
-        setError(error.response.data.message);
-      }
-    };
-
-    getTrends();
-  }, [API]);
-
-  useEffect(() => {
-    const getCurrentVideo = async () => {
-      try {
-        const res = await axios.get(`
-          ${API}/api/videos/find/${currentVideoId}
-        `);
-        setCurrentVideo(res.data);
-      } catch (error) {
-        setError(error.response.data.message);
-      }
-    };
-
-    getCurrentVideo();
-  }, [API, currentVideoId]);
-
-  useEffect(() => {
-    if (currentVideo) setVideoUserId(currentVideo?.userId);
-    else return;
-  }, [currentVideo]);
-
-  useEffect(() => {
-    const getUser = async () => {
-      if (!videoUserId) return;
-
-      try {
-        const res = await axios.get(`
-        ${API}/api/users/find/${videoUserId}
-      `);
-        setVideoUser(res.data);
-      } catch (error) {
-        setError(error.response.data.message);
-      }
-    };
-
-    getUser();
-  }, [API, videoUserId]);
-
-  useEffect(() => {
-    let timeout;
-    if (error) {
-      timeout = setTimeout(() => {
-        setError("");
-      }, 5000);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [error]);
 
   return (
     <Container isMobile={isMobile}>
@@ -298,37 +283,30 @@ function Video() {
             controls
             autoPlay
             isMobile={isMobile}
-            src={currentVideo?.VideoUrl}
+            src={video?.videoUrl}
           />
         </VideoWrapper>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Title>{currentVideo?.title}</Title>
+        {(videoError || userError) && (
+          <ErrorMessage>{videoError || userError}</ErrorMessage>
+        )}
+        <Title>{video?.title}</Title>
         <Details isMobile={isMobile}>
           <Info isMobile={isMobile}>
-            {currentVideo?.views} views •
-            {formatDistanceToNow(
-              new Date(currentVideo?.createdAt || Date.now()),
-              {
-                addSuffix: true,
-              }
-            )
+            {video?.views} views •
+            {formatDistanceToNow(new Date(video?.createdAt || Date.now()), {
+              addSuffix: true,
+            })
               .replace("about ", "")
               .replace("less than a minute ago", "just now")}
           </Info>
           <ButtonContainer>
-            <Button isMobile={isMobile}>
-              <ThumbUpAltOutlinedIcon
-                onClick={likeAVideo}
-                fontSize="inherit"
-              />
-              {currentVideo?.likes?.length}
+            <Button isMobile={isMobile} onClick={handleLike}>
+              <ThumbUpAltOutlinedIcon fontSize="inherit" />
+              {video?.likes?.length}
             </Button>
-            <Button isMobile={isMobile}>
-              <ThumbDownAltOutlinedIcon
-                onClick={dislikeAVideo}
-                fontSize="inherit"
-              />
-              {currentVideo?.dislikes?.length}
+            <Button isMobile={isMobile}  onClick={handleDislike}>
+              <ThumbDownAltOutlinedIcon fontSize="inherit" />
+              {video?.dislikes?.length}
             </Button>
             <Button isMobile={isMobile}>
               <ReplyOutlinedIcon fontSize="inherit" /> Share
@@ -343,20 +321,20 @@ function Video() {
           <ChannelInfo isMobile={isMobile}>
             <Image
               src={
-                videoUser?.profilePic
-                  ? videoUser?.profilePic
+                currentUser?.profilePic
+                  ? currentUser?.profilePic
                   : DEFAULT_PROFILE_PIC
               }
             />
             <ChannelDetail isMobile={isMobile}>
               <ChannelName isMobile={isMobile}>
-                {videoUser?.username}
+                {currentUser?.username}
               </ChannelName>
               <ChannelCounter isMobile={isMobile}>
-                {videoUser?.subscribers} Subscribers
+                {currentUser?.subscribers} Subscribers
               </ChannelCounter>
               <ChannelDescription isMobile={isMobile}>
-                {currentVideo?.desc}
+                {video?.desc}
               </ChannelDescription>
             </ChannelDetail>
             <Subscribe isMobile={isMobile}>SUBSCRIBE</Subscribe>
@@ -366,19 +344,18 @@ function Video() {
         <Comments currentVideoId={currentVideoId} />
       </Content>
       <Recommendation>
-        {videos?.map((video, index) => {
-          return (
-            <Card
-              key={video._id + index}
-              src={video.videoUrl}
-              views={video.views}
-              date={video.createdAt}
-              title={video.title}
-              userId={video.userId}
-              videoId={video._id}
-            />
-          );
-        })}
+        {videos?.map((video) => (
+          <Card
+            key={video._id}
+            src={video.videoUrl}
+            views={video.views}
+            date={video.createdAt}
+            title={video.title}
+            userId={video.userId}
+            videoId={video._id}
+            type="sm"
+          />
+        ))}
       </Recommendation>
     </Container>
   );
