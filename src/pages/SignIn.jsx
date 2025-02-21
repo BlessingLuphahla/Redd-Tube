@@ -93,6 +93,7 @@ function SignIn() {
 
   // Handle input changes
   const handleChange = (e, form) => {
+    e.preventDefault();
     const { name, value } = e.target;
     if (form === "signIn") {
       setSignInData((prev) => ({ ...prev, [name]: value }));
@@ -102,7 +103,8 @@ function SignIn() {
   };
 
   // Sign in function
-  const handleSignIn = async () => {
+  const handleSignIn = async (e) => {
+    e.preventDefault();
     setError(null);
     if (!signInData.username || !signInData.password) {
       setError("All fields are required");
@@ -126,7 +128,8 @@ function SignIn() {
   };
 
   // Sign up function
-  const handleSignUp = async () => {
+  const handleSignUp = async (e) => {
+    e.preventDefault();
     setError(null);
     if (!signUpData.username || !signUpData.email || !signUpData.password) {
       setError("All fields are required");
@@ -136,7 +139,7 @@ function SignIn() {
     try {
       const res = await axios.post(
         `
-        ${API}/api/auth/signin
+        ${API}/api/auth/signup
       `,
         signUpData
       );
@@ -150,7 +153,11 @@ function SignIn() {
   return (
     <Container>
       <MainWrapper isMobile={isMobile}>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <p style={{ color: "red" }}>
+            {error?.response?.message || "Error ... Please Double Check"}
+          </p>
+        )}
         {/* Sign In */}
         <SignInWrapper>
           <HeaderText>Sign In</HeaderText>
@@ -169,7 +176,7 @@ function SignIn() {
             value={signInData.password}
             onChange={(e) => handleChange(e, "signIn")}
           />
-          <Button onClick={handleSignIn}>Sign In</Button>
+          <Button onClick={(e) => handleSignIn(e)}>Sign In</Button>
         </SignInWrapper>
 
         {/* Sign Up */}
@@ -196,7 +203,7 @@ function SignIn() {
             value={signUpData.password}
             onChange={(e) => handleChange(e, "signUp")}
           />
-          <Button onClick={handleSignUp}>Sign Up</Button>
+          <Button onClick={(e) => handleSignUp(e)}>Sign Up</Button>
         </SignUpWrapper>
       </MainWrapper>
 

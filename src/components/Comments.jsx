@@ -53,9 +53,7 @@ function Comments({ currentVideoId }) {
     };
 
     getComments();
-  }, []);
-
-  console.log(comments);
+  }, [API, currentVideoId]);
 
   return (
     <Container>
