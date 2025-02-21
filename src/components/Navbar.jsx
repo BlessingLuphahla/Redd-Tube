@@ -153,7 +153,7 @@ function Navbar({ setTheme, theme }) {
   const handleMenuToggle = () => {
     try {
       setIsMenuOpen((prev) => !prev);
-      setError(""); // Clear any previous errors
+      setError("");
     } catch (err) {
       setError(err.response.data.message);
     }

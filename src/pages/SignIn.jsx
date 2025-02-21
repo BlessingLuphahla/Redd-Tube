@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useScreen } from "../context/ScreenContext";
@@ -79,7 +79,22 @@ const Links = styled.div`
 
 function SignIn() {
   const { isMobile } = useScreen();
-  // const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    let timeout;
+    if (successMessage) {
+      timeout = setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [successMessage]);
+
+  const showMessage = (message) => {
+    setSuccessMessage(`${message}🎉`);
+  };
 
   // State for sign-in form
   const [signInData, setSignInData] = useState({ username: "", password: "" });
@@ -133,6 +148,14 @@ function SignIn() {
       setError(err.response.data.message);
       dispatch(loginFailure());
     }
+
+    setSignInData({
+      username: "",
+      email: "",
+      password: "",
+    });
+
+    showMessage("Sign In successfull");
   };
 
   // Sign up function
@@ -156,6 +179,13 @@ function SignIn() {
     } catch (err) {
       setError(err.response.data.message);
     }
+
+    setSignUpData({
+      username: "",
+      email: "",
+      password: "",
+    });
+    showMessage("User Created Successfully");
   };
 
   return (
@@ -166,6 +196,14 @@ function SignIn() {
             {error}
           </p>
         )}
+        {successMessage && (
+          <p
+            style={{ color: "green", marginTop: "10px", marginBottom: "10px" }}
+          >
+            {successMessage}
+          </p>
+        )}
+
         {/* Sign In */}
         <SignInWrapper>
           <HeaderText>Sign In</HeaderText>

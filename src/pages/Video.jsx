@@ -21,6 +21,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
+  padding: ${({ isMobile }) => !isMobile && "15px"};
   flex: 5;
 
   //media queires
