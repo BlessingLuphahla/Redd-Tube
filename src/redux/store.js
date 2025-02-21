@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage"; // Uses localStorage by default
+import storage from "redux-persist/lib/storage";
 import {
   persistStore,
   persistReducer,
@@ -40,4 +40,3 @@ export const store = configureStore({
 
 // Persistor for rehydrating the store
 export const persistor = persistStore(store);
-
