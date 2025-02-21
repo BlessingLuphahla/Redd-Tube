@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useScreen } from "../context/ScreenContext";
 import axios from "axios";
@@ -81,6 +81,8 @@ function SignIn() {
   const { isMobile } = useScreen();
   const [successMessage, setSuccessMessage] = useState("");
 
+  const navigator = useNavigate();
+
   useEffect(() => {
     let timeout;
     if (successMessage) {
@@ -151,11 +153,11 @@ function SignIn() {
 
     setSignInData({
       username: "",
-      email: "",
       password: "",
     });
 
     showMessage("Sign In successfull");
+    navigator("/subscriptions");
   };
 
   // Sign up function
@@ -185,7 +187,9 @@ function SignIn() {
       email: "",
       password: "",
     });
+
     showMessage("User Created Successfully");
+    navigator("/subscriptions");
   };
 
   return (
