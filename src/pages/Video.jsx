@@ -153,45 +153,54 @@ const StyledVideo = styled.video`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+`;
+
 function Video() {
   const { isMobile } = useScreen();
-
   const API = import.meta.env.VITE_API_URL;
   const [videos, setVideos] = useState([]);
-
   const { videoId: currentVideoId } = useParams();
-
   const [currentVideo, setCurrentVideo] = useState({});
-
   const [videoUser, setVideoUser] = useState({});
-
   const [videoUserId, setVideoUserId] = useState("");
-
   const [isLiked, setIsLiked] = useState(false);
+  const [error, setError] = useState(null);
 
   const likeAVideo = async () => {
-    if (isLiked) return;
-    if (!currentVideo) return;
+    if (isLiked || !currentVideoId) return;
 
-    const response = await axios.put(`
-      ${API}/api/like/${currentVideoId}
-    `);
+    try {
+      const response = await axios.put(`
+        ${API}/api/users/like/${currentVideoId}
+      `);
 
-    if (response.status === 200) {
-      setIsLiked(!isLiked);
+      if (response.status === 200) {
+        setIsLiked(!isLiked);
+      }
+    } catch (error) {
+      setError(error.response.data.message);
     }
   };
 
   const dislikeAVideo = async () => {
-    if (!isLiked) return;
-    if (!currentVideo) return;
+    if (!isLiked || !currentVideoId) return;
 
-    const response = await axios.put(`
-          ${API}/api/dislike/${currentVideoId}
-        `);
+    try {
+      const response = await axios.put(`
+            ${API}/api/users/dislike/${currentVideoId}
+          `);
+      console.log(response);
 
-    if (response.status === 200) {
-      setIsLiked(!isLiked);
+      if (response.status === 200) {
+        setIsLiked(!isLiked);
+      }
+    } catch (error) {
+      setError(error.response.data.message);
     }
   };
 
@@ -203,7 +212,7 @@ function Video() {
         `);
         setVideos(res.data);
       } catch (error) {
-        console.log(error);
+        setError(error.response.data.message);
       }
     };
 
@@ -218,7 +227,7 @@ function Video() {
         `);
         setCurrentVideo(res.data);
       } catch (error) {
-        console.log(error);
+        setError(error.response.data.message);
       }
     };
 
@@ -240,12 +249,24 @@ function Video() {
       `);
         setVideoUser(res.data);
       } catch (error) {
-        console.log(error);
+        setError(error.response.data.message);
       }
     };
 
     getUser();
   }, [API, videoUserId]);
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [error]);
+
 
   return (
     <Container isMobile={isMobile}>
@@ -258,6 +279,7 @@ function Video() {
             src={currentVideo?.VideoUrl}
           />
         </VideoWrapper>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Title>{currentVideo?.title}</Title>
         <Details isMobile={isMobile}>
           <Info isMobile={isMobile}>
@@ -273,14 +295,19 @@ function Video() {
           </Info>
           <ButtonContainer>
             <Button isMobile={isMobile}>
-              <ThumbUpAltOutlinedIcon onClick={likeAVideo} fontSize="inherit" />{" "}
+              <ThumbUpAltOutlinedIcon
+                disabled={isLiked}
+                onClick={likeAVideo}
+                fontSize="inherit"
+              />
               {currentVideo?.likes?.length}
             </Button>
             <Button isMobile={isMobile}>
               <ThumbDownAltOutlinedIcon
+                disabled={!isLiked}
                 onClick={dislikeAVideo}
                 fontSize="inherit"
-              />{" "}
+              />
               {currentVideo?.dislikes?.length}
             </Button>
             <Button isMobile={isMobile}>
