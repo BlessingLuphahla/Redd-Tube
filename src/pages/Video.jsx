@@ -30,6 +30,12 @@ import {
   loginSuccess,
   loginFailure,
   logout,
+  subSuccess,
+  subFailure,
+  subStart,
+  unsubFailure,
+  unsubStart,
+  unsubSuccess,
 } from "../redux/userSlice";
 
 const Container = styled.div`
@@ -107,7 +113,9 @@ const Channel = styled.div`
 
 const ChannelInfo = styled.div`
   display: flex;
-  gap: 20px;
+  width: 100%;
+
+  align-items: center;
 
   // media queries
   flex-direction: ${({ isMobile }) => isMobile && "column"};
@@ -205,6 +213,7 @@ function Video() {
     error: userError,
   } = useSelector((state) => state.user);
   const [isLiked, setIsLiked] = useState(false);
+  const [user, setUser] = useState({});
 
   // Fetch video data
   useEffect(() => {
@@ -241,12 +250,11 @@ function Video() {
   useEffect(() => {
     if (video?.userId) {
       const fetchUserData = async () => {
-        dispatch(loginStart());
         try {
           const res = await axios.get(`${API}/api/users/find/${video.userId}`);
-          dispatch(loginSuccess(res.data));
+          setUser(res.data);
         } catch (error) {
-          dispatch(loginFailure());
+          console.log(error);
         }
       };
 
@@ -262,7 +270,7 @@ function Video() {
       await axios.put(`${API}/api/users/like/${video._id}`, {
         userId: currentUser._id,
       });
-      dispatch(like(currentUser._id)); // Dispatch like action
+      dispatch(like(currentUser._id));
       setIsLiked(!isLiked);
     } catch (error) {
       console.error("Failed to like the video", error);
@@ -277,10 +285,47 @@ function Video() {
       await axios.put(`${API}/api/users/dislike/${video._id}`, {
         userId: currentUser._id,
       });
-      dispatch(dislike(currentUser._id)); // Dispatch like action
+      dispatch(dislike(currentUser._id));
       setIsLiked(!isLiked);
     } catch (error) {
       console.error("Failed to like the video", error);
+    }
+  };
+
+  const subscribeToVideo = async () => {
+    if (!currentUser || !user) return;
+
+    dispatch(loginStart());
+
+    try {
+      const subscribed = currentUser.subscribedUsers.includes(user._id);
+
+      if (!subscribed) {
+        dispatch(subStart());
+        try {
+          await axios.put(`${API}/api/users/sub/${user._id}`, {
+            userId: currentUser._id,
+          });
+          dispatch(subSuccess({ userId: user._id }));
+        } catch (error) {
+          dispatch(subFailure());
+          console.log(error);
+        }
+      } else {
+        try {
+          dispatch(unsubStart());
+          await axios.put(`${API}/api/users/unsub/${user._id}`, {
+            userId: currentUser._id,
+          });
+          dispatch(unsubSuccess({ userId: user._id }));
+        } catch (error) {
+          dispatch(unsubFailure());
+          console.log(error);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to like the video", error);
+      dispatch(loginFailure());
     }
   };
 
@@ -339,25 +384,30 @@ function Video() {
         <Channel>
           <ChannelInfo isMobile={isMobile}>
             {userLoading && <Loading>Loading...</Loading>}
-            <Image
-              src={
-                currentUser?.profilePic
-                  ? currentUser?.profilePic
-                  : DEFAULT_PROFILE_PIC
-              }
-            />
-            <ChannelDetail isMobile={isMobile}>
-              <ChannelName isMobile={isMobile}>
-                {currentUser?.username}
-              </ChannelName>
-              <ChannelCounter isMobile={isMobile}>
-                {currentUser?.subscribers} Subscribers
-              </ChannelCounter>
-              <ChannelDescription isMobile={isMobile}>
-                {video?.desc}
-              </ChannelDescription>
-            </ChannelDetail>
-            <Subscribe isMobile={isMobile}>SUBSCRIBE</Subscribe>
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <Image
+                src={user?.profilePic ? user?.profilePic : DEFAULT_PROFILE_PIC}
+              />
+              <ChannelDetail isMobile={isMobile}>
+                <ChannelName isMobile={isMobile}>{user?.username}</ChannelName>
+                <ChannelCounter isMobile={isMobile}>
+                  {user?.subscribers} Subscribers
+                </ChannelCounter>
+                <ChannelDescription isMobile={isMobile}>
+                  {video?.desc}
+                </ChannelDescription>
+              </ChannelDetail>
+            </div>
+            <Subscribe onClick={subscribeToVideo} isMobile={isMobile}>
+              {currentUser?.subscribedUsers?.includes(user._id)
+                ? "UNSUBSCRIBE"
+                : "SUBSCRIBE"}
+            </Subscribe>
           </ChannelInfo>
         </Channel>
         <Hr />
@@ -365,18 +415,21 @@ function Video() {
       </Content>
       <Recommendation>
         {videoLoading && <Loading>Loading...</Loading>}
-        {videos?.map((video) => (
-          <Card
-            key={video._id}
-            src={video.videoUrl}
-            views={video.views}
-            date={video.createdAt}
-            title={video.title}
-            userId={video.userId}
-            videoId={video._id}
-            type="sm"
-          />
-        ))}
+        {videos?.map((video) => {
+          if (video.userId === currentUser._id) return;
+          return (
+            <Card
+              key={video._id}
+              src={video.videoUrl}
+              views={video.views}
+              date={video.createdAt}
+              title={video.title}
+              userId={video.userId}
+              videoId={video._id}
+              type="sm"
+            />
+          );
+        })}
       </Recommendation>
     </Container>
   );
