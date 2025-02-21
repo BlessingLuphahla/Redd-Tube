@@ -81,7 +81,7 @@ function Card({ src, type, views, date, title, userId, videoId }) {
       `);
         setUser(res.data);
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
       }
     };
 

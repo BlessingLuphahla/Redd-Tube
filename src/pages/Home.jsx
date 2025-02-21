@@ -23,7 +23,7 @@ function Home({ type }) {
         `);
         setVideos(res.data);
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
       }
     };
 
