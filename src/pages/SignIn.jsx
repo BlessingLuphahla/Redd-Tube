@@ -123,7 +123,7 @@ function SignIn() {
 
       // navigate("/subscription");
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.message);
     }
   };
 
@@ -146,7 +146,7 @@ function SignIn() {
 
       console.log(res);
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.message);
     }
   };
 
@@ -154,8 +154,8 @@ function SignIn() {
     <Container>
       <MainWrapper isMobile={isMobile}>
         {error && (
-          <p style={{ color: "red" }}>
-            {error?.response?.message || "Error ... Please Double Check"}
+          <p style={{ color: "red", marginTop: "10px", marginBottom: "10px" }}>
+            {error}
           </p>
         )}
         {/* Sign In */}
