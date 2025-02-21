@@ -174,32 +174,56 @@ function Video() {
   const likeAVideo = async () => {
     if (isLiked || !currentVideoId) return;
 
-    try {
-      const response = await axios.put(`
-        ${API}/api/users/like/${currentVideoId}
-      `);
+    // Optimistically update the UI
+    setIsLiked(true);
+    setCurrentVideo((prev) => ({
+      ...prev,
+      likes: prev.likes + 1, // Update the likes count
+    }));
 
-      if (response.status === 200) {
-        setIsLiked(!isLiked);
+    try {
+      const response = await axios.put(
+        `${API}/api/users/like/${currentVideoId}`
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to like the video");
       }
     } catch (error) {
-      setError(error.response.data.message);
+      // Revert the state if the request fails
+      setIsLiked(!isLiked);
+      setCurrentVideo((prev) => ({
+        ...prev,
+        likes: prev.likes - 1,
+      }));
+      setError(error.response?.data?.message || "An error occurred");
     }
   };
 
   const dislikeAVideo = async () => {
     if (!isLiked || !currentVideoId) return;
 
-    try {
-      const response = await axios.put(`
-            ${API}/api/users/dislike/${currentVideoId}
-          `);
+    // Optimistically update the UI
+    setIsLiked(!isLiked);
+    setCurrentVideo((prev) => ({
+      ...prev,
+      dislikes: prev.dislikes + 1, // Update the dislikes count
+    }));
 
-      if (response.status === 200) {
-        setIsLiked(!isLiked);
+    try {
+      const response = await axios.put(
+        `${API}/api/users/dislike/${currentVideoId}`
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to dislike the video");
       }
     } catch (error) {
-      setError(error.response.data.message);
+      // Revert the state if the request fails
+      setIsLiked(true);
+      setCurrentVideo((prev) => ({
+        ...prev,
+        dislikes: prev.dislikes - 1,
+      }));
+      setError(error.response?.data?.message || "An error occurred");
     }
   };
 
@@ -294,7 +318,6 @@ function Video() {
           <ButtonContainer>
             <Button isMobile={isMobile}>
               <ThumbUpAltOutlinedIcon
-                disabled={isLiked}
                 onClick={likeAVideo}
                 fontSize="inherit"
               />
@@ -302,7 +325,6 @@ function Video() {
             </Button>
             <Button isMobile={isMobile}>
               <ThumbDownAltOutlinedIcon
-                disabled={!isLiked}
                 onClick={dislikeAVideo}
                 fontSize="inherit"
               />
