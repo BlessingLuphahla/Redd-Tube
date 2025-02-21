@@ -18,8 +18,8 @@ export const videoSlice = createSlice({
     videoFetchSuccess: (state, action) => {
       state.video = {
         ...action.payload,
-        likes: action.payload.likes || [], // Ensure likes is initialized
-        dislikes: action.payload.dislikes || [], // Ensure dislikes is initialized
+        likes: action.payload.likes || [],
+        dislikes: action.payload.dislikes || [],
       };
       state.loading = false;
     },
