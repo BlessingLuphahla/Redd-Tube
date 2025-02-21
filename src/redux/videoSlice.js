@@ -12,9 +12,11 @@ export const videoSlice = createSlice({
   initialState,
   reducers: {
     // Fetch a single video
+
     videoFetchStart: (state) => {
       state.loading = true;
     },
+
     videoFetchSuccess: (state, action) => {
       state.video = {
         ...action.payload,
@@ -23,6 +25,7 @@ export const videoSlice = createSlice({
       };
       state.loading = false;
     },
+
     videoFetchFailure: (state) => {
       state.loading = false;
       state.error = true;
@@ -32,10 +35,12 @@ export const videoSlice = createSlice({
     videosFetchStart: (state) => {
       state.loading = true;
     },
+
     videosFetchSuccess: (state, action) => {
       state.videos = action.payload;
       state.loading = false;
     },
+
     videosFetchFailure: (state) => {
       state.loading = false;
       state.error = true;
