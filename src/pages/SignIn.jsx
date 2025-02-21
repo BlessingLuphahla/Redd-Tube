@@ -140,6 +140,9 @@ function SignIn() {
         signInData,
         { withCredentials: true }
       );
+
+      console.log(res);
+
       dispatch(loginSucess(res.data));
 
       // navigate("/subscription");
