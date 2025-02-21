@@ -7,7 +7,7 @@ import Comments from "../components/Comments";
 import Card from "../components/Card";
 import { useScreen } from "../context/ScreenContext";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 import { formatDistanceToNow } from "date-fns";
 

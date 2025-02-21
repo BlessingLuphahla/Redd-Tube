@@ -1,13 +1,15 @@
-/* eslint-disable react/prop-types */
+import { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useScreen } from "../context/ScreenContext";
+import Menu from "./Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router"; // Update to use "react-router-dom" instead of "react-router"
-import { useState } from "react";
-import { useScreen } from "../context/ScreenContext";
-import Menu from "./Menu";
 import LogoImg from "../assets/images/logo.jpg";
+import { DEFAULT_PROFILE_PIC } from "../utils/constants";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
 
 // Styled components
 const Container = styled.div`
@@ -45,7 +47,7 @@ const Button = styled.button`
 `;
 
 const Search = styled.div`
-  position: absolute;
+  position: ${({ isMobile }) => !isMobile && "absolute"};
   display: flex;
   top: 10%;
   right: 0;
@@ -57,6 +59,7 @@ const Search = styled.div`
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
+  margin-left: ${({ isMobile }) => isMobile && "10px"};
 `;
 
 const Input = styled.input`
@@ -94,7 +97,7 @@ const MobileMenu = styled.div`
 `;
 
 const Logo = styled.div`
-  display: "flex";
+  display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
@@ -109,20 +112,59 @@ const Logo = styled.div`
 const Img = styled.img`
   height: 43px;
   width: 43px;
-  position: absolute;
+  position: ${({ isMobile }) => !isMobile && "absolute"};
   bottom: -50%;
   right: 100%;
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+`;
+
+const UserDetails = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+`;
+
+const UserImage = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #999;
+`;
+
+const Username = styled.h2`
+  font-size: 14px;
+  color: ${({ theme }) => theme.textSoft};
+  text-transform: capitalize;
+`;
+
+// eslint-disable-next-line react/prop-types
 function Navbar({ setTheme, theme }) {
   const { isMobile } = useScreen();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [error, setError] = useState("");
+
   const handleMenuToggle = () => {
-    setIsMenuOpen((prev) => !prev);
+    try {
+      setIsMenuOpen((prev) => !prev);
+      setError(""); // Clear any previous errors
+    } catch (err) {
+      setError(err.response.data.message);
+    }
   };
+
+  const { user: currentUser } = useSelector((state) => state.user);
 
   return (
     <Container>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
       <Wrapper isMobile={isMobile}>
         {isMobile ? (
           <>
@@ -130,10 +172,14 @@ function Navbar({ setTheme, theme }) {
               onClick={handleMenuToggle}
               style={{ cursor: "pointer" }}
             />
+            <Search isMobile={isMobile}>
+              <Input isMobile={isMobile} placeholder="Search" />
+              <SearchIcon />
+            </Search>
             <Link to="/" style={{ textDecoration: "none" }}>
               <Logo isMobile={isMobile}>
-                <Img src={LogoImg} alt="logo" />
-                Axe-Media
+                <Img isMobile={isMobile} src={LogoImg} alt="logo" />
+                Axe Media
               </Logo>
             </Link>
           </>
@@ -143,22 +189,31 @@ function Navbar({ setTheme, theme }) {
               <Input isMobile={isMobile} placeholder="Search" />
               <SearchIcon />
             </Search>
-            <Link to="/login" style={{ textDecoration: "none" }}>
-              <Button isMobile={isMobile}>
-                <PersonIcon />
-                Sign In
-              </Button>
-            </Link>
+            {currentUser ? (
+              <UserDetails>
+                <VideoCallIcon />
+                <UserImage
+                  src={
+                    currentUser?.profilePic
+                      ? currentUser?.profilePic
+                      : DEFAULT_PROFILE_PIC
+                  }
+                />
+                <Username>{currentUser?.username}</Username>
+              </UserDetails>
+            ) : (
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <Button isMobile={isMobile}>
+                  <PersonIcon />
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </MenuContainer>
         )}
 
         {isMobile && isMenuOpen && (
-          // Mobile menu when hamburger is clicked
           <MobileMenu isOpen={isMenuOpen}>
-            <Search isMobile={isMobile}>
-              <Input isMobile={isMobile} placeholder="Search" />
-              <SearchIcon />
-            </Search>
             <Menu
               handleMenuToggle={handleMenuToggle}
               isMobile={isMobile}

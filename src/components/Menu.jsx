@@ -18,7 +18,9 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import PersonIcon from "@mui/icons-material/Person";
 import { LightTheme, DarkTheme } from "../utils/Theme";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 
 const Container = styled.div`
   flex: 1.2;
@@ -114,12 +116,44 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const UserDetails = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+`;
+
+const UserImage = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #999;
+`;
+
+const Username = styled.h2`
+  font-size: 16px;
+  color: ${({ theme }) => theme.textSoft};
+  text-transform: capitalize;
+`;
+
+const Email = styled.h3`
+  font-size: 14px;
+  color: ${({ theme }) => theme.textSoft};
+`;
+const UserDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
   const handleSetTheme = () => {
     if (theme === LightTheme) setTheme(DarkTheme);
     else setTheme(LightTheme);
     isMobile && handleMenuToggle();
   };
+
+  const { user: currentUser } = useSelector((state) => state.user);
 
   return (
     <Container>
@@ -174,19 +208,35 @@ function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
           {theme === LightTheme ? "Dark Mode" : "Light Mode"}
         </Item>
         <Hr />
-        <Link
-          to="/login"
-          style={{ textDecoration: "none" }}
-          onClick={handleMenuToggle}
-        >
-          <Login>
-            Sign in to like videos, comment, and subscribe.
-            <Button>
-              <PersonIcon />
-              Sign In
-            </Button>
-          </Login>
-        </Link>
+        {currentUser ? (
+          <UserDetails>
+            <UserImage
+              src={
+                currentUser?.profilePic
+                  ? currentUser?.profilePic
+                  : DEFAULT_PROFILE_PIC
+              }
+            />
+            <UserDetailsContainer>
+              <Username>{currentUser?.username}</Username>
+              <Email>{currentUser?.email}</Email>
+            </UserDetailsContainer>
+          </UserDetails>
+        ) : (
+          <Link
+            to="/login"
+            style={{ textDecoration: "none" }}
+            onClick={handleMenuToggle}
+          >
+            <Login>
+              Sign in to like videos, comment, and subscribe.
+              <Button>
+                <PersonIcon />
+                Sign In
+              </Button>
+            </Login>
+          </Link>
+        )}
         <Hr />
         <Item>
           <LibraryMusicIcon />

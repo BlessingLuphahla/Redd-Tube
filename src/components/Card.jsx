@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
@@ -90,7 +90,7 @@ function Card({ src, type, views, date, title, userId,videoId }) {
   }, []);
 
   return (
-    <Link to={`video/${videoId}`} style={{ textDecoration: "none" }}>
+    <Link to={`/video/${videoId}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
         <Image type={type} src={src ? src : DEFAULT_VIDEO_IMAGE} />
         <Details type={type}>

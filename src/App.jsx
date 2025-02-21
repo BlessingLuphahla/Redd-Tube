@@ -3,7 +3,7 @@ import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
 import { DarkTheme } from "./utils/Theme";
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
 import SignIn from "./pages/SignIn";
@@ -50,7 +50,7 @@ function App() {
                   <Route index element={<Home type="random" />} />
                   <Route
                     path="subscriptions"
-                    element={<Home type="subscriptions" />}
+                    element={<Home type="subs" />}
                   />
                   <Route path="trends" element={<Home type="trends" />} />
                   <Route path="video">

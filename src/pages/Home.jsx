@@ -31,6 +31,7 @@ function Home({ type }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
+
   return (
     <Container>
       {videos?.map((video, index) => {
