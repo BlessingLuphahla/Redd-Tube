@@ -6,6 +6,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSucess } from "../redux/userSlice";
 
+axios.defaults.withCredentials = true
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
