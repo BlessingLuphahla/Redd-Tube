@@ -193,7 +193,6 @@ const Loading = styled.div`
   margin-top: 5px;
   text-align: center;
 `;
-
 function Video() {
   const { isMobile } = useScreen();
   const API = import.meta.env.VITE_API_URL;
@@ -246,7 +245,7 @@ function Video() {
     fetchVideoData();
   }, [dispatch, currentVideoId, API]);
 
-  // Fetch user data
+  // Fetch user data (channel owner)
   useEffect(() => {
     if (video?.userId) {
       const fetchUserData = async () => {
@@ -277,7 +276,7 @@ function Video() {
     }
   };
 
-  // Handle like functionality
+  // Handle dislike functionality
   const handleDislike = async () => {
     if (!currentUser) return;
 
@@ -288,44 +287,35 @@ function Video() {
       dispatch(dislike(currentUser._id));
       setIsLiked(!isLiked);
     } catch (error) {
-      console.error("Failed to like the video", error);
+      console.error("Failed to dislike the video", error);
     }
   };
 
+  // Handle subscribe functionality
   const subscribeToVideo = async () => {
     if (!currentUser || !user) return;
-
-    dispatch(loginStart());
 
     try {
       const subscribed = currentUser.subscribedUsers.includes(user._id);
 
       if (!subscribed) {
-        dispatch(subStart());
-        try {
-          await axios.put(`${API}/api/users/sub/${user._id}`, {
-            userId: currentUser._id,
-          });
-          dispatch(subSuccess({ userId: user._id }));
-        } catch (error) {
-          dispatch(subFailure());
-          console.log(error);
-        }
+        // Subscribe to the channel
+        dispatch(subStart()); // Start loading
+        await axios.put(`${API}/api/users/sub/${user._id}`, {
+          userId: currentUser._id,
+        });
+        dispatch(subSuccess({ userId: user._id })); // Update Redux state
       } else {
-        try {
-          dispatch(unsubStart());
-          await axios.put(`${API}/api/users/unsub/${user._id}`, {
-            userId: currentUser._id,
-          });
-          dispatch(unsubSuccess({ userId: user._id }));
-        } catch (error) {
-          dispatch(unsubFailure());
-          console.log(error);
-        }
+        // Unsubscribe from the channel
+        dispatch(unsubStart()); // Start loading
+        await axios.put(`${API}/api/users/unsub/${user._id}`, {
+          userId: currentUser._id,
+        });
+        dispatch(unsubSuccess({ userId: user._id })); // Update Redux state
       }
     } catch (error) {
-      console.error("Failed to like the video", error);
-      dispatch(loginFailure());
+      console.error(error);
+      dispatch(subFailure());
     }
   };
 
@@ -360,7 +350,6 @@ function Video() {
               ) : (
                 <ThumbUpAltOutlinedIcon fontSize="inherit" />
               )}
-
               {video?.likes?.length}
             </Button>
             <Button isMobile={isMobile} onClick={handleDislike}>
@@ -369,7 +358,6 @@ function Video() {
               ) : (
                 <ThumbDownAltOutlinedIcon fontSize="inherit" />
               )}
-
               {video?.dislikes?.length}
             </Button>
             <Button isMobile={isMobile}>
@@ -384,12 +372,7 @@ function Video() {
         <Channel>
           <ChannelInfo isMobile={isMobile}>
             {userLoading && <Loading>Loading...</Loading>}
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-              }}
-            >
+            <div style={{ display: "flex", gap: "10px" }}>
               <Image
                 src={user?.profilePic ? user?.profilePic : DEFAULT_PROFILE_PIC}
               />
