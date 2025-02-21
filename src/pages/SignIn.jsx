@@ -3,6 +3,8 @@ import { Link } from "react-router";
 import styled from "styled-components";
 import { useScreen } from "../context/ScreenContext";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginFailure, loginStart, loginSucess } from "../redux/userSlice";
 
 const Container = styled.div`
   display: flex;
@@ -83,6 +85,7 @@ function SignIn() {
   const [signInData, setSignInData] = useState({ username: "", password: "" });
   const [error, setError] = useState(null);
   const API = import.meta.env.VITE_API_URL;
+  const dispatch = useDispatch();
 
   // State for sign-up form
   const [signUpData, setSignUpData] = useState({
@@ -106,6 +109,9 @@ function SignIn() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError(null);
+
+    dispatch(loginStart());
+
     if (!signInData.username || !signInData.password) {
       setError("All fields are required");
       return;
@@ -118,12 +124,14 @@ function SignIn() {
       `,
         signInData
       );
+      dispatch(loginSucess(res.data));
 
       console.log(res);
 
       // navigate("/subscription");
     } catch (err) {
       setError(err.response.data.message);
+      dispatch(loginFailure());
     }
   };
 
