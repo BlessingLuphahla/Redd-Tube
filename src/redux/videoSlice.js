@@ -13,7 +13,7 @@ export const videoSlice = createSlice({
     loginStart: (state) => {
       state.loading = true;
     },
-    loginSucess: (state, action) => {
+    loginSuccess: (state, action) => {
       state.user = action.payload;
       state.loading = false;
     },
@@ -29,6 +29,6 @@ export const videoSlice = createSlice({
   },
 });
 
-export const { loginStart, loginSucess, loginFailure, logout } =
+export const { loginStart, loginSuccess, loginFailure, logout } =
   videoSlice.actions;
 export default videoSlice.reducer;

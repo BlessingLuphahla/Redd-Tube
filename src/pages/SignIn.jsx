@@ -4,9 +4,11 @@ import styled from "styled-components";
 import { useScreen } from "../context/ScreenContext";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { loginFailure, loginStart, loginSucess } from "../redux/userSlice";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
+import { auth, provider } from "../../firebase";
+import { signInWithPopup } from "firebase/auth";
 
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true;
 
 const Container = styled.div`
   display: flex;
@@ -22,9 +24,10 @@ const MainWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.soft};
   padding: 20px;
   text-align: center;
-  width: ${({ isMobile }) => (isMobile ? "320px" : "350px")};
+  width: ${({ isMobile }) => (isMobile ? "350px" : "400px")};
   margin-top: ${({ isMobile }) => isMobile && "20px"};
   overflow-y: ${({ isMobile }) => isMobile && "scroll"};
+  margin-top: ${({ isMobile }) => (isMobile ? "5px" : "20px")};
 `;
 
 const SignInWrapper = styled.div`
@@ -63,7 +66,7 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100px;
   padding: 13px 0px;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   background-color: ${({ theme }) => theme.bg};
   border: none;
   outline: none;
@@ -143,9 +146,7 @@ function SignIn() {
         { withCredentials: true }
       );
 
-      console.log(res);
-
-      dispatch(loginSucess(res.data));
+      dispatch(loginSuccess(res.data));
 
       // navigate("/subscription");
     } catch (err) {
@@ -179,7 +180,7 @@ function SignIn() {
         { withCredentials: true }
       );
 
-      dispatch(loginSucess(res.data));
+      dispatch(loginSuccess(res.data));
     } catch (err) {
       setError(err.response.data.message);
     }
@@ -191,6 +192,25 @@ function SignIn() {
     });
 
     showMessage("User Created Successfully");
+  };
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then(async (data) => {
+        dispatch(loginStart());
+        const userCredentials = {
+          username: data?.user.displayName,
+          email: data?.user.email,
+          profilePic: data?.user.photoURL,
+        };
+
+        await axios.post(`${API}/auth/google`, userCredentials);
+        dispatch(loginSuccess(userCredentials));
+      })
+      .catch((error) => {
+        setError(error.response.data.message);
+        dispatch(loginFailure());
+      });
   };
 
   return (
@@ -230,8 +250,11 @@ function SignIn() {
           <Button onClick={(e) => handleSignIn(e)}>Sign In</Button>
         </SignInWrapper>
 
-        {/* Sign Up */}
         <SignUpWrapper>
+          <SubText>or</SubText>
+          <Button style={{ width: "150px" }} onClick={signInWithGoogle}>
+            SignIn With Google
+          </Button>
           <SubText>or</SubText>
           <Input
             type="text"

@@ -60,7 +60,7 @@ function Comment({ text, date, userId }) {
     };
 
     getCommentUser();
-  }, []);
+  }, [API, userId]);
 
   return (
     <Container>
