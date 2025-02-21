@@ -63,7 +63,7 @@ const Info = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-function Card({ src, type, views, date, title, userId,videoId }) {
+function Card({ src, type, views, date, title, userId, videoId }) {
   const API = import.meta.env.VITE_API_URL;
 
   const [user, setUser] = useState({});
@@ -86,11 +86,21 @@ function Card({ src, type, views, date, title, userId,videoId }) {
     };
 
     getUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Link to={`/video/${videoId}`} style={{ textDecoration: "none" }}>
+    <Link
+      onClick={async () => {
+        try {
+          await axios.put(`${API}/api/videos/view/${videoId}`); // Increment views
+        } catch (error) {
+          console.log("Error incrementing views:", error);
+        }
+      }}
+      to={`/video/${videoId}`}
+      style={{ textDecoration: "none" }}
+    >
       <Container type={type}>
         <Image type={type} src={src ? src : DEFAULT_VIDEO_IMAGE} />
         <Details type={type}>

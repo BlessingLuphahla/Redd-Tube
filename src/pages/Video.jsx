@@ -167,6 +167,34 @@ function Video() {
 
   const [videoUserId, setVideoUserId] = useState("");
 
+  const [isLiked, setIsLiked] = useState(false);
+
+  const likeAVideo = async () => {
+    if (isLiked) return;
+    if (!currentVideo) return;
+
+    const response = await axios.put(`
+      ${API}/api/like/${currentVideoId}
+    `);
+
+    if (response.status === 200) {
+      setIsLiked(!isLiked);
+    }
+  };
+
+  const dislikeAVideo = async () => {
+    if (!isLiked) return;
+    if (!currentVideo) return;
+
+    const response = await axios.put(`
+          ${API}/api/dislike/${currentVideoId}
+        `);
+
+    if (response.status === 200) {
+      setIsLiked(!isLiked);
+    }
+  };
+
   useEffect(() => {
     const getTrends = async () => {
       try {
@@ -245,11 +273,14 @@ function Video() {
           </Info>
           <ButtonContainer>
             <Button isMobile={isMobile}>
-              <ThumbUpAltOutlinedIcon fontSize="inherit" />{" "}
+              <ThumbUpAltOutlinedIcon onClick={likeAVideo} fontSize="inherit" />{" "}
               {currentVideo?.likes?.length}
             </Button>
             <Button isMobile={isMobile}>
-              <ThumbDownAltOutlinedIcon fontSize="inherit" />{" "}
+              <ThumbDownAltOutlinedIcon
+                onClick={dislikeAVideo}
+                fontSize="inherit"
+              />{" "}
               {currentVideo?.dislikes?.length}
             </Button>
             <Button isMobile={isMobile}>
@@ -297,6 +328,7 @@ function Video() {
               date={video.createdAt}
               title={video.title}
               userId={video.userId}
+              videoId={video._id}
             />
           );
         })}
