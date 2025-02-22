@@ -53,6 +53,14 @@ const LoadingOverlay = styled.div`
   z-index: 1000; /* Ensure it's above other content */
 `;
 
+const Title = styled.h1`
+  font-size: 20px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text};
+  margin-bottom: 20px;
+  text-transform: capitalize;
+`;
+
 function Home({ type }) {
   const API = import.meta.env.VITE_API_URL;
   const [videos, setVideos] = useState([]);
@@ -78,14 +86,21 @@ function Home({ type }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
+  type.toLowerCase() === "random" && (type = "Welcome");
+  type.toLowerCase() === "subs" && (type = "subscriptions");
+
   return (
     <>
+      {type.toLowerCase() === "subscriptions" && !videos && <></>}
+
       {isLoading && (
         <LoadingOverlay>
           <CircularProgress size={60} color="primary" /> {/* Loading spinner */}
         </LoadingOverlay>
       )}
       <Container>
+        <Title>{type}</Title>
+
         <Search isMobile={isMobile}>
           <Input isMobile={isMobile} placeholder="Search" />
           <SearchIcon />

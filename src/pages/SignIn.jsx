@@ -149,7 +149,7 @@ function SignIn() {
 
       dispatch(loginSuccess(res.data));
       showMessage("Sign In successfull");
-      navigator("/");
+      navigator("/subscriptions");
     } catch (err) {
       setError(err.response.data.message);
       dispatch(loginFailure());
@@ -180,7 +180,8 @@ function SignIn() {
       );
 
       dispatch(loginSuccess(res.data));
-      navigator("/");
+      showMessage("User Created Successfully");
+      navigator("/subscriptions");
     } catch (err) {
       setError(err.response.data.message);
     }
@@ -212,7 +213,7 @@ function SignIn() {
 
           await axios.post(`${API}/auth/google`, userCredentials);
           dispatch(loginSuccess(userCredentials));
-          navigator("/");
+          navigator("/subscriptions");
         }
       })
       .catch((error) => {

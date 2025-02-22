@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -90,6 +90,18 @@ function Settings() {
   const { isMobile } = useScreen();
   const navigator = useNavigate();
   const API = import.meta.env.VITE_API_URL;
+
+  // Auto-dismiss messages after 10 seconds
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError("");
+        setSuccess("");
+      }, 10000); // 10 seconds
+
+      return () => clearTimeout(timer); // Clear the timer on unmount
+    }
+  }, [error, success]);
 
   const handleUpdateSettings = async () => {
     if (!username && !profilePic && !password) {
