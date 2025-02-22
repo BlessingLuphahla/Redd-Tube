@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
@@ -185,6 +184,7 @@ const Progress = styled.div`
   transition: width 0.3s ease;
 `;
 
+// eslint-disable-next-line react/prop-types
 function Upload({ setPopupIsOpen }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -234,7 +234,7 @@ function Upload({ setPopupIsOpen }) {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          setUploadProgress(percentCompleted);
+          setUploadProgress(percentCompleted * 0.8); // 80% weight
         },
       });
 
@@ -248,6 +248,7 @@ function Upload({ setPopupIsOpen }) {
         VideoUrl: videoUrl,
       });
 
+      setUploadProgress(100);
       setSuccessMessage("Upload successful! Your video is now live.");
       setTimeout(() => {
         setSuccessMessage("");
