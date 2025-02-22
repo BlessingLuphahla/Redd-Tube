@@ -63,7 +63,7 @@ const Info = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-function Card({ src, type, views, date, title, userId, videoId }) {
+function Card({ videoSrc, type, views, date, title, userId, videoId,imgSrc }) {
   const API = import.meta.env.VITE_API_URL;
 
   const [user, setUser] = useState({});
@@ -102,7 +102,7 @@ function Card({ src, type, views, date, title, userId, videoId }) {
       style={{ textDecoration: "none" }}
     >
       <Container type={type}>
-        <Image type={type} src={src ? src : DEFAULT_VIDEO_IMAGE} />
+        <Image type={type} src={imgSrc ? imgSrc : DEFAULT_VIDEO_IMAGE} />
         <Details type={type}>
           <ChannelImage
             type={type}
