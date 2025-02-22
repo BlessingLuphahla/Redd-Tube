@@ -8,7 +8,7 @@ import { DEFAULT_PROFILE_PIC, DEFAULT_VIDEO_IMAGE } from "../utils/constants";
 
 const Container = styled.div`
   cursor: pointer;
-  width: ${(props) => props.type !== "sm" && "100%"};
+  width: ${(props) => props.type !== "sm" && "350px"};
   display: ${(props) => props.type === "sm" && "flex"};
   margin-top: ${(props) => (props.type === "sm" ? "10px" : "45px")};
   justify-content: center;

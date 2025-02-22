@@ -395,7 +395,8 @@ function Video() {
           return (
             <Card
               key={video._id}
-              src={video.videoUrl}
+              src={video.VideoUrl}
+              imgSrc={video.imgUrl}
               views={video.views}
               date={video.createdAt}
               title={video.title}

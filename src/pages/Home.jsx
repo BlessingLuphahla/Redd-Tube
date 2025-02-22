@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import { useScreen } from "../context/ScreenContext";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Container = styled.div`
   display: flex;
@@ -39,20 +40,37 @@ const Input = styled.input`
   }
 `;
 
+const LoadingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it's above other content */
+`;
+
 function Home({ type }) {
   const API = import.meta.env.VITE_API_URL;
   const [videos, setVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   const { isMobile } = useScreen();
 
   useEffect(() => {
     const getRandomVideos = async () => {
       try {
-        const res = await axios.get(`
-          ${API}/api/videos/${type}
-        `);
+        // Artificial delay for testing (2 seconds)
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        const res = await axios.get(`${API}/api/videos/${type}`);
         setVideos(res.data);
       } catch (error) {
         console.log(error.response.data.message);
+      } finally {
+        setIsLoading(false); // Stop loading
       }
     };
 
@@ -61,13 +79,18 @@ function Home({ type }) {
   }, [type]);
 
   return (
-    <Container>
-      <Search isMobile={isMobile}>
-        <Input isMobile={isMobile} placeholder="Search" />
-        <SearchIcon />
-      </Search>
-      {videos?.map((video, index) => {
-        return (
+    <>
+      {isLoading && (
+        <LoadingOverlay>
+          <CircularProgress size={60} color="primary" /> {/* Loading spinner */}
+        </LoadingOverlay>
+      )}
+      <Container>
+        <Search isMobile={isMobile}>
+          <Input isMobile={isMobile} placeholder="Search" />
+          <SearchIcon />
+        </Search>
+        {videos?.map((video, index) => (
           <Card
             key={video._id + index}
             imgSrc={video.imgUrl}
@@ -77,9 +100,9 @@ function Home({ type }) {
             userId={video.userId}
             videoId={video._id}
           />
-        );
-      })}
-    </Container>
+        ))}
+      </Container>
+    </>
   );
 }
 
