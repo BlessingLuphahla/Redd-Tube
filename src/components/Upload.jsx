@@ -170,7 +170,7 @@ const SuccessMessage = styled.div`
 
 const ProgressBar = styled.div`
   width: 100%;
-  height: 10px;
+  height: 20px;
   background-color: ${({ theme }) => theme.soft};
   border-radius: 5px;
   margin-top: 10px;
@@ -180,7 +180,7 @@ const ProgressBar = styled.div`
 const Progress = styled.div`
   width: ${({ progress }) => progress}%;
   height: 100%;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: #00ff00;
   transition: width 0.3s ease;
 `;
 
@@ -234,7 +234,8 @@ function Upload({ setPopupIsOpen }) {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          setUploadProgress(percentCompleted * 0.8); // 80% weight
+          const weightedProgress = Math.round(percentCompleted * 0.8);
+          setUploadProgress(weightedProgress);
         },
       });
 
@@ -313,12 +314,22 @@ function Upload({ setPopupIsOpen }) {
             required
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
+
           {isLoading && (
-            <ProgressBar>
-              <Progress progress={uploadProgress} />
-            </ProgressBar>
+            <div
+              style={{
+                display: "flex",
+                gap: "5px",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ProgressBar>
+                <Progress progress={uploadProgress} />
+              </ProgressBar>
+              <div>{uploadProgress}%</div>
+            </div>
           )}
-          {isLoading && <div>{uploadProgress}%</div>}
           <Button type="submit" disabled={isLoading}>
             {isLoading ? <StyledCircularProgress size={24} /> : "Upload"}
           </Button>
