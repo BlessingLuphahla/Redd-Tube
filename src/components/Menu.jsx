@@ -210,17 +210,31 @@ function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
         <Hr />
         {currentUser ? (
           <UserDetails>
-            <UserImage
-              src={
-                currentUser?.profilePic
-                  ? currentUser?.profilePic
-                  : DEFAULT_PROFILE_PIC
-              }
-            />
-            <UserDetailsContainer>
-              <Username>{currentUser?.username}</Username>
-              <Email>{currentUser?.email}</Email>
-            </UserDetailsContainer>
+            <Link
+              to="/settings"
+              style={{
+                textDecoration: "none",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "5px",
+                margin: "auto",
+              }}
+              onClick={handleMenuToggle}
+            >
+              <UserImage
+                src={
+                  currentUser?.profilePic
+                    ? currentUser?.profilePic
+                    : DEFAULT_PROFILE_PIC
+                }
+              />
+              <UserDetailsContainer>
+                <Username>{currentUser?.username}</Username>
+                <Email>{currentUser?.email}</Email>
+              </UserDetailsContainer>
+            </Link>
           </UserDetails>
         ) : (
           <Link
@@ -237,7 +251,7 @@ function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
             </Login>
           </Link>
         )}
-        <Hr />
+        {!currentUser ? <Hr /> : <br />}
         <Item>
           <LibraryMusicIcon />
           Library

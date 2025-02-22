@@ -54,6 +54,7 @@ const MenuContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
+  width: 100%;
 `;
 
 const MobileMenu = styled.div`
@@ -214,7 +215,12 @@ function Navbar({ setTheme, theme }) {
               ></Link>
 
               {currentUser ? (
-                <UserDetails style={{ textDecoration: "none" }}>
+                <UserDetails
+                  style={{
+                    textDecoration: "none",
+                    marginLeft: "auto",
+                  }}
+                >
                   <VideoCallIcon
                     onClick={handlePopUpVideoPost}
                     style={{ cursor: "pointer", color: "purple" }}
@@ -228,6 +234,7 @@ function Navbar({ setTheme, theme }) {
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "5px",
+                      margin: "auto",
                     }}
                   >
                     <UserImage
