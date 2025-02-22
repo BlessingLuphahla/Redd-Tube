@@ -148,6 +148,7 @@ function SignIn() {
       );
 
       dispatch(loginSuccess(res.data));
+      showMessage("Sign In successfull");
       navigator("/");
     } catch (err) {
       setError(err.response.data.message);
@@ -158,8 +159,6 @@ function SignIn() {
       username: "",
       password: "",
     });
-
-    showMessage("Sign In successfull");
   };
 
   // Sign up function

@@ -11,6 +11,7 @@ import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useScreen } from "../context/ScreenContext.jsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   padding: 20px;
@@ -87,11 +88,12 @@ function Settings() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { isMobile } = useScreen();
+  const navigator = useNavigate();
   const API = import.meta.env.VITE_API_URL;
 
   const handleUpdateSettings = async () => {
-    if (!username || !password) {
-      setError("Username and password are required.");
+    if (!username && !profilePic && !password) {
+      setError("There is nothing to update here");
       return;
     }
 
@@ -165,6 +167,7 @@ function Settings() {
 
   const handleLogout = () => {
     dispatch(logout());
+    navigator("/");
   };
 
   return (
