@@ -151,7 +151,6 @@ function Navbar({ setTheme, theme }) {
     <>
       <Container isMobile={isMobile}>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-
         <Wrapper isMobile={isMobile}>
           {isMobile ? (
             <>
