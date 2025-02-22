@@ -90,7 +90,7 @@ const Button = styled.button`
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  font-size: ${({ isMobile }) => (isMobile ? "12px" : "14px")};
+  font-size: ${({ isMobile }) => (isMobile ? "15px" : "18px")};
 `;
 
 const Recommendation = styled.div`
