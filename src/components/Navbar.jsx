@@ -10,6 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoImg from "../assets/images/logo.jpg";
 import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
+import Upload from "./Upload";
 
 // Styled components
 const Container = styled.div`
@@ -149,6 +150,15 @@ function Navbar({ setTheme, theme }) {
   const { isMobile } = useScreen();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [error, setError] = useState("");
+  const [popupIsOpen, setPopupIsOpen] = useState(false);
+
+  const handlePopUpVideoPost = () => {
+    if (popupIsOpen) {
+      setPopupIsOpen(!popupIsOpen);
+    } else {
+      setPopupIsOpen(!popupIsOpen);
+    }
+  };
 
   const handleMenuToggle = () => {
     try {
@@ -160,70 +170,79 @@ function Navbar({ setTheme, theme }) {
   };
 
   const { user: currentUser } = useSelector((state) => state.user);
+console.log(popupIsOpen);
 
   return (
-    <Container>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+    <>
+      <Container>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      <Wrapper isMobile={isMobile}>
-        {isMobile ? (
-          <>
-            <MenuIcon
-              onClick={handleMenuToggle}
-              style={{ cursor: "pointer" }}
-            />
-            <Search isMobile={isMobile}>
-              <Input isMobile={isMobile} placeholder="Search" />
-              <SearchIcon />
-            </Search>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <Logo isMobile={isMobile}>
-                <Img isMobile={isMobile} src={LogoImg} alt="logo" />
-                Axe Media
-              </Logo>
-            </Link>
-          </>
-        ) : (
-          <MenuContainer>
-            <Search isMobile={isMobile}>
-              <Input isMobile={isMobile} placeholder="Search" />
-              <SearchIcon />
-            </Search>
-            {currentUser ? (
-              <UserDetails>
-                <VideoCallIcon />
-                <UserImage
-                  src={
-                    currentUser?.profilePic
-                      ? currentUser?.profilePic
-                      : DEFAULT_PROFILE_PIC
-                  }
-                />
-                <Username>{currentUser?.username}</Username>
-              </UserDetails>
-            ) : (
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                <Button isMobile={isMobile}>
-                  <PersonIcon />
-                  Sign In
-                </Button>
+        <Wrapper isMobile={isMobile}>
+          {isMobile ? (
+            <>
+              <MenuIcon
+                onClick={handleMenuToggle}
+                style={{ cursor: "pointer" }}
+              />
+              <Search isMobile={isMobile}>
+                <Input isMobile={isMobile} placeholder="Search" />
+                <SearchIcon />
+              </Search>
+              <VideoCallIcon
+                onClick={handlePopUpVideoPost}
+                style={{ marginLeft: "10px" }}
+              />
+              <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
+                <Logo isMobile={isMobile}>
+                  <Img isMobile={isMobile} src={LogoImg} alt="logo" />
+                </Logo>
               </Link>
-            )}
-          </MenuContainer>
-        )}
+            </>
+          ) : (
+            <MenuContainer>
+              <Search isMobile={isMobile}>
+                <Input isMobile={isMobile} placeholder="Search" />
+                <SearchIcon />
+              </Search>
+              {currentUser ? (
+                <UserDetails>
+                  <VideoCallIcon onClick={handlePopUpVideoPost} />
+                  <UserImage
+                    src={
+                      currentUser?.profilePic
+                        ? currentUser?.profilePic
+                        : DEFAULT_PROFILE_PIC
+                    }
+                  />
+                  <Username>{currentUser?.username}</Username>
+                </UserDetails>
+              ) : (
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  <Button isMobile={isMobile}>
+                    <PersonIcon />
+                    Sign In
+                  </Button>
+                </Link>
+              )}
+            </MenuContainer>
+          )}
 
-        {isMobile && isMenuOpen && (
-          <MobileMenu isOpen={isMenuOpen}>
-            <Menu
-              handleMenuToggle={handleMenuToggle}
-              isMobile={isMobile}
-              setTheme={setTheme}
-              theme={theme}
-            />
-          </MobileMenu>
-        )}
-      </Wrapper>
-    </Container>
+          {isMobile && isMenuOpen && (
+            <MobileMenu isOpen={isMenuOpen}>
+              <Menu
+                handleMenuToggle={handleMenuToggle}
+                isMobile={isMobile}
+                setTheme={setTheme}
+                theme={theme}
+              />
+            </MobileMenu>
+          )}
+        </Wrapper>
+      </Container>
+      {popupIsOpen && (
+        <Upload setPopupIsOpen={setPopupIsOpen} isMobile={isMobile} />
+      )}
+    </>
   );
 }
 

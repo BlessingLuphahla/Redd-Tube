@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,14 +25,9 @@ import {
   dislike,
 } from "../redux/videoSlice";
 import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-  logout,
   subSuccess,
   subFailure,
   subStart,
-  unsubFailure,
   unsubStart,
   unsubSuccess,
 } from "../redux/userSlice";
@@ -43,22 +37,18 @@ const Container = styled.div`
   gap: ${({ isMobile }) => (isMobile ? "0" : "24px")};
   flex-direction: ${({ isMobile }) => (isMobile ? "column" : "row")};
   background-color: ${({ isMobile, theme }) => isMobile && theme.bg};
+  padding: ${({ isMobile }) => (isMobile ? "10px" : "0")};
 `;
 
 const Content = styled.div`
-  padding: ${({ isMobile }) => !isMobile && "15px"};
+  padding: ${({ isMobile }) => (isMobile ? "0" : "15px")};
   flex: 5;
-
-  //media queires
-  display: ${({ isMobile }) => isMobile && "flex"};
-  flex-direction: ${({ isMobile }) => isMobile && "column"};
-  align-items: ${({ isMobile }) => isMobile && "center"};
-  justify-content: ${({ isMobile }) => isMobile && "center"};
+  width: 100%;
 `;
 
 const Title = styled.h1`
-  font-size: ${({ isMobile }) => (isMobile ? "12px" : "18px")};
-  font-weight: 400;
+  font-size: ${({ isMobile }) => (isMobile ? "18px" : "24px")};
+  font-weight: 500;
   margin-top: 20px;
   margin-bottom: 10px;
   color: ${({ theme }) => theme.text};
@@ -68,21 +58,22 @@ const Details = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-direction: ${({ isMobile }) => isMobile && "column"};
-  flex-wrap: ${({ isMobile }) => isMobile && "wrap"};
+  flex-direction: ${({ isMobile }) => (isMobile ? "column" : "row")};
+  gap: ${({ isMobile }) => (isMobile ? "10px" : "0")};
+  margin-top: ${({ isMobile }) => (isMobile ? "10px" : "0")};
 `;
 
 const Info = styled.span`
   color: ${({ theme }) => theme.textSoft};
-  font-size: ${({ isMobile }) => isMobile && "13px"};
+  font-size: ${({ isMobile }) => (isMobile ? "12px" : "14px")};
 `;
 
 const ButtonContainer = styled.div`
-  flex-direction: ${({ isMobile }) => isMobile && "column"};
-  padding: ${({ isMobile }) => !isMobile && "10px"};
-  color: ${({ theme }) => theme.text};
   display: flex;
-  gap: 20px;
+  gap: ${({ isMobile }) => (isMobile ? "10px" : "20px")};
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0px;
 `;
 
 const Hr = styled.hr`
@@ -99,33 +90,33 @@ const Button = styled.button`
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  font-size: ${({ isMobile }) => isMobile && "13px"};
+  font-size: ${({ isMobile }) => (isMobile ? "12px" : "14px")};
 `;
 
 const Recommendation = styled.div`
   flex: 2;
+  margin-top: ${({ isMobile }) => (isMobile ? "20px" : "0")};
 `;
+
 const Channel = styled.div`
   display: flex;
   justify-content: space-between;
-  flex-direction: ${({ isMobile }) => isMobile && "column"};
+  flex-direction: ${({ isMobile }) => (isMobile ? "column" : "row")};
+  gap: ${({ isMobile }) => (isMobile ? "10px" : "0")};
 `;
 
 const ChannelInfo = styled.div`
   display: flex;
-  width: 100%;
-
   align-items: center;
-
-  // media queries
-  flex-direction: ${({ isMobile }) => isMobile && "column"};
-  align-items: ${({ isMobile }) => isMobile && "center"};
-  justify-content: ${({ isMobile }) => (isMobile ? "center" : "space-between")};
+  gap: ${({ isMobile }) => (isMobile ? "10px" : "20px")};
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 const Image = styled.img`
-  height: 50px;
-  width: 50px;
+  height: ${({ isMobile }) => (isMobile ? "40px" : "50px")};
+  width: ${({ isMobile }) => (isMobile ? "40px" : "50px")};
   border-radius: 50%;
   object-fit: cover;
 `;
@@ -133,27 +124,24 @@ const Image = styled.img`
 const ChannelDetail = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.text};
-
-  // media queries
-  align-items: ${({ isMobile }) => isMobile && "center"};
-  justify-content: ${({ isMobile }) => isMobile && "center"};
+  align-items: ${({ isMobile }) => (isMobile ? "center" : "flex-start")};
+  gap: ${({ isMobile }) => (isMobile ? "5px" : "10px")};
 `;
 
 const ChannelName = styled.span`
-  font-size: ${({ isMobile }) => (isMobile ? "10px" : "16px")};
+  font-size: ${({ isMobile }) => (isMobile ? "14px" : "16px")};
+  font-weight: 500;
 `;
 
 const ChannelCounter = styled.span`
-  margin-top: 5px;
-  margin-bottom: 20px;
   color: ${({ theme }) => theme.textSoft};
-  font-size: ${({ isMobile }) => (isMobile ? "9px" : "12px")};
+  font-size: ${({ isMobile }) => (isMobile ? "12px" : "14px")};
 `;
 
 const ChannelDescription = styled.p`
-  font-size: ${({ isMobile }) => (isMobile ? "10px" : "14px")};
-  width: ${({ isMobile }) => isMobile && "90%"};
+  font-size: ${({ isMobile }) => (isMobile ? "12px" : "14px")};
+  color: ${({ theme }) => theme.textSoft};
+  text-align: ${({ isMobile }) => (isMobile ? "center" : "left")};
 `;
 
 const Subscribe = styled.button`
@@ -162,15 +150,15 @@ const Subscribe = styled.button`
   background-color: #cc1a00;
   font-weight: 500;
   color: white;
-  width: ${({ isMobile }) => (isMobile ? "100px" : "100px")};
-  height: ${({ isMobile }) => (isMobile ? "35px" : "45px")};
-  font-size: ${({ isMobile }) => isMobile && "14px"};
+  padding: ${({ isMobile }) => (isMobile ? "8px 16px" : "10px 20px")};
   border-radius: 20px;
   cursor: pointer;
+  font-size: ${({ isMobile }) => (isMobile ? "12px" : "14px")};
 `;
 
 const VideoWrapper = styled.div`
-  margin-top: ${({ isMobile }) => isMobile && "20px"};
+  width: 100%;
+  margin-top: ${({ isMobile }) => (isMobile ? "10px" : "0")};
 `;
 
 const StyledVideo = styled.video`
@@ -193,6 +181,7 @@ const Loading = styled.div`
   margin-top: 5px;
   text-align: center;
 `;
+
 function Video() {
   const { isMobile } = useScreen();
   const API = import.meta.env.VITE_API_URL;
@@ -224,6 +213,7 @@ function Video() {
         dispatch(videosFetchSuccess(res.data));
       } catch (error) {
         dispatch(videosFetchFailure());
+        console.log(error);
       }
     };
 
@@ -239,6 +229,7 @@ function Video() {
         dispatch(videoFetchSuccess(res.data));
       } catch (error) {
         dispatch(videoFetchFailure());
+        console.log(error);
       }
     };
 
@@ -333,7 +324,7 @@ function Video() {
         {(videoError || userError) && (
           <ErrorMessage>{videoError || userError}</ErrorMessage>
         )}
-        <Title>{video?.title}</Title>
+        <Title isMobile={isMobile}>{video?.title}</Title>
         <Details isMobile={isMobile}>
           <Info isMobile={isMobile}>
             {video?.views} views •
@@ -343,7 +334,7 @@ function Video() {
               .replace("about ", "")
               .replace("less than a minute ago", "just now")}
           </Info>
-          <ButtonContainer>
+          <ButtonContainer isMobile={isMobile}>
             <Button isMobile={isMobile} onClick={handleLike}>
               {video?.likes?.includes(currentUser._id) ? (
                 <ThumbUpIcon fontSize="inherit" />
@@ -369,11 +360,12 @@ function Video() {
           </ButtonContainer>
         </Details>
         <Hr />
-        <Channel>
+        <Channel isMobile={isMobile}>
           <ChannelInfo isMobile={isMobile}>
             {userLoading && <Loading>Loading...</Loading>}
             <div style={{ display: "flex", gap: "10px" }}>
               <Image
+                isMobile={isMobile}
                 src={user?.profilePic ? user?.profilePic : DEFAULT_PROFILE_PIC}
               />
               <ChannelDetail isMobile={isMobile}>
@@ -386,7 +378,7 @@ function Video() {
                 </ChannelDescription>
               </ChannelDetail>
             </div>
-            <Subscribe onClick={subscribeToVideo} isMobile={isMobile}>
+            <Subscribe isMobile={isMobile} onClick={subscribeToVideo}>
               {currentUser?.subscribedUsers?.includes(user._id)
                 ? "UNSUBSCRIBE"
                 : "SUBSCRIBE"}
@@ -396,7 +388,7 @@ function Video() {
         <Hr />
         <Comments currentVideoId={currentVideoId} />
       </Content>
-      <Recommendation>
+      <Recommendation isMobile={isMobile}>
         {videoLoading && <Loading>Loading...</Loading>}
         {videos?.map((video) => {
           if (video.userId === currentUser._id) return;
