@@ -188,6 +188,7 @@ const Progress = styled.div`
 function Upload({ setPopupIsOpen }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState("");
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [error, setError] = useState("");
@@ -247,6 +248,7 @@ function Upload({ setPopupIsOpen }) {
         desc: description,
         imgUrl: thumbnailUrl,
         VideoUrl: videoUrl,
+        tags: tags.split(","),
       });
 
       setUploadProgress(100);
@@ -296,12 +298,21 @@ function Upload({ setPopupIsOpen }) {
           <FileInputLabel htmlFor="video-upload">
             {videoFile ? videoFile.name : "Upload Video"}
           </FileInputLabel>
+
           <FileInput
             id="video-upload"
             type="file"
             accept="video/*"
             onChange={(e) => setVideoFile(e.target.files[0])}
             required
+          />
+          <FileInputLabel htmlFor="video-upload">
+            {videoFile ? videoFile.name : "Upload Video"}
+          </FileInputLabel>
+          <FileInput
+            id="tags"
+            type="text"
+            onChange={(e) => setTags(e.target.files[0])}
           />
           <FileInputLabel htmlFor="thumbnail-upload">
             {thumbnailFile ? thumbnailFile.name : "Upload Thumbnail"}

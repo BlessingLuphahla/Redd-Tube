@@ -39,7 +39,7 @@ const Button = styled.button`
   justify-content: center;
   gap: 5px;
   width: 105px;
-  height: 45px;
+  height: 38px;
   background-color: transparent;
   border: 1px solid #3eafff;
   color: #3eafff;
@@ -160,7 +160,7 @@ function Navbar({ setTheme, theme }) {
                   style={{ cursor: "pointer" }}
                 />
                 <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
-                  <Logo isMobile={isMobile} style={{ fontSize: "15px" }}>
+                  <Logo isMobile={isMobile} style={{ fontSize: "20px" }}>
                     AXE MEDIA
                   </Logo>
                 </Link>
