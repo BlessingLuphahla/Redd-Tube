@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -26,8 +27,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  justify-content: ${({ isMobile }) =>
-    isMobile ? "space-between" : "flex-end"};
+  justify-content: space-between;
   position: relative;
 `;
 
@@ -48,19 +48,14 @@ const Button = styled.button`
 `;
 
 const Search = styled.div`
-  position: ${({ isMobile }) => !isMobile && "absolute"};
   display: flex;
-  top: 10%;
-  right: 0;
-  left: 0;
-  margin: auto;
-  width: ${({ isMobile }) => (isMobile ? "70%" : "30%")};
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
-  margin-left: ${({ isMobile }) => isMobile && "10px"};
+  margin-left: ${({ isMobile }) => (isMobile ? "0" : "20px")};
 `;
 
 const Input = styled.input`
@@ -113,9 +108,6 @@ const Logo = styled.div`
 const Img = styled.img`
   height: 43px;
   width: 43px;
-  position: ${({ isMobile }) => !isMobile && "absolute"};
-  bottom: -50%;
-  right: 100%;
 `;
 
 const ErrorMessage = styled.div`
@@ -145,7 +137,19 @@ const Username = styled.h2`
   text-transform: capitalize;
 `;
 
-// eslint-disable-next-line react/prop-types
+const MobileHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const MobileIcons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 function Navbar({ setTheme, theme }) {
   const { isMobile } = useScreen();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -153,11 +157,7 @@ function Navbar({ setTheme, theme }) {
   const [popupIsOpen, setPopupIsOpen] = useState(false);
 
   const handlePopUpVideoPost = () => {
-    if (popupIsOpen) {
-      setPopupIsOpen(!popupIsOpen);
-    } else {
-      setPopupIsOpen(!popupIsOpen);
-    }
+    setPopupIsOpen((prev) => !prev);
   };
 
   const handleMenuToggle = () => {
@@ -170,7 +170,6 @@ function Navbar({ setTheme, theme }) {
   };
 
   const { user: currentUser } = useSelector((state) => state.user);
-console.log(popupIsOpen);
 
   return (
     <>
@@ -180,33 +179,49 @@ console.log(popupIsOpen);
         <Wrapper isMobile={isMobile}>
           {isMobile ? (
             <>
-              <MenuIcon
-                onClick={handleMenuToggle}
-                style={{ cursor: "pointer" }}
-              />
+              <MobileHeader>
+                <MenuIcon
+                  onClick={handleMenuToggle}
+                  style={{ cursor: "pointer" }}
+                />
+                <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
+                  <Logo isMobile={isMobile} style={{ fontSize: "10px" }}>
+                    <Img src={LogoImg} alt="logo" />
+                    AXE MEDIA
+                  </Logo>
+                </Link>
+                <MobileIcons>
+                  <VideoCallIcon
+                    onClick={handlePopUpVideoPost}
+                    style={{ cursor: "pointer", marginRight: "10px" }}
+                  />
+                </MobileIcons>
+              </MobileHeader>
               <Search isMobile={isMobile}>
-                <Input isMobile={isMobile} placeholder="Search" />
-                <SearchIcon />
+                <Input
+                  style={{ fontSize: "10px" }}
+                  isMobile={isMobile}
+                  placeholder="Search"
+                />
+                <SearchIcon style={{ fontSize: "10px" }} />
               </Search>
-              <VideoCallIcon
-                onClick={handlePopUpVideoPost}
-                style={{ marginLeft: "10px" }}
-              />
-              <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
-                <Logo isMobile={isMobile}>
-                  <Img isMobile={isMobile} src={LogoImg} alt="logo" />
-                </Logo>
-              </Link>
             </>
           ) : (
             <MenuContainer>
+              <Link
+                to="/"
+                style={{ textDecoration: "none", margin: "0px" }}
+              ></Link>
               <Search isMobile={isMobile}>
                 <Input isMobile={isMobile} placeholder="Search" />
                 <SearchIcon />
               </Search>
               {currentUser ? (
                 <UserDetails>
-                  <VideoCallIcon onClick={handlePopUpVideoPost} />
+                  <VideoCallIcon
+                    onClick={handlePopUpVideoPost}
+                    style={{ cursor: "pointer" }}
+                  />
                   <UserImage
                     src={
                       currentUser?.profilePic

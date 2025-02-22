@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { useState } from "react";
 
@@ -78,29 +79,83 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Button = styled.button`
+const FileInputLabel = styled.label`
   padding: 10px 20px;
-  color: ${({ theme }) => theme.bg};
-  background-color: ${({ theme }) => theme.text};
-  border: none;
+  background-color: ${({ theme }) => theme.bgLighter};
+  color: ${({ theme }) => theme.text};
   border-radius: 5px;
-  font-size: 16px;
+  text-align: center;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
   &:hover {
     background-color: ${({ theme }) => theme.soft};
   }
 `;
 
+const FileInput = styled.input`
+  display: none; // Hide the actual file input
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: ${({ theme }) => theme.bgLighter};
+  color: ${({ theme }) => theme.text};
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.soft};
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+`;
+
 function Upload({ setPopupIsOpen }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate inputs
+    if (!title || !description || !videoFile || !thumbnailFile) {
+      setError("All fields are required.");
+      return;
+    }
+
+    // Validate file types
+    if (!videoFile.type.startsWith("video/")) {
+      setError("Please upload a valid video file.");
+      return;
+    }
+    if (!thumbnailFile.type.startsWith("image/")) {
+      setError("Please upload a valid image file for the thumbnail.");
+      return;
+    }
+
     // Handle video upload logic here
-    console.log({ title, description, file });
-    setPopupIsOpen(false); // Close the modal after submission
+    const uploadData = { title, description, videoFile, thumbnailFile };
+
+    // Reset form and close modal
+    setTitle("");
+    setDescription("");
+    setVideoFile(null);
+    setThumbnailFile(null);
+    setError("");
+    setPopupIsOpen(false);
   };
 
   const handleOverlayClick = (e) => {
@@ -130,12 +185,27 @@ function Upload({ setPopupIsOpen }) {
             onChange={(e) => setDescription(e.target.value)}
             required
           />
-          <Input
+          <FileInputLabel htmlFor="video-upload">
+            {videoFile ? videoFile.name : "Upload Video"}
+          </FileInputLabel>
+          <FileInput
+            id="video-upload"
             type="file"
             accept="video/*"
-            onChange={(e) => setFile(e.target.files[0])}
+            onChange={(e) => setVideoFile(e.target.files[0])}
             required
           />
+          <FileInputLabel htmlFor="thumbnail-upload">
+            {thumbnailFile ? thumbnailFile.name : "Upload Thumbnail"}
+          </FileInputLabel>
+          <FileInput
+            id="thumbnail-upload"
+            type="file"
+            accept="image/*"
+            onChange={(e) => setThumbnailFile(e.target.files[0])}
+            required
+          />
+          {error && <ErrorMessage>{error}</ErrorMessage>}
           <Button type="submit">Upload</Button>
         </Form>
       </Wrapper>
