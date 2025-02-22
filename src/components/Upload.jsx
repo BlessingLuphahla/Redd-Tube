@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
 import { styled as styledMaterial } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -170,6 +169,22 @@ const SuccessMessage = styled.div`
   }
 `;
 
+const ProgressBar = styled.div`
+  width: 100%;
+  height: 10px;
+  background-color: ${({ theme }) => theme.soft};
+  border-radius: 5px;
+  margin-top: 10px;
+  overflow: hidden;
+`;
+
+const Progress = styled.div`
+  width: ${({ progress }) => progress}%;
+  height: 100%;
+  background-color: ${({ theme }) => theme.primary};
+  transition: width 0.3s ease;
+`;
+
 function Upload({ setPopupIsOpen }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -178,15 +193,16 @@ function Upload({ setPopupIsOpen }) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const { user: currentUser } = useSelector((state) => state.user);
   const API = import.meta.env.VITE_API_URL;
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setUploadProgress(0);
 
     // Validate inputs
     if (!title || !description || !videoFile || !thumbnailFile) {
@@ -208,18 +224,22 @@ function Upload({ setPopupIsOpen }) {
     }
 
     try {
-      // Upload files to Cloudinary
       const formData = new FormData();
       formData.append("video", videoFile);
       formData.append("thumbnail", thumbnailFile);
 
       const uploadResponse = await axios.post(`${API}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setUploadProgress(percentCompleted);
+        },
       });
 
       const { thumbnailUrl, videoUrl } = uploadResponse.data;
 
-      // Save video details to MongoDB
       await axios.post(`${API}/api/videos`, {
         userId: currentUser?._id,
         title,
@@ -228,25 +248,22 @@ function Upload({ setPopupIsOpen }) {
         VideoUrl: videoUrl,
       });
 
-      // Show success message
       setSuccessMessage("Upload successful! Your video is now live.");
       setTimeout(() => {
         setSuccessMessage("");
-        setPopupIsOpen(false); // Close modal after success message
+        setPopupIsOpen(false);
       }, 3000);
     } catch (error) {
       console.error(error);
       setError(
-        error.response.data.message
-          ? error.response.data.message
-          : "Upload failed. Please try again."
+        error.response?.data?.message || "Upload failed. Please try again."
       );
     } finally {
       setIsLoading(false);
+      setUploadProgress(0);
     }
   };
 
-  // Close modal when clicking outside
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       setPopupIsOpen(false);
@@ -295,6 +312,12 @@ function Upload({ setPopupIsOpen }) {
             required
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
+          {isLoading && (
+            <ProgressBar>
+              <Progress progress={uploadProgress} />
+            </ProgressBar>
+          )}
+          {isLoading && <div>{uploadProgress}%</div>}
           <Button type="submit" disabled={isLoading}>
             {isLoading ? <StyledCircularProgress size={24} /> : "Upload"}
           </Button>
