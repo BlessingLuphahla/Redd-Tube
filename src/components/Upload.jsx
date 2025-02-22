@@ -1,6 +1,18 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+
+import { styled as styledMaterial } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+
+const StyledCircularProgress = styledMaterial(CircularProgress)(
+  ({ theme }) => ({
+    color: theme.palette.primary.main, // Use theme colors
+    margin: "0 auto", // Center the spinner
+  })
+);
 
 const Container = styled.div`
   height: 100vh;
@@ -111,6 +123,11 @@ const Button = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.soft};
   }
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.soft};
+    cursor: not-allowed;
+  }
 `;
 
 const ErrorMessage = styled.div`
@@ -120,47 +137,119 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
+const SuccessMessage = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: ${({ theme }) => theme.bgLighter};
+  color: ${({ theme }) => theme.text};
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1300;
+  text-align: center;
+  font-size: 18px;
+  max-width: 90%;
+  width: 300px;
+  animation: fadeInOut 3s ease-in-out;
+
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+`;
+
 function Upload({ setPopupIsOpen }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const { user: currentUser } = useSelector((state) => state.user);
+  const API = import.meta.env.VITE_API_URL;
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     // Validate inputs
     if (!title || !description || !videoFile || !thumbnailFile) {
       setError("All fields are required.");
+      setIsLoading(false);
       return;
     }
 
-    // Validate file types
     if (!videoFile.type.startsWith("video/")) {
       setError("Please upload a valid video file.");
+      setIsLoading(false);
       return;
     }
+
     if (!thumbnailFile.type.startsWith("image/")) {
       setError("Please upload a valid image file for the thumbnail.");
+      setIsLoading(false);
       return;
     }
 
-    // Handle video upload logic here
-    const uploadData = { title, description, videoFile, thumbnailFile };
+    try {
+      // Upload files to Cloudinary
+      const formData = new FormData();
+      formData.append("video", videoFile);
+      formData.append("thumbnail", thumbnailFile);
 
-    // Reset form and close modal
-    setTitle("");
-    setDescription("");
-    setVideoFile(null);
-    setThumbnailFile(null);
-    setError("");
-    setPopupIsOpen(false);
+      const uploadResponse = await axios.post(`${API}/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const { thumbnailUrl, videoUrl } = uploadResponse.data;
+
+      // Save video details to MongoDB
+      await axios.post(`${API}/api/videos`, {
+        userId: currentUser?._id,
+        title,
+        desc: description,
+        imgUrl: thumbnailUrl,
+        VideoUrl: videoUrl,
+      });
+
+      // Show success message
+      setSuccessMessage("Upload successful! Your video is now live.");
+      setTimeout(() => {
+        setSuccessMessage("");
+        setPopupIsOpen(false); // Close modal after success message
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+      setError(
+        error.response.data.message
+          ? error.response.data.message
+          : "Upload failed. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  // Close modal when clicking outside
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
-      setPopupIsOpen(false); // Close the modal when clicking outside
+      setPopupIsOpen(false);
     }
   };
 
@@ -206,9 +295,12 @@ function Upload({ setPopupIsOpen }) {
             required
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <Button type="submit">Upload</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? <StyledCircularProgress size={24} /> : "Upload"}
+          </Button>
         </Form>
       </Wrapper>
+      {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
     </Container>
   );
 }
