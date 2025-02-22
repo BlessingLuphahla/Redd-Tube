@@ -157,7 +157,11 @@ function Menu({ handleSetTheme, theme, isMobile, handleMenuToggle }) {
   return (
     <Container>
       <Wrapper>
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link
+          to="/"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
           <Logo isMobile={isMobile}>
             <Img src={LogoImg} alt="logo" />
             REDD Axe MEDIA
@@ -194,14 +198,26 @@ function Menu({ handleSetTheme, theme, isMobile, handleMenuToggle }) {
           </Item>
         </Link>
         <Hr />
-        <Item>
-          <SportsEsportsIcon />
-          Sports
-        </Item>
-        <Item>
-          <HistoryIcon />
-          History
-        </Item>
+        <Link
+          to="/sports"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
+          <Item>
+            <SportsEsportsIcon />
+            Sports
+          </Item>
+        </Link>
+        <Link
+          to="/history"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
+          <Item>
+            <HistoryIcon />
+            History
+          </Item>
+        </Link>
         <Item onClick={toggleTheme}>
           <SettingsBrightnessIcon />
           {theme === LightTheme ? "Dark Mode" : "Light Mode"}
@@ -251,18 +267,36 @@ function Menu({ handleSetTheme, theme, isMobile, handleMenuToggle }) {
           </Link>
         )}
         {!currentUser ? <Hr /> : <br />}
-        <Item>
-          <LibraryMusicIcon />
-          Library
-        </Item>
-        <Item>
-          <MovieIcon />
-          Movies
-        </Item>
-        <Item>
-          <ArticleIcon />
-          Articles
-        </Item>
+        <Link
+          to="/library"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
+          <Item>
+            <LibraryMusicIcon />
+            Library
+          </Item>
+        </Link>
+        <Link
+          to="/movies"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
+          <Item>
+            <MovieIcon />
+            Movies
+          </Item>
+        </Link>
+        <Link
+          to="/articles"
+          style={{ textDecoration: "none" }}
+          onClick={handleMenuToggle}
+        >
+          <Item>
+            <ArticleIcon />
+            Articles
+          </Item>
+        </Link>
         <Item>
           <LiveTvIcon />
           Live TV

@@ -15,6 +15,11 @@ import PrivPolicy from "./components/PrivPolicy";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setReduxTheme } from "./redux/userSlice";
+import History from "./components/History";
+import Sports from "./components/Sports";
+import Library from "./components/Library";
+import Articles from "./components/Articles";
+import Movies from "./components/Movies";
 
 const Container = styled.div`
   display: flex;
@@ -54,6 +59,13 @@ const AppRoutes = () => {
           <Route path="settings" element={<Settings />} />
           <Route path="contact-developer" element={<ContactDeveloper />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+
+          {/* New Routes */}
+          <Route path="history" element={<History />} />
+          <Route path="sports" element={<Sports />} />
+          <Route path="library" element={<Library />} />
+          <Route path="articles" element={<Articles />} />
+          <Route path="movies" element={<Movies />} />
         </Route>
       </Routes>
     </Wrapper>
