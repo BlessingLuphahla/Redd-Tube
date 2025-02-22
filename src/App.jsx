@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
 import SignIn from "./pages/SignIn";
+import Settings from "./pages/Settings";
 
 import { useScreen } from "./context/ScreenContext";
 import ContactDeveloper from "./components/ContactDeveloper";
@@ -58,6 +59,7 @@ function App() {
                   </Route>
                   <Route path="login" element={<SignIn />} />
                   <Route path="privacy-policy" element={<PrivPolicy />} />
+                  <Route path="settings" element={<Settings />} />
                   <Route
                     path="contact-developer"
                     element={<ContactDeveloper />}

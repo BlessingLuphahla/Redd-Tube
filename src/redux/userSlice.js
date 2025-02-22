@@ -57,6 +57,32 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = true;
     },
+
+    // Update user settings actions
+    updateSettingsStart: (state) => {
+      state.loading = true;
+    },
+    updateSettingsSuccess: (state, action) => {
+      state.user = { ...state.user, ...action.payload }; // Merge updated settings with existing user data
+      state.loading = false;
+    },
+    updateSettingsFailure: (state) => {
+      state.loading = false;
+      state.error = true;
+    },
+
+    // Update profile picture actions
+    updateProfilePicStart: (state) => {
+      state.loading = true;
+    },
+    updateProfilePicSuccess: (state, action) => {
+      state.user.profilePic = action.payload; // Update profile picture URL
+      state.loading = false;
+    },
+    updateProfilePicFailure: (state) => {
+      state.loading = false;
+      state.error = true;
+    },
   },
 });
 
@@ -71,6 +97,12 @@ export const {
   unsubStart,
   unsubSuccess,
   unsubFailure,
+  updateSettingsStart,
+  updateSettingsSuccess,
+  updateSettingsFailure,
+  updateProfilePicStart,
+  updateProfilePicSuccess,
+  updateProfilePicFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

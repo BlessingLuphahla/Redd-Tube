@@ -170,15 +170,27 @@ function Navbar({ setTheme, theme }) {
                   <UserDetails style={{ marginLeft: "auto" }}>
                     <VideoCallIcon
                       onClick={handlePopUpVideoPost}
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "pointer", color: "purple" }}
                     />
-                    <UserImage
-                      src={
-                        currentUser?.profilePic
-                          ? currentUser?.profilePic
-                          : DEFAULT_PROFILE_PIC
-                      }
-                    />
+                    <Link
+                      to="/settings"
+                      style={{
+                        textDecoration: "none",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <UserImage
+                        src={
+                          currentUser?.profilePic
+                            ? currentUser?.profilePic
+                            : DEFAULT_PROFILE_PIC
+                        }
+                      />
+                    </Link>
                     <Username>{currentUser?.username}</Username>
                   </UserDetails>
                 ) : (
@@ -202,19 +214,31 @@ function Navbar({ setTheme, theme }) {
               ></Link>
 
               {currentUser ? (
-                <UserDetails>
+                <UserDetails style={{ textDecoration: "none" }}>
                   <VideoCallIcon
                     onClick={handlePopUpVideoPost}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", color: "purple" }}
                   />
-                  <UserImage
-                    src={
-                      currentUser?.profilePic
-                        ? currentUser?.profilePic
-                        : DEFAULT_PROFILE_PIC
-                    }
-                  />
-                  <Username>{currentUser?.username}</Username>
+                  <Link
+                    to="/settings"
+                    style={{
+                      textDecoration: "none",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "5px",
+                    }}
+                  >
+                    <UserImage
+                      src={
+                        currentUser?.profilePic
+                          ? currentUser?.profilePic
+                          : DEFAULT_PROFILE_PIC
+                      }
+                    />
+                    <Username>{currentUser?.username}</Username>
+                  </Link>
                 </UserDetails>
               ) : (
                 <Link to="/login" style={{ textDecoration: "none" }}>
