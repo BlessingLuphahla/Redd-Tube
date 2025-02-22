@@ -163,7 +163,7 @@ const VideoWrapper = styled.div`
 
 const StyledVideo = styled.video`
   width: 100%;
-  height: auto;
+  height: ${({ isMobile }) => (isMobile ? " 350px" : "500px")};
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 `;
@@ -318,7 +318,7 @@ function Video() {
             controls
             autoPlay
             isMobile={isMobile}
-            src={video?.videoUrl}
+            src={video?.VideoUrl}
           />
         </VideoWrapper>
         {(videoError || userError) && (

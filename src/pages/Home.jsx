@@ -70,7 +70,6 @@ function Home({ type }) {
         return (
           <Card
             key={video._id + index}
-            videoSrc={video.videoUrl}
             imgSrc={video.imgUrl}
             views={video.views}
             date={video.createdAt}

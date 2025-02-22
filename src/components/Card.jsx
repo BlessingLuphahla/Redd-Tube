@@ -63,7 +63,7 @@ const Info = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-function Card({ videoSrc, type, views, date, title, userId, videoId,imgSrc }) {
+function Card({ type, views, date, title, userId, videoId, imgSrc }) {
   const API = import.meta.env.VITE_API_URL;
 
   const [user, setUser] = useState({});
