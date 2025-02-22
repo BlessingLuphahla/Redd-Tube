@@ -160,27 +160,38 @@ function Navbar({ setTheme, theme }) {
                   style={{ cursor: "pointer" }}
                 />
                 <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
-                  <Logo isMobile={isMobile} style={{ fontSize: "12px" }}>
+                  <Logo isMobile={isMobile} style={{ fontSize: "15px" }}>
                     AXE MEDIA
                   </Logo>
                 </Link>
 
-                <MobileIcons>
-                  <VideoCallIcon
-                    onClick={handlePopUpVideoPost}
-                    style={{ cursor: "pointer", marginRight: "10px" }}
-                  />
-                </MobileIcons>
-                <UserDetails style={{ marginLeft: "auto" }}>
-                  <UserImage
-                    src={
-                      currentUser?.profilePic
-                        ? currentUser?.profilePic
-                        : DEFAULT_PROFILE_PIC
-                    }
-                  />
-                  <Username>{currentUser?.username}</Username>
-                </UserDetails>
+                <MobileIcons></MobileIcons>
+                {currentUser ? (
+                  <UserDetails style={{ marginLeft: "auto" }}>
+                    <VideoCallIcon
+                      onClick={handlePopUpVideoPost}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <UserImage
+                      src={
+                        currentUser?.profilePic
+                          ? currentUser?.profilePic
+                          : DEFAULT_PROFILE_PIC
+                      }
+                    />
+                    <Username>{currentUser?.username}</Username>
+                  </UserDetails>
+                ) : (
+                  <Link
+                    to="/login"
+                    style={{ textDecoration: "none", marginLeft: "auto" }}
+                  >
+                    <Button isMobile={isMobile}>
+                      <PersonIcon />
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
               </MobileHeader>
             </>
           ) : (
