@@ -17,7 +17,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import PersonIcon from "@mui/icons-material/Person";
-import { LightTheme, DarkTheme } from "../utils/Theme";
+import { LightTheme } from "../utils/Theme";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DEFAULT_PROFILE_PIC } from "../utils/constants";
@@ -64,7 +64,7 @@ const Logo = styled.div`
   font-weight: bold;
   margin-bottom: 5px;
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 13px;
   font-family: "Courier New", Courier, monospace;
   color: ${({ theme }) => theme.text};
 `;
@@ -146,14 +146,13 @@ const UserDetailsContainer = styled.div`
   gap: 5px;
 `;
 
-function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
-  const handleSetTheme = () => {
-    if (theme === LightTheme) setTheme(DarkTheme);
-    else setTheme(LightTheme);
-    isMobile && handleMenuToggle();
-  };
-
+function Menu({ handleSetTheme, theme, isMobile, handleMenuToggle }) {
   const { user: currentUser } = useSelector((state) => state.user);
+
+  const toggleTheme = () => {
+    const newTheme = theme === LightTheme ? "dark" : "light";
+    handleSetTheme(newTheme);
+  };
 
   return (
     <Container>
@@ -161,7 +160,7 @@ function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
         <Link to="/" style={{ textDecoration: "none" }}>
           <Logo isMobile={isMobile}>
             <Img src={LogoImg} alt="logo" />
-            Axe-Media
+            REDD Axe MEDIA
           </Logo>
         </Link>
         <Link
@@ -203,7 +202,7 @@ function Menu({ setTheme, theme, isMobile, handleMenuToggle }) {
           <HistoryIcon />
           History
         </Item>
-        <Item onClick={handleSetTheme}>
+        <Item onClick={toggleTheme}>
           <SettingsBrightnessIcon />
           {theme === LightTheme ? "Dark Mode" : "Light Mode"}
         </Item>

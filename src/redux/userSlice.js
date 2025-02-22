@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   loading: false,
   error: false,
+  theme: "dark",
 };
 
 export const userSlice = createSlice({
@@ -75,6 +76,14 @@ export const userSlice = createSlice({
     updateProfilePicStart: (state) => {
       state.loading = true;
     },
+    /**
+     * Updates the user's profile picture URL in the state.
+     * Sets loading to false after the update.
+     *
+     * @param {Object} state - The current state of the user slice.
+     * @param {Object} action - The action object containing the new profile picture URL as payload.
+     */
+
     updateProfilePicSuccess: (state, action) => {
       state.user.profilePic = action.payload; // Update profile picture URL
       state.loading = false;
@@ -82,6 +91,16 @@ export const userSlice = createSlice({
     updateProfilePicFailure: (state) => {
       state.loading = false;
       state.error = true;
+    },
+    // Theme actions
+    /**
+     * Updates the theme in the Redux store.
+     *
+     * @param {Object} state - The current state of the user slice.
+     * @param {Object} action - The action object containing the new theme as payload.
+     */
+    setReduxTheme: (state, action) => {
+      state.theme = action.payload; // Update theme in Redux store
     },
   },
 });
@@ -103,6 +122,7 @@ export const {
   updateProfilePicStart,
   updateProfilePicSuccess,
   updateProfilePicFailure,
+  setReduxTheme,
 } = userSlice.actions;
 
 export default userSlice.reducer;

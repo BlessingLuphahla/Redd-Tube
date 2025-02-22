@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import { useScreen } from "../context/ScreenContext";
@@ -61,61 +61,101 @@ const Title = styled.h1`
   text-transform: capitalize;
 `;
 
+const Message = styled.div`
+  font-size: 16px;
+  color: ${({ theme }) => theme.text};
+  text-align: center;
+  margin-top: 20px;
+`;
+
 function Home({ type }) {
   const API = import.meta.env.VITE_API_URL;
   const [videos, setVideos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const { isMobile } = useScreen();
 
-  useEffect(() => {
-    const getRandomVideos = async () => {
-      try {
-        // Artificial delay for testing (2 seconds)
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        const res = await axios.get(`${API}/api/videos/${type}`);
+  // Fetch videos based on type or search query
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        setIsLoading(true);
+        setError("");
+
+        let endpoint = `${API}/api/videos/${type}`;
+        if (searchQuery) {
+          endpoint = `${API}/api/videos/search?q=${searchQuery}`;
+        }
+
+        const res = await axios.get(endpoint);
         setVideos(res.data);
       } catch (error) {
-        console.log(error.response.data.message);
+        setError(error.response?.data?.message || "Failed to fetch videos.");
       } finally {
-        setIsLoading(false); // Stop loading
+        setIsLoading(false);
       }
     };
 
-    getRandomVideos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
+    fetchVideos();
+  }, [API, type, searchQuery]);
 
-  type.toLowerCase() === "random" && (type = "Welcome");
-  type.toLowerCase() === "subs" && (type = "subscriptions");
+  // Handle type display
+  let displayType = type;
+  switch (type.toLowerCase()) {
+    case "random":
+      displayType = "Welcome";
+      break;
+    case "subs":
+      displayType = "subscriptions";
+      break;
+    default:
+      break;
+  }
 
   return (
     <>
-      {type.toLowerCase() === "subscriptions" && !videos && <></>}
-
       {isLoading && (
         <LoadingOverlay>
-          <CircularProgress size={60} color="primary" /> {/* Loading spinner */}
+          <CircularProgress size={60} color="primary" />
         </LoadingOverlay>
       )}
-      <Container>
-        <Title>{type}</Title>
 
+      <Container>
+        <Title>{displayType}</Title>
+
+        {/* Search bar */}
         <Search isMobile={isMobile}>
-          <Input isMobile={isMobile} placeholder="Search" />
+          <Input
+            isMobile={isMobile}
+            placeholder="Search videos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <SearchIcon />
         </Search>
-        {videos?.map((video, index) => (
-          <Card
-            key={video._id + index}
-            imgSrc={video.imgUrl}
-            views={video.views}
-            date={video.createdAt}
-            title={video.title}
-            userId={video.userId}
-            videoId={video._id}
-          />
-        ))}
+
+        {/* Show videos or a message if no videos are available */}
+        {error ? (
+          <Message>{error}</Message>
+        ) : videos.length === 0 && type.toLowerCase() === "subs" ? (
+          <Message>You are not subscribed to any channels.</Message>
+        ) : videos.length === 0 && searchQuery ? (
+          <Message>{`No videos found for ${searchQuery}.`}</Message>
+        ) : (
+          videos.map((video, index) => (
+            <Card
+              key={video._id + index}
+              imgSrc={video.imgUrl}
+              views={video.views}
+              date={video.createdAt}
+              title={video.title}
+              userId={video.userId}
+              videoId={video._id}
+            />
+          ))
+        )}
       </Container>
     </>
   );

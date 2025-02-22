@@ -162,7 +162,7 @@ function Navbar({ setTheme, theme }) {
                 />
                 <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
                   <Logo isMobile={isMobile} style={{ fontSize: "20px" }}>
-                    AXE MEDIA
+                    REDD AXE MEDIA
                   </Logo>
                 </Link>
 
