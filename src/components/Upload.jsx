@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { styled as styledMaterial } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
 
 const StyledCircularProgress = styledMaterial(CircularProgress)(
   ({ theme }) => ({
@@ -82,7 +83,7 @@ const TextArea = styled.textarea`
   color: ${({ theme }) => theme.text};
   font-size: 16px;
   resize: vertical;
-  min-height: 100px;
+  min-height: 300px;
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.primary};
@@ -196,6 +197,8 @@ function Upload({ setPopupIsOpen }) {
   const [successMessage, setSuccessMessage] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  const navigator = useNavigate();
+
   const { user: currentUser } = useSelector((state) => state.user);
   const API = import.meta.env.VITE_API_URL;
 
@@ -257,6 +260,8 @@ function Upload({ setPopupIsOpen }) {
         setSuccessMessage("");
         setPopupIsOpen(false);
       }, 3000);
+
+      navigator("/");
     } catch (error) {
       console.error(error);
       setError(
@@ -295,6 +300,12 @@ function Upload({ setPopupIsOpen }) {
             onChange={(e) => setDescription(e.target.value)}
             required
           />
+          <Input
+            type="text"
+            placeholder="Put tags here seperated by commas (optional)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
           <FileInputLabel htmlFor="video-upload">
             {videoFile ? videoFile.name : "Upload Video"}
           </FileInputLabel>
@@ -305,14 +316,6 @@ function Upload({ setPopupIsOpen }) {
             accept="video/*"
             onChange={(e) => setVideoFile(e.target.files[0])}
             required
-          />
-          <FileInputLabel htmlFor="video-upload">
-            {videoFile ? videoFile.name : "Upload Video"}
-          </FileInputLabel>
-          <FileInput
-            id="tags"
-            type="text"
-            onChange={(e) => setTags(e.target.files[0])}
           />
           <FileInputLabel htmlFor="thumbnail-upload">
             {thumbnailFile ? thumbnailFile.name : "Upload Thumbnail"}

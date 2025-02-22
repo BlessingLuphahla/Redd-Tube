@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useScreen } from "../context/ScreenContext";
 import axios from "axios";
@@ -106,6 +106,7 @@ function SignIn() {
   const [error, setError] = useState(null);
   const API = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch();
+  const navigator = useNavigate();
 
   // State for sign-up form
   const [signUpData, setSignUpData] = useState({
@@ -147,8 +148,7 @@ function SignIn() {
       );
 
       dispatch(loginSuccess(res.data));
-
-      // navigate("/subscription");
+      navigator("/");
     } catch (err) {
       setError(err.response.data.message);
       dispatch(loginFailure());
@@ -181,6 +181,7 @@ function SignIn() {
       );
 
       dispatch(loginSuccess(res.data));
+      navigator("/");
     } catch (err) {
       setError(err.response.data.message);
     }
@@ -212,13 +213,14 @@ function SignIn() {
 
           await axios.post(`${API}/auth/google`, userCredentials);
           dispatch(loginSuccess(userCredentials));
+          navigator("/");
         }
       })
       .catch((error) => {
         console.error("Error during authentication: ", error);
         dispatch(loginFailure());
       });
-  }, [API, dispatch]);
+  }, [API, dispatch, navigator]);
 
   return (
     <Container>
