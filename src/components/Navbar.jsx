@@ -6,24 +6,26 @@ import { useSelector } from "react-redux";
 import { useScreen } from "../context/ScreenContext";
 import Menu from "./Menu";
 import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
-import LogoImg from "../assets/images/logo.jpg";
 import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import Upload from "./Upload";
+// import LogoImg from "../assets/images/logo.jpg";
 
 // Styled components
 const Container = styled.div`
   position: sticky;
   top: 0;
   background-color: ${({ theme }) => theme.bgLighter};
+  justify-content: ${({ isMobile }) => !isMobile && "flex-end"};
   height: 56px;
   z-index: 10;
+  display: flex;
 `;
 
 const Wrapper = styled.div`
   padding: 0px 20px;
+  width: 100%;
   display: flex;
   align-items: center;
   height: 100%;
@@ -45,32 +47,6 @@ const Button = styled.button`
   outline: none;
   margin-top: 10px;
   cursor: pointer;
-`;
-
-const Search = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  margin-left: ${({ isMobile }) => (isMobile ? "0" : "20px")};
-`;
-
-const Input = styled.input`
-  border: none;
-  width: ${({ isMobile }) => (isMobile ? "80%" : "92%")};
-  padding: 5px;
-  background-color: transparent;
-  height: ${({ isMobile }) => (isMobile ? "80%" : "100%")};
-  font-size: 16px;
-  color: ${({ theme }) => theme.text};
-
-  &:focus {
-    outline: none;
-    border: none;
-  }
 `;
 
 const MenuContainer = styled.div`
@@ -105,10 +81,10 @@ const Logo = styled.div`
   position: relative;
 `;
 
-const Img = styled.img`
-  height: 43px;
-  width: 43px;
-`;
+// const Img = styled.img`
+//   height: 43px;
+//   width: 43px;
+// `;
 
 const ErrorMessage = styled.div`
   color: red;
@@ -140,7 +116,7 @@ const Username = styled.h2`
 const MobileHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   width: 100%;
 `;
 
@@ -173,7 +149,7 @@ function Navbar({ setTheme, theme }) {
 
   return (
     <>
-      <Container>
+      <Container isMobile={isMobile}>
         {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <Wrapper isMobile={isMobile}>
@@ -185,26 +161,28 @@ function Navbar({ setTheme, theme }) {
                   style={{ cursor: "pointer" }}
                 />
                 <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
-                  <Logo isMobile={isMobile} style={{ fontSize: "10px" }}>
-                    <Img src={LogoImg} alt="logo" />
+                  <Logo isMobile={isMobile} style={{ fontSize: "12px" }}>
                     AXE MEDIA
                   </Logo>
                 </Link>
+
                 <MobileIcons>
                   <VideoCallIcon
                     onClick={handlePopUpVideoPost}
                     style={{ cursor: "pointer", marginRight: "10px" }}
                   />
                 </MobileIcons>
+                <UserDetails style={{ marginLeft: "auto" }}>
+                  <UserImage
+                    src={
+                      currentUser?.profilePic
+                        ? currentUser?.profilePic
+                        : DEFAULT_PROFILE_PIC
+                    }
+                  />
+                  <Username>{currentUser?.username}</Username>
+                </UserDetails>
               </MobileHeader>
-              <Search isMobile={isMobile}>
-                <Input
-                  style={{ fontSize: "10px" }}
-                  isMobile={isMobile}
-                  placeholder="Search"
-                />
-                <SearchIcon style={{ fontSize: "10px" }} />
-              </Search>
             </>
           ) : (
             <MenuContainer>
@@ -212,10 +190,7 @@ function Navbar({ setTheme, theme }) {
                 to="/"
                 style={{ textDecoration: "none", margin: "0px" }}
               ></Link>
-              <Search isMobile={isMobile}>
-                <Input isMobile={isMobile} placeholder="Search" />
-                <SearchIcon />
-              </Search>
+
               {currentUser ? (
                 <UserDetails>
                   <VideoCallIcon
