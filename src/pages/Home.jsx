@@ -4,33 +4,36 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
-import { useScreen } from "../context/ScreenContext";
+// import { useScreen } from "../context/ScreenContext";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 1px;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const Search = styled.div`
   display: flex;
   width: 100%;
+  max-width: 600px;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 3px;
-  margin-left: ${({ isMobile }) => (isMobile ? "0" : "20px")};
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.bg};
 `;
 
 const Input = styled.input`
   border: none;
-  width: ${({ isMobile }) => (isMobile ? "80%" : "92%")};
-  padding: 5px;
+  width: 100%;
+  padding: 10px;
   background-color: transparent;
-  height: ${({ isMobile }) => (isMobile ? "80%" : "100%")};
   font-size: 16px;
   color: ${({ theme }) => theme.text};
 
@@ -54,11 +57,12 @@ const LoadingOverlay = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
   color: ${({ theme }) => theme.text};
   margin-bottom: 20px;
   text-transform: capitalize;
+  text-align: center;
 `;
 
 const Message = styled.div`
@@ -68,14 +72,22 @@ const Message = styled.div`
   margin-top: 20px;
 `;
 
+const CardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+`;
+
 function Home({ type }) {
   const API = import.meta.env.VITE_API_URL;
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const { isMobile } = useScreen();
-
+  // const { isMobile } = useScreen();
 
   // Fetch videos based on type or search query
   useEffect(() => {
@@ -126,9 +138,8 @@ function Home({ type }) {
         <Title>{displayType}</Title>
 
         {/* Search bar */}
-        <Search isMobile={isMobile}>
+        <Search>
           <Input
-            isMobile={isMobile}
             placeholder="Search videos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -144,17 +155,19 @@ function Home({ type }) {
         ) : videos.length === 0 && searchQuery ? (
           <Message>{`No videos found for ${searchQuery}.`}</Message>
         ) : (
-          videos.map((video, index) => (
-            <Card
-              key={video?._id + index}
-              imgSrc={video?.imgUrl}
-              views={video?.views}
-              date={video?.createdAt}
-              title={video?.title}
-              userId={video?.userId}
-              videoId={video?._id}
-            />
-          ))
+          <CardContainer>
+            {videos.map((video, index) => (
+              <Card
+                key={video?._id + index}
+                imgSrc={video?.imgUrl}
+                views={video?.views}
+                date={video?.createdAt}
+                title={video?.title}
+                userId={video?.userId}
+                videoId={video?._id}
+              />
+            ))}
+          </CardContainer>
         )}
       </Container>
     </>

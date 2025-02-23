@@ -11,17 +11,16 @@ import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import Upload from "./Upload";
 import { LightTheme } from "../utils/Theme";
-// import LogoImg from "../assets/images/logo.jpg";
 
 // Styled components
 const Container = styled.div`
   position: sticky;
   top: 0;
   background-color: ${({ theme }) => theme.bgLighter};
-  justify-content: ${({ isMobile }) => !isMobile && "flex-end"};
   height: 56px;
   z-index: 10;
   display: flex;
+  justify-content: flex-end;
 `;
 
 const Wrapper = styled.div`
@@ -46,7 +45,6 @@ const Button = styled.button`
   color: #3eafff;
   border-radius: 3px;
   outline: none;
-  margin-top: 10px;
   cursor: pointer;
 `;
 
@@ -113,7 +111,7 @@ const Username = styled.h2`
 const MobileHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
   width: 100%;
 `;
 
@@ -151,25 +149,22 @@ function Navbar({ setTheme, theme, handleSetTheme }) {
 
   return (
     <>
-      <Container isMobile={isMobile}>
+      <Container>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Wrapper isMobile={isMobile}>
+        <Wrapper>
           {isMobile ? (
-            <>
-              <MobileHeader>
-                <MenuIcon
-                  onClick={handleMenuToggle}
-                  style={{ cursor: "pointer" }}
-                />
-                <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
-                  <Logo isMobile={isMobile} style={{ fontSize: "20px" }}>
-                    REDD AXE MEDIA
-                  </Logo>
-                </Link>
+            <MobileHeader>
+              <MenuIcon
+                onClick={handleMenuToggle}
+                style={{ cursor: "pointer" }}
+              />
+              <Link to="/" style={{ textDecoration: "none", margin: "0px" }}>
+                <Logo>REDD AXE MEDIA</Logo>
+              </Link>
 
-                <MobileIcons></MobileIcons>
+              <MobileIcons>
                 {currentUser ? (
-                  <UserDetails style={{ marginLeft: "auto" }}>
+                  <UserDetails>
                     <VideoCallIcon
                       onClick={handlePopUpVideoPost}
                       style={{ cursor: "pointer", color: "purple" }}
@@ -196,18 +191,15 @@ function Navbar({ setTheme, theme, handleSetTheme }) {
                     <Username>{currentUser?.username}</Username>
                   </UserDetails>
                 ) : (
-                  <Link
-                    to="/login"
-                    style={{ textDecoration: "none", marginLeft: "auto" }}
-                  >
-                    <Button isMobile={isMobile}>
+                  <Link to="/login" style={{ textDecoration: "none" }}>
+                    <Button>
                       <PersonIcon />
                       Sign In
                     </Button>
                   </Link>
                 )}
-              </MobileHeader>
-            </>
+              </MobileIcons>
+            </MobileHeader>
           ) : (
             <MenuContainer>
               <Link
@@ -216,12 +208,7 @@ function Navbar({ setTheme, theme, handleSetTheme }) {
               ></Link>
 
               {currentUser ? (
-                <UserDetails
-                  style={{
-                    textDecoration: "none",
-                    marginLeft: "auto",
-                  }}
-                >
+                <UserDetails>
                   <VideoCallIcon
                     onClick={handlePopUpVideoPost}
                     style={{ cursor: "pointer", color: "purple" }}
@@ -235,7 +222,6 @@ function Navbar({ setTheme, theme, handleSetTheme }) {
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "5px",
-                      margin: "auto",
                     }}
                   >
                     <UserImage
@@ -250,7 +236,7 @@ function Navbar({ setTheme, theme, handleSetTheme }) {
                 </UserDetails>
               ) : (
                 <Link to="/login" style={{ textDecoration: "none" }}>
-                  <Button isMobile={isMobile}>
+                  <Button>
                     <PersonIcon />
                     Sign In
                   </Button>
