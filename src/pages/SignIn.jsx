@@ -206,9 +206,9 @@ function SignIn() {
         if (data) {
           dispatch(loginStart());
           const userCredentials = {
-            username: data.user.displayName,
-            email: data.user.email,
-            profilePic: data.user.photoURL,
+            username: data.user?.displayName,
+            email: data.user?.email,
+            profilePic: data.user?.photoURL,
           };
 
           await axios.post(`${API}/auth/google`, userCredentials);

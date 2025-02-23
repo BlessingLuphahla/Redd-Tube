@@ -117,7 +117,7 @@ function Settings() {
     try {
       const updatedFields = {};
 
-      if (username !== user.username) {
+      if (username !== user?.username) {
         updatedFields.username = username;
       }
 
@@ -125,13 +125,13 @@ function Settings() {
         updatedFields.password = password;
       }
 
-      if (profilePic !== user.profilePic) {
+      if (profilePic !== user?.profilePic) {
         updatedFields.profilePic = profilePic;
       }
 
       // Update the backend
       const res = await axios.put(
-        `${API}/api/users/${user._id}`,
+        `${API}/api/users/${user?._id}`,
         updatedFields
       );
       

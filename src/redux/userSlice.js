@@ -35,8 +35,8 @@ export const userSlice = createSlice({
     },
     subSuccess: (state, action) => {
       const { userId } = action.payload; // userId of the channel owner
-      if (!state.user.subscribedUsers.includes(userId)) {
-        state.user.subscribedUsers.push(userId); // Add the channel owner's ID to subscribedUsers
+      if (!state.user?.subscribedUsers.includes(userId)) {
+        state.user?.subscribedUsers.push(userId); // Add the channel owner's ID to subscribedUsers
       }
       state.loading = false;
     },
@@ -49,7 +49,7 @@ export const userSlice = createSlice({
     },
     unsubSuccess: (state, action) => {
       const { userId } = action.payload; // userId of the channel owner
-      state.user.subscribedUsers = state.user.subscribedUsers.filter(
+      state.user.subscribedUsers = state.user?.subscribedUsers.filter(
         (id) => id !== userId
       ); // Remove the channel owner's ID from subscribedUsers
       state.loading = false;

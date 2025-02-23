@@ -86,7 +86,7 @@ function App() {
       if (currentUser) {
         try {
           const res = await axios.get(
-            `${API}/api/users/theme/${currentUser._id}`
+            `${API}/api/users/theme/${currentUser?._id}`
           );
           const userTheme = res.data.theme;
 
@@ -110,7 +110,7 @@ function App() {
 
     try {
       // Update theme in MongoDB
-      const res = await axios.put(`${API}/api/users/theme/${currentUser._id}`, {
+      const res = await axios.put(`${API}/api/users/theme/${currentUser?._id}`, {
         theme: newTheme,
       });
 

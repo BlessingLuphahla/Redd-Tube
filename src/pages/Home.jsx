@@ -146,13 +146,13 @@ function Home({ type }) {
         ) : (
           videos.map((video, index) => (
             <Card
-              key={video._id + index}
-              imgSrc={video.imgUrl}
-              views={video.views}
-              date={video.createdAt}
-              title={video.title}
-              userId={video.userId}
-              videoId={video._id}
+              key={video?._id + index}
+              imgSrc={video?.imgUrl}
+              views={video?.views}
+              date={video?.createdAt}
+              title={video?.title}
+              userId={video?.userId}
+              videoId={video?._id}
             />
           ))
         )}

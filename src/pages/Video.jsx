@@ -257,10 +257,10 @@ function Video() {
     if (!currentUser) return;
 
     try {
-      await axios.put(`${API}/api/users/like/${video._id}`, {
-        userId: currentUser._id,
+      await axios.put(`${API}/api/users/like/${video?._id}`, {
+        userId: currentUser?._id,
       });
-      dispatch(like(currentUser._id));
+      dispatch(like(currentUser?._id));
       setIsLiked(!isLiked);
     } catch (error) {
       console.error("Failed to like the video", error);
@@ -272,10 +272,10 @@ function Video() {
     if (!currentUser) return;
 
     try {
-      await axios.put(`${API}/api/users/dislike/${video._id}`, {
-        userId: currentUser._id,
+      await axios.put(`${API}/api/users/dislike/${video?._id}`, {
+        userId: currentUser?._id,
       });
-      dispatch(dislike(currentUser._id));
+      dispatch(dislike(currentUser?._id));
       setIsLiked(!isLiked);
     } catch (error) {
       console.error("Failed to dislike the video", error);
@@ -287,22 +287,22 @@ function Video() {
     if (!currentUser || !user) return;
 
     try {
-      const subscribed = currentUser.subscribedUsers.includes(user._id);
+      const subscribed = currentUser?.subscribedUsers.includes(user?._id);
 
       if (!subscribed) {
         // Subscribe to the channel
         dispatch(subStart()); // Start loading
-        await axios.put(`${API}/api/users/sub/${user._id}`, {
-          userId: currentUser._id,
+        await axios.put(`${API}/api/users/sub/${user?._id}`, {
+          userId: currentUser?._id,
         });
-        dispatch(subSuccess({ userId: user._id })); // Update Redux state
+        dispatch(subSuccess({ userId: user?._id })); // Update Redux state
       } else {
         // Unsubscribe from the channel
         dispatch(unsubStart()); // Start loading
-        await axios.put(`${API}/api/users/unsub/${user._id}`, {
-          userId: currentUser._id,
+        await axios.put(`${API}/api/users/unsub/${user?._id}`, {
+          userId: currentUser?._id,
         });
-        dispatch(unsubSuccess({ userId: user._id })); // Update Redux state
+        dispatch(unsubSuccess({ userId: user?._id })); // Update Redux state
       }
     } catch (error) {
       console.error("Failed to subscribe/unsubscribe", error);
@@ -336,7 +336,7 @@ function Video() {
           </Info>
           <ButtonContainer isMobile={isMobile}>
             <Button isMobile={isMobile} onClick={handleLike}>
-              {video?.likes?.includes(currentUser._id) ? (
+              {video?.likes?.includes(currentUser?._id) ? (
                 <ThumbUpIcon fontSize="inherit" />
               ) : (
                 <ThumbUpAltOutlinedIcon fontSize="inherit" />
@@ -344,7 +344,7 @@ function Video() {
               {video?.likes?.length}
             </Button>
             <Button isMobile={isMobile} onClick={handleDislike}>
-              {video?.dislikes?.includes(currentUser._id) ? (
+              {video?.dislikes?.includes(currentUser?._id) ? (
                 <ThumbDownIcon fontSize="inherit" />
               ) : (
                 <ThumbDownAltOutlinedIcon fontSize="inherit" />
@@ -379,7 +379,7 @@ function Video() {
               </ChannelDetail>
             </div>
             <Subscribe isMobile={isMobile} onClick={subscribeToVideo}>
-              {currentUser?.subscribedUsers?.includes(user._id)
+              {currentUser?.subscribedUsers?.includes(user?._id)
                 ? "UNSUBSCRIBE"
                 : "SUBSCRIBE"}
             </Subscribe>
@@ -391,17 +391,17 @@ function Video() {
       <Recommendation isMobile={isMobile}>
         {videoLoading && <Loading>Loading...</Loading>}
         {videos?.map((video) => {
-          if (video.userId === currentUser._id) return;
+          if (video.userId === currentUser?._id) return;
           return (
             <Card
-              key={video._id}
-              src={video.VideoUrl}
-              imgSrc={video.imgUrl}
-              views={video.views}
-              date={video.createdAt}
-              title={video.title}
-              userId={video.userId}
-              videoId={video._id}
+              key={video?._id}
+              src={video?.VideoUrl}
+              imgSrc={video?.imgUrl}
+              views={video?.views}
+              date={video?.createdAt}
+              title={video?.title}
+              userId={video?.userId}
+              videoId={video?._id}
               type="sm"
             />
           );
