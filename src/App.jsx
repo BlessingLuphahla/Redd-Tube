@@ -130,12 +130,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Container>
         <BrowserRouter>
-          {!isMobile && (
-            <Menu
-              theme={theme}
-              handleSetTheme={(newTheme) => handleSetTheme(newTheme)}
-            />
-          )}
+          {!isMobile && <Menu theme={theme} handleSetTheme={handleSetTheme} />}
           <Main>
             <Navbar
               setTheme={(newTheme) => handleSetTheme(newTheme)}
