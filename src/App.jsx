@@ -133,7 +133,8 @@ function App() {
           {!isMobile && <Menu theme={theme} handleSetTheme={handleSetTheme} />}
           <Main>
             <Navbar
-              setTheme={(newTheme) => handleSetTheme(newTheme)}
+              setTheme={setTheme}
+              handleSetTheme={handleSetTheme}
               theme={theme}
             />
             <AppRoutes /> {/* Use the AppRoutes component here */}

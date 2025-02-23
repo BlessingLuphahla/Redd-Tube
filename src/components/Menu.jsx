@@ -152,6 +152,7 @@ function Menu({ handleSetTheme, theme, isMobile, handleMenuToggle }) {
   const toggleTheme = () => {
     const newTheme = theme === LightTheme ? "dark" : "light";
     handleSetTheme(newTheme);
+    handleMenuToggle();
   };
 
   return (

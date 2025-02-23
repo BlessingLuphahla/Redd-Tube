@@ -48,7 +48,7 @@ function Comments({ currentVideoId }) {
       `);
         setComments(res.data);
       } catch (error) {
-        console.log(error.response.data.message);
+        console.log(error);
       }
     };
 

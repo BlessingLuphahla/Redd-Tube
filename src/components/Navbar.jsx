@@ -10,6 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { DEFAULT_PROFILE_PIC } from "../utils/constants";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import Upload from "./Upload";
+import { LightTheme } from "../utils/Theme";
 // import LogoImg from "../assets/images/logo.jpg";
 
 // Styled components
@@ -82,11 +83,6 @@ const Logo = styled.div`
   position: relative;
 `;
 
-// const Img = styled.img`
-//   height: 43px;
-//   width: 43px;
-// `;
-
 const ErrorMessage = styled.div`
   color: red;
   font-size: 14px;
@@ -127,7 +123,7 @@ const MobileIcons = styled.div`
   gap: 10px;
 `;
 
-function Navbar({ setTheme, theme }) {
+function Navbar({ setTheme, theme, handleSetTheme }) {
   const { isMobile } = useScreen();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [error, setError] = useState("");
@@ -147,6 +143,11 @@ function Navbar({ setTheme, theme }) {
   };
 
   const { user: currentUser } = useSelector((state) => state.user);
+
+  const handleTheme = () => {
+    const newTheme = theme === LightTheme ? "dark" : "light";
+    handleSetTheme(newTheme);
+  };
 
   return (
     <>
@@ -265,6 +266,7 @@ function Navbar({ setTheme, theme }) {
                 isMobile={isMobile}
                 setTheme={setTheme}
                 theme={theme}
+                handleSetTheme={handleTheme}
               />
             </MobileMenu>
           )}

@@ -134,10 +134,9 @@ function Settings() {
         `${API}/api/users/${user._id}`,
         updatedFields
       );
-      console.log(res.data);
-
+      
       // Update Redux state
-      dispatch(updateSettingsSuccess(updatedFields));
+      dispatch(updateSettingsSuccess(res.data));
       setSuccess("Settings updated successfully!");
     } catch (error) {
       setError(error.response?.data?.message || "Failed to update settings.");
