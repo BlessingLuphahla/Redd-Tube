@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
-// import { useScreen } from "../context/ScreenContext";
+import { useScreen } from "../context/ScreenContext";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Container = styled.div`
@@ -12,9 +12,16 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 20px;
   width: 100%;
   box-sizing: border-box;
+  padding: 20px;
+  background-color: ${({ theme }) => theme.bg};
+
+  // media queries
+  position: ${({ isMobile }) => isMobile && "absolute"};
+  top: 100px;
+  left: 0;
+  right: 0;
 `;
 
 const Search = styled.div`
@@ -87,7 +94,8 @@ function Home({ type }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  // const { isMobile } = useScreen();
+
+  const { isMobile } = useScreen();
 
   // Fetch videos based on type or search query
   useEffect(() => {
@@ -134,7 +142,7 @@ function Home({ type }) {
         </LoadingOverlay>
       )}
 
-      <Container>
+      <Container isMobile={isMobile}>
         <Title>{displayType}</Title>
 
         {/* Search bar */}
